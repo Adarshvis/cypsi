@@ -1,0 +1,1667 @@
+[
+  {
+    "_id": "692895c0159defdcb9072d7d",
+    "createdAt": "2025-11-27T18:17:36.181Z",
+    "updatedAt": "2026-04-06T10:33:20.907Z",
+    "sectionName": "Hero Section",
+    "sectionType": "hero",
+    "status": "active",
+    "hero": {
+      "layoutType": "text-slider",
+      "title": "Driving Breakthroughs Through Research & Innovation",
+      "description": "CyPSi Lab advances cutting-edge research in Cyber-Physical Systems to improve lives and transform industries. We collaborate with academia, government, and industry partners to build scalable and socially relevant technological solutions.",
+      "heroImages": [
+        {
+          "image": "6933490777d9f4f59803db3d",
+          "id": "693348e838318859a5743de7"
+        },
+        {
+          "image": "6933492777d9f4f59803db5b",
+          "id": "6933490e38318859a5743de9"
+        },
+        {
+          "image": "6933494677d9f4f59803db78",
+          "id": "6933493338318859a5743deb"
+        },
+        {
+          "image": "6933496477d9f4f59803db94",
+          "id": "6933494f38318859a5743ded"
+        }
+      ],
+      "stats": [],
+      "primaryButton": {
+        "text": "Explore Research",
+        "link": "http://172.16.0.108:3002/publications"
+      },
+      "secondaryButton": {
+        "text": "Learn More",
+        "link": "#about"
+      },
+      "features": [
+        {
+          "icon": "bi-shield-check",
+          "text": "PHD Programs",
+          "id": "692895c0dfc42411989dd0be"
+        },
+        {
+          "icon": "bi-award",
+          "text": "Internships",
+          "id": "692895c0dfc42411989dd0bf"
+        },
+        {
+          "icon": "bi-people",
+          "text": "Expert Faculty",
+          "id": "692895c0dfc42411989dd0c0"
+        }
+      ],
+      "floatingCards": [],
+      "singleImage": {
+        "image": "6933490777d9f4f59803db3d",
+        "alt": "Hero_img",
+        "caption": "CyPSi Lab"
+      },
+      "fullWidthSlider": {
+        "height": "85vh",
+        "interval": 3,
+        "slides": [
+          {
+            "mediaType": "image",
+            "textContent": {},
+            "imageFile": "6933494677d9f4f59803db78",
+            "videoAutoplay": false,
+            "videoControls": true,
+            "audioAutoplay": false,
+            "documentDisplayMode": "download",
+            "animationLoop": true,
+            "model3DAutoRotate": true,
+            "embedType": "youtube",
+            "embedAutoplay": false,
+            "dataHeight": 400,
+            "mapProvider": "google",
+            "mapHeight": 450,
+            "mapInteractive": true,
+            "id": "6958d8865f4b854a8c8b2b1d"
+          },
+          {
+            "mediaType": "embed",
+            "textContent": {},
+            "videoAutoplay": false,
+            "videoControls": true,
+            "audioAutoplay": false,
+            "documentDisplayMode": "download",
+            "animationLoop": true,
+            "model3DAutoRotate": true,
+            "embedType": "youtube",
+            "embedUrl": "https://youtu.be/sFnwxnU0MN0?si=-QLjwirrkmI8zBoa",
+            "embedAutoplay": false,
+            "dataHeight": 400,
+            "mapProvider": "google",
+            "mapHeight": 450,
+            "mapInteractive": true,
+            "id": "6958d8ac5f4b854a8c8b2b1f"
+          },
+          {
+            "mediaType": "animation",
+            "textContent": {},
+            "videoAutoplay": false,
+            "videoControls": true,
+            "audioAutoplay": false,
+            "documentDisplayMode": "download",
+            "animationFile": "6958dcfd9493549a6a5dc11c",
+            "animationLoop": true,
+            "model3DAutoRotate": true,
+            "embedType": "youtube",
+            "embedAutoplay": false,
+            "dataHeight": 400,
+            "mapProvider": "google",
+            "mapHeight": 450,
+            "mapInteractive": true,
+            "id": "6958d8c65f4b854a8c8b2b21"
+          },
+          {
+            "mediaType": "data",
+            "textContent": {},
+            "videoAutoplay": false,
+            "videoControls": true,
+            "audioAutoplay": false,
+            "documentDisplayMode": "download",
+            "animationLoop": true,
+            "model3DAutoRotate": true,
+            "embedType": "youtube",
+            "embedAutoplay": false,
+            "dataEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.5235481632417!2d77.16077027450795!3d28.58406658628172!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1d11d46ccc85%3A0x2e94d9687f938329!2sInstitute%20of%20Informatics%20and%20Communication%2C%20UDSC!5e0!3m2!1sen!2sin!4v1767439324433!5m2!1sen!2sin",
+            "dataHeight": 400,
+            "mapProvider": "google",
+            "mapHeight": 450,
+            "mapInteractive": true,
+            "id": "6958fb513e1d5db11f911fe3"
+          }
+        ]
+      },
+      "twoMedia": {
+        "media1": {
+          "mediaCategory": "image",
+          "width": "50",
+          "imageFile": "6933496477d9f4f59803db94",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "mediaCategory": "maps",
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapEmbedUrl": "https://maps.app.goo.gl/LLuG7C2Cba8m3fha9",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": [
+          {
+            "mediaCategory": "image",
+            "width": "25",
+            "textContent": {
+              "buttons": []
+            },
+            "imageMedia": {
+              "format": "auto",
+              "file": "6933492777d9f4f59803db5b",
+              "alt": "Multimedia"
+            },
+            "videoMedia": {
+              "format": "mp4-h264",
+              "autoplay": false,
+              "controls": true,
+              "loop": false,
+              "muted": false
+            },
+            "audioMedia": {
+              "format": "mp3",
+              "controls": true,
+              "autoplay": false
+            },
+            "documentMedia": {
+              "format": "pdf",
+              "displayMode": "download",
+              "buttonText": "Download Document"
+            },
+            "animationMedia": {
+              "format": "lottie",
+              "autoplay": true,
+              "loop": true
+            },
+            "threeDMedia": {
+              "format": "glb",
+              "autoRotate": true,
+              "enableZoom": true
+            },
+            "embedMedia": {
+              "type": "youtube",
+              "autoplay": false,
+              "controls": true
+            },
+            "dataMedia": {
+              "type": "iframe",
+              "height": 400
+            },
+            "mapsMedia": {
+              "provider": "google",
+              "height": 450,
+              "interactive": true
+            },
+            "id": "69581aac442991c05a59ba76"
+          },
+          {
+            "mediaCategory": "embed",
+            "width": "25",
+            "textContent": {
+              "buttons": []
+            },
+            "imageMedia": {
+              "format": "auto"
+            },
+            "videoMedia": {
+              "format": "mp4-h264",
+              "autoplay": false,
+              "controls": true,
+              "loop": false,
+              "muted": false
+            },
+            "audioMedia": {
+              "format": "mp3",
+              "controls": true,
+              "autoplay": false
+            },
+            "documentMedia": {
+              "format": "pdf",
+              "displayMode": "download",
+              "buttonText": "Download Document"
+            },
+            "animationMedia": {
+              "format": "lottie",
+              "autoplay": true,
+              "loop": true
+            },
+            "threeDMedia": {
+              "format": "glb",
+              "autoRotate": true,
+              "enableZoom": true
+            },
+            "embedMedia": {
+              "type": "youtube",
+              "url": "https://youtu.be/BO92dAI6YXA?si=QOcve0F2mNDbfg_Q",
+              "autoplay": false,
+              "controls": true
+            },
+            "dataMedia": {
+              "type": "iframe",
+              "height": 400
+            },
+            "mapsMedia": {
+              "provider": "google",
+              "height": 450,
+              "interactive": true
+            },
+            "id": "69581b6c442991c05a59ba78"
+          },
+          {
+            "mediaCategory": "animation",
+            "width": "25",
+            "textContent": {
+              "buttons": []
+            },
+            "imageMedia": {
+              "format": "auto"
+            },
+            "videoMedia": {
+              "format": "mp4-h264",
+              "autoplay": false,
+              "controls": true,
+              "loop": false,
+              "muted": false
+            },
+            "audioMedia": {
+              "format": "mp3",
+              "controls": true,
+              "autoplay": false
+            },
+            "documentMedia": {
+              "format": "pdf",
+              "displayMode": "download",
+              "buttonText": "Download Document"
+            },
+            "animationMedia": {
+              "format": "gif",
+              "file": "6958dcfd9493549a6a5dc11c",
+              "autoplay": true,
+              "loop": true
+            },
+            "threeDMedia": {
+              "format": "glb",
+              "autoRotate": true,
+              "enableZoom": true
+            },
+            "embedMedia": {
+              "type": "youtube",
+              "autoplay": false,
+              "controls": true
+            },
+            "dataMedia": {
+              "type": "iframe",
+              "height": 400
+            },
+            "mapsMedia": {
+              "provider": "google",
+              "height": 450,
+              "interactive": true
+            },
+            "id": "69581ba6442991c05a59ba7a"
+          },
+          {
+            "mediaCategory": "maps",
+            "width": "25",
+            "textContent": {
+              "buttons": []
+            },
+            "imageMedia": {
+              "format": "auto"
+            },
+            "videoMedia": {
+              "format": "mp4-h264",
+              "autoplay": false,
+              "controls": true,
+              "loop": false,
+              "muted": false
+            },
+            "audioMedia": {
+              "format": "mp3",
+              "controls": true,
+              "autoplay": false
+            },
+            "documentMedia": {
+              "format": "pdf",
+              "displayMode": "download",
+              "buttonText": "Download Document"
+            },
+            "animationMedia": {
+              "format": "lottie",
+              "autoplay": true,
+              "loop": true
+            },
+            "threeDMedia": {
+              "format": "glb",
+              "autoRotate": true,
+              "enableZoom": true
+            },
+            "embedMedia": {
+              "type": "youtube",
+              "autoplay": false,
+              "controls": true
+            },
+            "dataMedia": {
+              "type": "iframe",
+              "height": 400
+            },
+            "mapsMedia": {
+              "provider": "google",
+              "embedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.5235481632417!2d77.16077027450795!3d28.58406658628172!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1d11d46ccc85%3A0x2e94d9687f938329!2sInstitute%20of%20Informatics%20and%20Communication%2C%20UDSC!5e0!3m2!1sen!2sin!4v1767433001217!5m2!1sen!2sin",
+              "height": 450,
+              "interactive": true
+            },
+            "id": "69581bb0442991c05a59ba7c"
+          }
+        ]
+      }
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "rating": 4.8,
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "customBlock": [],
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    },
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "order": 1
+  },
+  {
+    "_id": "693b0beeb1ab28b7c69dd71b",
+    "createdAt": "2025-12-11T18:22:38.351Z",
+    "updatedAt": "2026-03-24T15:46:22.946Z",
+    "order": 2,
+    "sectionType": "featured-instructors",
+    "sectionName": "Research Domains",
+    "status": "active",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "title": "Research Domains",
+      "description": "Explore our cutting-edge research areas and innovative solutions",
+      "instructors": [
+        {
+          "image": "6933d7fa98940860b56197c5",
+          "name": "Human-Centered Systems",
+          "description": "Human-Centered Systems address the challenges of rapid cyberization as technology becomes deeply integrated into everyday life. Our research focuses on designing usable, sustainable, and socially responsible CPS that interact seamlessly with humans.",
+          "profileLink": "/research-domains/human-centered-systems",
+          "profileButtonText": "Read More",
+          "socialLinks": [],
+          "id": "693b0beee1753c4370a946a7"
+        },
+        {
+          "image": "6933f56298940860b5619bd4",
+          "name": "Healthcare",
+          "description": "Healthcare-CPS focuses on advancing remote and intelligent healthcare as technology transforms how medical challenges are addressed. With rapid evolution across telemedicine, connected-health, mobile-health and intelligent-health systems, CPS enables enhanced care delivery.",
+          "profileLink": "/research-domains/data-science-analytics",
+          "profileButtonText": "Read More",
+          "socialLinks": [],
+          "id": "693b0beee1753c4370a946a8"
+        },
+        {
+          "image": "6933fc6e98940860b5619cf4",
+          "name": "Cybersecurity",
+          "description": "Cyber-Physical Systems combine sensing, computing, networking, and feedback-driven automation through highly connected smart devices. This enhanced functionality and connectivity also introduce unprecedented cybersecurity risks. Ensuring safety, security, and privacy.",
+          "profileLink": "/research-domains/cybersecurity-privacy",
+          "profileButtonText": "Read More",
+          "socialLinks": [],
+          "id": "693b0beee1753c4370a946a9"
+        },
+        {
+          "image": "6933f28898940860b5619b8b",
+          "name": "Wearables",
+          "description": "Advances in sensors, IoT, and microelectronics have accelerated the rise of smart wearables, creating major research opportunities. These devices operate as complex networks processing real-time data and functioning autonomously for long durations.",
+          "profileLink": "/research-domains/cloud-computing-devops",
+          "profileButtonText": "Read More",
+          "socialLinks": [],
+          "id": "693b0beee1753c4370a946aa"
+        }
+      ]
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "customBlock": [],
+    "contentBlocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6939bcec9e483c7b9b8b633e",
+    "createdAt": "2025-12-10T18:33:16.408Z",
+    "updatedAt": "2026-04-06T10:35:21.477Z",
+    "sectionType": "our-story",
+    "sectionName": "About Us",
+    "status": "active",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "ourStory": {
+      "subtitle": "About Us",
+      "title": "Advancing Cyber-Physical Systems for Societal Impact",
+      "description": "The CyPSi Lab, established in 1999 at the Institute of Informatics and Communication (IIC) of University of Delhi has contributed to a wide range of domains from Educational Technologies, to scientific research papers and to Cyber Physical Systems (CPS)\n\n",
+      "timelinePoints": [
+        {
+          "title": "Research Expansion",
+          "description": "The lab expanded into educational technologies, applied computing, and interdisciplinary research, producing high-quality academic publications.",
+          "id": "6939bb9e9300902a2e3cf63d"
+        },
+        {
+          "title": "Focus on CPS",
+          "description": "Dedicated research in Cyber-Physical Systems integrated computation, communication, and physical processes for real-life solutions.",
+          "id": "6939bbdf9300902a2e3cf63f"
+        }
+      ],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "campusImage": "6939bc8b9e483c7b9b8b6326",
+      "missionVisionCards": [
+        {
+          "title": "Our Mission",
+          "description": "To lead research in Cyber-Physical Systems and allied disciplines, addressing real-world challenges through innovation.",
+          "id": "6939bcae9300902a2e3cf643"
+        },
+        {
+          "title": "Our Vision",
+          "description": "To be a globally recognized lab connecting academia, industry, and society through scalable, impactful research solutions.",
+          "id": "6939bcbf9300902a2e3cf645"
+        }
+      ],
+      "coreValues": []
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "rating": 4.8,
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "customBlock": [],
+    "contentBlocks": [],
+    "__v": 0,
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "order": 3
+  },
+  {
+    "_id": "693a897c3dbadbf15db3d000",
+    "createdAt": "2025-12-11T09:06:04.429Z",
+    "updatedAt": "2026-03-24T15:46:23.044Z",
+    "order": 4,
+    "sectionType": "featured-news",
+    "sectionName": "Featured News",
+    "status": "active",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "rating": 4.8,
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "customBlock": [],
+    "contentBlocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "692895c0159defdcb9072d8b",
+    "createdAt": "2025-11-27T18:17:36.751Z",
+    "updatedAt": "2026-03-24T15:46:23.019Z",
+    "sectionName": "Recent Blog Posts Section",
+    "sectionType": "blog-posts",
+    "status": "inactive",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "rating": 4.8,
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "title": "Recent Blog Posts",
+      "description": "Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit",
+      "posts": [
+        {
+          "authorAvatar": "692895be159defdcb9072d59",
+          "authorName": "Andy glamer",
+          "likes": 65,
+          "image": "692895bf159defdcb9072d6b",
+          "title": "Sed ut perspiciatis unde omnis iste natus",
+          "excerpt": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione...",
+          "link": "/blog-details",
+          "id": "692895c0dfc42411989dd0f2"
+        },
+        {
+          "authorAvatar": "692895be159defdcb9072d60",
+          "authorName": "Den viliamson",
+          "likes": 35,
+          "image": "692895bf159defdcb9072d71",
+          "title": "Nemo enim ipsam voluptatem quia voluptas sit",
+          "excerpt": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos...",
+          "link": "/blog-details",
+          "id": "692895c0dfc42411989dd0f3"
+        },
+        {
+          "authorAvatar": "692895be159defdcb9072d65",
+          "authorName": "Jones robbert",
+          "likes": 58,
+          "image": "692895bf159defdcb9072d77",
+          "title": "Ut enim ad minima veniam, quis nostrum exercitationem",
+          "excerpt": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem...",
+          "link": "/blog-details",
+          "id": "692895c0dfc42411989dd0f4"
+        }
+      ]
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "customBlock": [],
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "order": 5,
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  },
+  {
+    "_id": "695883818ba5b2083f269185",
+    "createdAt": "2026-01-03T02:48:32.988Z",
+    "updatedAt": "2026-03-24T15:46:23.078Z",
+    "order": 6,
+    "sectionType": "custom-block",
+    "sectionName": "Our Past Activites ",
+    "status": "active",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "customBlock": [
+      {
+        "blockType": "video",
+        "videoType": "youtube",
+        "videoUrl": "https://www.youtube.com/embed/sFnwxnU0MN0?si=RNpRV58Y8bFD3Kdr",
+        "title": "Our Past Activites ",
+        "description": "Professor Sanjeev Singh, joint director of the University of Delhi South Campus, took the stage at AWS Summit New Delhi to share the story of the Samarth eGov Suite, a purpose-built platform for higher education institutions (HEIs) that uses AWS to deploy an e-governance system for administration and management of higher education processes. ",
+        "autoplay": true,
+        "loop": false,
+        "aspectRatio": "16:9",
+        "width": "contained",
+        "id": "695880c4900dfb6e26551771"
+      }
+    ],
+    "contentBlocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "692895c0159defdcb9072d80",
+    "createdAt": "2025-11-27T18:17:36.312Z",
+    "updatedAt": "2026-03-24T15:46:23.424Z",
+    "sectionName": "Work with us",
+    "sectionType": "featured-courses",
+    "status": "active",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "featuredCourses": {
+      "title": "Work with us",
+      "description": "Turn ideas into deployed solutions with our research community.",
+      "courses": [
+        {
+          "image": "692895b7159defdcb9072d00",
+          "badge": null,
+          "price": "",
+          "level": null,
+          "duration": "",
+          "title": "PHD Programme",
+          "description": "Our PhD programme equips scholars to conduct pioneering research across domains like smart healthcare, cybersecurity, wearables, IoT, and human-centered systems contributing to the future of Cyber-Physical Systems.",
+          "instructorAvatar": null,
+          "instructorName": "",
+          "instructorSpecialty": "",
+          "rating": null,
+          "studentCount": null,
+          "buttonText": "Read More ",
+          "buttonLink": "/work-with-us/phd-programme",
+          "id": "692895c0dfc42411989dd0c4"
+        },
+        {
+          "image": "692895b8159defdcb9072d04",
+          "badge": null,
+          "price": "",
+          "level": null,
+          "duration": "",
+          "title": "Incubation",
+          "description": "From idea validation to prototype development, our incubation programme empowers students and researchers to convert innovative concepts into real-world solutions through expert mentoring",
+          "instructorAvatar": null,
+          "instructorName": "",
+          "instructorSpecialty": "",
+          "rating": null,
+          "studentCount": null,
+          "buttonText": "Read More",
+          "buttonLink": "/work-with-us/incubation",
+          "id": "692895c0dfc42411989dd0c5"
+        },
+        {
+          "image": "692895b8159defdcb9072d07",
+          "badge": null,
+          "price": "",
+          "level": null,
+          "duration": "",
+          "title": "Research Internship",
+          "description": "Through hands-on project experience and expert mentorship, our internship programme enables students and scholars to apply advanced concepts to real-world challenges and contribute to Cyber-Physical Systems innovations.",
+          "instructorAvatar": null,
+          "instructorName": "",
+          "instructorSpecialty": "",
+          "rating": null,
+          "studentCount": null,
+          "buttonText": "Apply For Internship ",
+          "buttonLink": "/work-with-us/research-internship",
+          "id": "692895c0dfc42411989dd0c6"
+        }
+      ],
+      "viewAllButton": {
+        "text": "",
+        "link": ""
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "rating": 4.8,
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "__v": 0,
+    "contentBlocks": [
+      {
+        "blockType": "video",
+        "videoType": "youtube",
+        "videoUrl": "https://www.youtube.com/embed/FEDVRJXyTqI?si=JtBBK3xhvxI3v5NF",
+        "title": "VC's Speech ",
+        "description": " 150 Years of Vande Mataram at Shaheed bhagat singh college (November 26, 2025)",
+        "autoplay": false,
+        "loop": false,
+        "aspectRatio": "16:9",
+        "width": "full",
+        "id": "693a9361723814622c39acfb"
+      }
+    ],
+    "customBlock": [],
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "order": 7,
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  },
+  {
+    "_id": "692895c0159defdcb9072d88",
+    "createdAt": "2025-11-27T18:17:36.633Z",
+    "updatedAt": "2026-03-24T15:46:23.512Z",
+    "sectionName": "Testimonials Section",
+    "sectionType": "testimonials",
+    "status": "inactive",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "description": "Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit",
+      "criticReviews": [
+        {
+          "source": "The New York Times",
+          "rating": 5,
+          "quote": "Pellentesque in ipsum id orci porta dapibus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+          "id": "692895c0dfc42411989dd0e8"
+        },
+        {
+          "source": "Washington Post",
+          "rating": 4.5,
+          "quote": "Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero malesuada feugiat.",
+          "id": "692895c0dfc42411989dd0e9"
+        },
+        {
+          "source": "The Guardian",
+          "rating": 5,
+          "quote": "Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus suscipit tortor eget felis porttitor volutpat.",
+          "id": "692895c0dfc42411989dd0ea"
+        }
+      ],
+      "studentReviews": [
+        {
+          "avatar": "692895bd159defdcb9072d45",
+          "name": "Jane Smith",
+          "role": "Book Enthusiast",
+          "rating": 5,
+          "review": "Proin eget tortor risus. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat.",
+          "id": "692895c0dfc42411989dd0eb"
+        },
+        {
+          "avatar": "692895bd159defdcb9072d49",
+          "name": "Pushkar ",
+          "role": "Sci-Fi Blogger",
+          "rating": 5,
+          "review": "Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Cras ultricies ligula sed magna dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus.",
+          "id": "692895c0dfc42411989dd0ec"
+        },
+        {
+          "avatar": "692895bd159defdcb9072d4f",
+          "name": "Anjali",
+          "role": "Book Club President",
+          "rating": 4.5,
+          "review": "Quisque velit nisi, pretium ut lacinia in, elementum id enim. Cras ultricies ligula sed magna dictum porta. Donec sollicitudin molestie malesuada.",
+          "id": "692895c0dfc42411989dd0ed"
+        },
+        {
+          "avatar": "692895bd159defdcb9072d52",
+          "name": "Vijay",
+          "role": "Literary Reviewer",
+          "rating": 5,
+          "review": "Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Lorem ipsum dolor sit amet, consectetur.",
+          "id": "692895c0dfc42411989dd0ee"
+        }
+      ],
+      "overallRating": {
+        "rating": null,
+        "reviewCount": "",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "customBlock": [],
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "order": 8,
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  },
+  {
+    "_id": "692895c0159defdcb9072d83",
+    "createdAt": "2025-11-27T18:17:36.427Z",
+    "updatedAt": "2026-03-24T15:46:23.598Z",
+    "sectionName": "Course Categories Section",
+    "sectionType": "course-categories",
+    "status": "inactive",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "title": "Course Categories",
+      "description": "Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit",
+      "categories": [
+        {
+          "icon": "bi-laptop",
+          "name": "Computer Science",
+          "courseCount": 24,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0ca"
+        },
+        {
+          "icon": "bi-briefcase",
+          "name": "Business",
+          "courseCount": 18,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0cb"
+        },
+        {
+          "icon": "bi-palette",
+          "name": "Design",
+          "courseCount": 15,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0cc"
+        },
+        {
+          "icon": "bi-heart-pulse",
+          "name": "Health & Medical",
+          "courseCount": 12,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0cd"
+        },
+        {
+          "icon": "bi-globe",
+          "name": "Languages",
+          "courseCount": 21,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0ce"
+        },
+        {
+          "icon": "bi-diagram-3",
+          "name": "Science",
+          "courseCount": 16,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0cf"
+        },
+        {
+          "icon": "bi-megaphone",
+          "name": "Marketing",
+          "courseCount": 19,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d0"
+        },
+        {
+          "icon": "bi-graph-up-arrow",
+          "name": "Finance",
+          "courseCount": 14,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d1"
+        },
+        {
+          "icon": "bi-camera",
+          "name": "Photography",
+          "courseCount": 11,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d2"
+        },
+        {
+          "icon": "bi-music-note-beamed",
+          "name": "Music",
+          "courseCount": 13,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d3"
+        },
+        {
+          "icon": "bi-gear",
+          "name": "Engineering",
+          "courseCount": 22,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d4"
+        },
+        {
+          "icon": "bi-journal-text",
+          "name": "Law & Legal",
+          "courseCount": 9,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d5"
+        },
+        {
+          "icon": "bi-cup-hot",
+          "name": "Culinary Arts",
+          "courseCount": 8,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d6"
+        },
+        {
+          "icon": "bi-trophy",
+          "name": "Sports & Fitness",
+          "courseCount": 17,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d7"
+        },
+        {
+          "icon": "bi-pen",
+          "name": "Writing",
+          "courseCount": 10,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d8"
+        },
+        {
+          "icon": "bi-body-text",
+          "name": "Psychology",
+          "courseCount": 12,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0d9"
+        },
+        {
+          "icon": "bi-tree",
+          "name": "Environment",
+          "courseCount": 7,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0da"
+        },
+        {
+          "icon": "bi-chat-dots",
+          "name": "Communication",
+          "courseCount": 15,
+          "link": "/courses",
+          "id": "692895c0dfc42411989dd0db"
+        }
+      ]
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "rating": 4.8,
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "cta": {
+      "features": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "stats": [],
+      "floatingCards": []
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "customBlock": [],
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "order": 9,
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  },
+  {
+    "_id": "692895c0159defdcb9072d8e",
+    "createdAt": "2025-11-27T18:17:36.857Z",
+    "updatedAt": "2026-03-24T15:46:23.647Z",
+    "sectionName": "CTA Section",
+    "sectionType": "cta",
+    "status": "inactive",
+    "hero": {
+      "layoutType": "text-slider",
+      "heroMediaInterval": 5,
+      "heroImages": [],
+      "stats": [],
+      "primaryButton": {},
+      "secondaryButton": {},
+      "features": [],
+      "floatingCards": [],
+      "singleImage": {},
+      "fullWidthSlider": {
+        "height": "70vh",
+        "interval": 5,
+        "slides": []
+      },
+      "twoMedia": {
+        "media1": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        },
+        "media2": {
+          "width": "50",
+          "documentDisplayMode": "download",
+          "embedType": "youtube",
+          "dataHeight": 400,
+          "mapProvider": "google",
+          "mapHeight": 450,
+          "mapInteractive": true
+        }
+      },
+      "multiMedia": {
+        "items": []
+      }
+    },
+    "featuredCourses": {
+      "courses": [],
+      "viewAllButton": {
+        "text": "View All Courses",
+        "link": "/courses"
+      }
+    },
+    "courseCategories": {
+      "categories": []
+    },
+    "featuredInstructors": {
+      "instructors": []
+    },
+    "testimonials": {
+      "criticReviews": [],
+      "studentReviews": [],
+      "overallRating": {
+        "rating": 4.8,
+        "reviewCount": "230+",
+        "platforms": []
+      }
+    },
+    "blogPosts": {
+      "posts": []
+    },
+    "cta": {
+      "title": "Advance the Future with Cyber-Physical Systems Innovation",
+      "description": "Join a community of researchers and innovators working to solve real-world challenges through cutting-edge CPS technologies.",
+      "image": "692895c0159defdcb9072d7b",
+      "features": [
+        {
+          "text": "Interdisciplinary research projects",
+          "id": "692895c0dfc42411989dd0f5"
+        },
+        {
+          "text": "Mentorship from experienced researchers and domain experts",
+          "id": "692895c0dfc42411989dd0f6"
+        },
+        {
+          "text": "Hands-on work on real-world problems across multiple domains",
+          "id": "692895c0dfc42411989dd0f7"
+        }
+      ],
+      "primaryButton": {
+        "text": "Explore Research",
+        "link": "/courses"
+      },
+      "secondaryButton": {
+        "text": "Get Involved",
+        "link": "/enroll"
+      },
+      "stats": [],
+      "floatingCards": []
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "customBlock": [],
+    "featuredNews": {
+      "title": "Featured News",
+      "description": "Stay updated with our latest news and announcements",
+      "enabled": true
+    },
+    "order": 10,
+    "ourStory": {
+      "timelinePoints": [],
+      "buttonText": "Learn More About Us",
+      "buttonLink": "/about",
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  }
+]

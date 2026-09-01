@@ -1,0 +1,13 @@
+hero            : 4 slides, 2 buttons, 3 features
+  ! dropped dead link /research-domains/cloud-computing-devops (no such research domain)
+researchDomains : 4 cards
+aboutUs         : storyTimeline — 2 milestones, 2 cards, image 59
+featuredNews    : spotlight, fetches from the news collection
+pastActivities  : embed "Our Past Activites " (width=full)
+workWithUs      : 3 cards with buttons
+vcSpeech        : embed "VC's Speech " (width=fullBleed)
+
+total blocks: 7
+blocks in order: hero → showcaseCards → storyTimeline → newsUpdates → embed → featureCards → embed
+
+updated page id 17 ("Home") at /home — layout replaced

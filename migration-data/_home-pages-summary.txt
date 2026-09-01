@@ -1,0 +1,642 @@
+
+======================================================================
+[ACTIVE] order=1 type=hero — Hero Section
+======================================================================
+  hero:
+    layoutType = "text-slider"
+    title = "Driving Breakthroughs Through Research & Innovation"
+    description = "CyPSi Lab advances cutting-edge research in Cyber-Physical Systems to improve lives and transform industries. …"
+    heroImages: [4]
+      #1:
+        image = [media: New_Hero_Image_1.jpg]
+      #2:
+        image = [media: Hero_image_2.jpg]
+      #3:
+        image = [media: Hero_image_3.jpg]
+      #4:
+        image = [media: Hero_image_4.jpg]
+    primaryButton:
+      text = "Explore Research"
+      link = "http://172.16.0.108:3002/publications"
+    secondaryButton:
+      text = "Learn More"
+      link = "#about"
+    features: [3]
+      #1:
+        icon = "bi-shield-check"
+        text = "PHD Programs"
+      #2:
+        icon = "bi-award"
+        text = "Internships"
+      #3:
+        icon = "bi-people"
+        text = "Expert Faculty"
+    singleImage:
+      image = [media: New_Hero_Image_1.jpg]
+      alt = "Hero_img"
+      caption = "CyPSi Lab"
+    fullWidthSlider:
+      height = "85vh"
+      interval = "3"
+      slides: [4]
+        #1:
+          mediaType = "image"
+          imageFile = [media: Hero_image_3.jpg]
+          videoAutoplay = "false"
+          videoControls = "true"
+          audioAutoplay = "false"
+          documentDisplayMode = "download"
+          animationLoop = "true"
+          model3DAutoRotate = "true"
+          embedType = "youtube"
+          embedAutoplay = "false"
+          dataHeight = "400"
+          mapProvider = "google"
+          mapHeight = "450"
+          mapInteractive = "true"
+        #2:
+          mediaType = "embed"
+          videoAutoplay = "false"
+          videoControls = "true"
+          audioAutoplay = "false"
+          documentDisplayMode = "download"
+          animationLoop = "true"
+          model3DAutoRotate = "true"
+          embedType = "youtube"
+          embedUrl = "https://youtu.be/sFnwxnU0MN0?si=-QLjwirrkmI8zBoa"
+          embedAutoplay = "false"
+          dataHeight = "400"
+          mapProvider = "google"
+          mapHeight = "450"
+          mapInteractive = "true"
+        #3:
+          mediaType = "animation"
+          videoAutoplay = "false"
+          videoControls = "true"
+          audioAutoplay = "false"
+          documentDisplayMode = "download"
+          animationFile = [media: Futuristic_Data_Network_Animation.gif]
+          animationLoop = "true"
+          model3DAutoRotate = "true"
+          embedType = "youtube"
+          embedAutoplay = "false"
+          dataHeight = "400"
+          mapProvider = "google"
+          mapHeight = "450"
+          mapInteractive = "true"
+        #4:
+          mediaType = "data"
+          videoAutoplay = "false"
+          videoControls = "true"
+          audioAutoplay = "false"
+          documentDisplayMode = "download"
+          animationLoop = "true"
+          model3DAutoRotate = "true"
+          embedType = "youtube"
+          embedAutoplay = "false"
+          dataEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.5235481632417!2d77.16077027450795!3d28.584066586281…"
+          dataHeight = "400"
+          mapProvider = "google"
+          mapHeight = "450"
+          mapInteractive = "true"
+    twoMedia:
+      media1:
+        mediaCategory = "image"
+        width = "50"
+        imageFile = [media: Hero_image_4.jpg]
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+      media2:
+        mediaCategory = "maps"
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapEmbedUrl = "https://maps.app.goo.gl/LLuG7C2Cba8m3fha9"
+        mapHeight = "450"
+        mapInteractive = "true"
+    multiMedia:
+      items: [4]
+        #1:
+          mediaCategory = "image"
+          width = "25"
+          textContent:
+          imageMedia:
+            format = "auto"
+            file = [media: Hero_image_2.jpg]
+            alt = "Multimedia"
+          videoMedia:
+            format = "mp4-h264"
+            autoplay = "false"
+            controls = "true"
+            loop = "false"
+            muted = "false"
+          audioMedia:
+            format = "mp3"
+            controls = "true"
+            autoplay = "false"
+          documentMedia:
+            format = "pdf"
+            displayMode = "download"
+            buttonText = "Download Document"
+          animationMedia:
+            format = "lottie"
+            autoplay = "true"
+            loop = "true"
+          threeDMedia:
+            format = "glb"
+            autoRotate = "true"
+            enableZoom = "true"
+          embedMedia:
+            type = "youtube"
+            autoplay = "false"
+            controls = "true"
+          dataMedia:
+            type = "iframe"
+            height = "400"
+          mapsMedia:
+            provider = "google"
+            height = "450"
+            interactive = "true"
+        #2:
+          mediaCategory = "embed"
+          width = "25"
+          textContent:
+          imageMedia:
+            format = "auto"
+          videoMedia:
+            format = "mp4-h264"
+            autoplay = "false"
+            controls = "true"
+            loop = "false"
+            muted = "false"
+          audioMedia:
+            format = "mp3"
+            controls = "true"
+            autoplay = "false"
+          documentMedia:
+            format = "pdf"
+            displayMode = "download"
+            buttonText = "Download Document"
+          animationMedia:
+            format = "lottie"
+            autoplay = "true"
+            loop = "true"
+          threeDMedia:
+            format = "glb"
+            autoRotate = "true"
+            enableZoom = "true"
+          embedMedia:
+            type = "youtube"
+            url = "https://youtu.be/BO92dAI6YXA?si=QOcve0F2mNDbfg_Q"
+            autoplay = "false"
+            controls = "true"
+          dataMedia:
+            type = "iframe"
+            height = "400"
+          mapsMedia:
+            provider = "google"
+            height = "450"
+            interactive = "true"
+        #3:
+          mediaCategory = "animation"
+          width = "25"
+          textContent:
+          imageMedia:
+            format = "auto"
+          videoMedia:
+            format = "mp4-h264"
+            autoplay = "false"
+            controls = "true"
+            loop = "false"
+            muted = "false"
+          audioMedia:
+            format = "mp3"
+            controls = "true"
+            autoplay = "false"
+          documentMedia:
+            format = "pdf"
+            displayMode = "download"
+            buttonText = "Download Document"
+          animationMedia:
+            format = "gif"
+            file = [media: Futuristic_Data_Network_Animation.gif]
+            autoplay = "true"
+            loop = "true"
+          threeDMedia:
+            format = "glb"
+            autoRotate = "true"
+            enableZoom = "true"
+          embedMedia:
+            type = "youtube"
+            autoplay = "false"
+            controls = "true"
+          dataMedia:
+            type = "iframe"
+            height = "400"
+          mapsMedia:
+            provider = "google"
+            height = "450"
+            interactive = "true"
+        #4:
+          mediaCategory = "maps"
+          width = "25"
+          textContent:
+          imageMedia:
+            format = "auto"
+          videoMedia:
+            format = "mp4-h264"
+            autoplay = "false"
+            controls = "true"
+            loop = "false"
+            muted = "false"
+          audioMedia:
+            format = "mp3"
+            controls = "true"
+            autoplay = "false"
+          documentMedia:
+            format = "pdf"
+            displayMode = "download"
+            buttonText = "Download Document"
+          animationMedia:
+            format = "lottie"
+            autoplay = "true"
+            loop = "true"
+          threeDMedia:
+            format = "glb"
+            autoRotate = "true"
+            enableZoom = "true"
+          embedMedia:
+            type = "youtube"
+            autoplay = "false"
+            controls = "true"
+          dataMedia:
+            type = "iframe"
+            height = "400"
+          mapsMedia:
+            provider = "google"
+            embedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.5235481632417!2d77.16077027450795!3d28.584066586281…"
+            height = "450"
+            interactive = "true"
+  featuredCourses:
+    viewAllButton:
+      text = "View All Courses"
+      link = "/courses"
+  courseCategories:
+  featuredInstructors:
+  testimonials:
+    overallRating:
+      rating = "4.8"
+      reviewCount = "230+"
+  blogPosts:
+  cta:
+  ourStory:
+    buttonText = "Learn More About Us"
+    buttonLink = "/about"
+  featuredNews:
+    title = "Featured News"
+    description = "Stay updated with our latest news and announcements"
+    enabled = "true"
+
+======================================================================
+[ACTIVE] order=2 type=featured-instructors — Research Domains
+======================================================================
+  hero:
+    layoutType = "text-slider"
+    heroMediaInterval = "5"
+    fullWidthSlider:
+      height = "70vh"
+      interval = "5"
+    twoMedia:
+      media1:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+      media2:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+    multiMedia:
+  ourStory:
+    buttonText = "Learn More About Us"
+    buttonLink = "/about"
+  featuredCourses:
+    viewAllButton:
+      text = "View All Courses"
+      link = "/courses"
+  courseCategories:
+  featuredInstructors:
+    title = "Research Domains"
+    description = "Explore our cutting-edge research areas and innovative solutions"
+    instructors: [4]
+      #1:
+        image = [media: H-CPS.jpg]
+        name = "Human-Centered Systems"
+        description = "Human-Centered Systems address the challenges of rapid cyberization as technology becomes deeply integrated in…"
+        profileLink = "/research-domains/human-centered-systems"
+        profileButtonText = "Read More"
+      #2:
+        image = [media: H-CPS_1.jpg]
+        name = "Healthcare"
+        description = "Healthcare-CPS focuses on advancing remote and intelligent healthcare as technology transforms how medical cha…"
+        profileLink = "/research-domains/data-science-analytics"
+        profileButtonText = "Read More"
+      #3:
+        image = [media: Cybs_4.png]
+        name = "Cybersecurity"
+        description = "Cyber-Physical Systems combine sensing, computing, networking, and feedback-driven automation through highly c…"
+        profileLink = "/research-domains/cybersecurity-privacy"
+        profileButtonText = "Read More"
+      #4:
+        image = [media: hcs_1.jpg]
+        name = "Wearables"
+        description = "Advances in sensors, IoT, and microelectronics have accelerated the rise of smart wearables, creating major re…"
+        profileLink = "/research-domains/cloud-computing-devops"
+        profileButtonText = "Read More"
+  testimonials:
+    overallRating:
+      reviewCount = "230+"
+  blogPosts:
+  featuredNews:
+    title = "Featured News"
+    description = "Stay updated with our latest news and announcements"
+    enabled = "true"
+  cta:
+
+======================================================================
+[ACTIVE] order=3 type=our-story — About Us
+======================================================================
+  hero:
+    layoutType = "text-slider"
+    fullWidthSlider:
+      height = "70vh"
+      interval = "5"
+    twoMedia:
+      media1:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+      media2:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+    multiMedia:
+  ourStory:
+    subtitle = "About Us"
+    title = "Advancing Cyber-Physical Systems for Societal Impact"
+    description = "The CyPSi Lab, established in 1999 at the Institute of Informatics and Communication (IIC) of University of De…"
+    timelinePoints: [2]
+      #1:
+        title = "Research Expansion"
+        description = "The lab expanded into educational technologies, applied computing, and interdisciplinary research, producing h…"
+      #2:
+        title = "Focus on CPS"
+        description = "Dedicated research in Cyber-Physical Systems integrated computation, communication, and physical processes for…"
+    buttonText = "Learn More About Us"
+    buttonLink = "/about"
+    campusImage = [media: ChatGPT Image Dec 10, 2025, 11_43_23 PM.jpg]
+    missionVisionCards: [2]
+      #1:
+        title = "Our Mission"
+        description = "To lead research in Cyber-Physical Systems and allied disciplines, addressing real-world challenges through in…"
+      #2:
+        title = "Our Vision"
+        description = "To be a globally recognized lab connecting academia, industry, and society through scalable, impactful researc…"
+  featuredCourses:
+    viewAllButton:
+      text = "View All Courses"
+      link = "/courses"
+  courseCategories:
+  featuredInstructors:
+  testimonials:
+    overallRating:
+      rating = "4.8"
+      reviewCount = "230+"
+  blogPosts:
+  cta:
+  featuredNews:
+    title = "Featured News"
+    description = "Stay updated with our latest news and announcements"
+    enabled = "true"
+
+======================================================================
+[ACTIVE] order=4 type=featured-news — Featured News
+======================================================================
+  hero:
+    layoutType = "text-slider"
+    heroMediaInterval = "5"
+    fullWidthSlider:
+      height = "70vh"
+      interval = "5"
+    twoMedia:
+      media1:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+      media2:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+    multiMedia:
+  ourStory:
+    buttonText = "Learn More About Us"
+    buttonLink = "/about"
+  featuredCourses:
+    viewAllButton:
+      text = "View All Courses"
+      link = "/courses"
+  courseCategories:
+  featuredInstructors:
+  testimonials:
+    overallRating:
+      rating = "4.8"
+      reviewCount = "230+"
+  blogPosts:
+  featuredNews:
+    title = "Featured News"
+    description = "Stay updated with our latest news and announcements"
+    enabled = "true"
+  cta:
+
+======================================================================
+[inactive] order=5 type=blog-posts — Recent Blog Posts Section
+======================================================================
+  (skipped — inactive)
+
+======================================================================
+[ACTIVE] order=6 type=custom-block — Our Past Activites 
+======================================================================
+  hero:
+    layoutType = "text-slider"
+    heroMediaInterval = "5"
+    fullWidthSlider:
+      height = "70vh"
+      interval = "5"
+    twoMedia:
+      media1:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+      media2:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+    multiMedia:
+  ourStory:
+    buttonText = "Learn More About Us"
+    buttonLink = "/about"
+  featuredCourses:
+    viewAllButton:
+      text = "View All Courses"
+      link = "/courses"
+  courseCategories:
+  featuredInstructors:
+  testimonials:
+    overallRating:
+      reviewCount = "230+"
+  blogPosts:
+  featuredNews:
+    title = "Featured News"
+    description = "Stay updated with our latest news and announcements"
+    enabled = "true"
+  cta:
+  customBlock: [1]
+    #1:
+      blockType = "video"
+      videoType = "youtube"
+      videoUrl = "https://www.youtube.com/embed/sFnwxnU0MN0?si=RNpRV58Y8bFD3Kdr"
+      title = "Our Past Activites"
+      description = "Professor Sanjeev Singh, joint director of the University of Delhi South Campus, took the stage at AWS Summit …"
+      autoplay = "true"
+      loop = "false"
+      aspectRatio = "16:9"
+      width = "contained"
+
+======================================================================
+[ACTIVE] order=7 type=featured-courses — Work with us
+======================================================================
+  hero:
+    layoutType = "text-slider"
+    heroMediaInterval = "5"
+    fullWidthSlider:
+      height = "70vh"
+      interval = "5"
+    twoMedia:
+      media1:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+      media2:
+        width = "50"
+        documentDisplayMode = "download"
+        embedType = "youtube"
+        dataHeight = "400"
+        mapProvider = "google"
+        mapHeight = "450"
+        mapInteractive = "true"
+    multiMedia:
+  featuredCourses:
+    title = "Work with us"
+    description = "Turn ideas into deployed solutions with our research community."
+    courses: [3]
+      #1:
+        image = [media: phd.jpg]
+        title = "PHD Programme"
+        description = "Our PhD programme equips scholars to conduct pioneering research across domains like smart healthcare, cyberse…"
+        buttonText = "Read More"
+        buttonLink = "/work-with-us/phd-programme"
+      #2:
+        image = [media: Incubation.jpg]
+        title = "Incubation"
+        description = "From idea validation to prototype development, our incubation programme empowers students and researchers to c…"
+        buttonText = "Read More"
+        buttonLink = "/work-with-us/incubation"
+      #3:
+        image = [media: Intership.jpg]
+        title = "Research Internship"
+        description = "Through hands-on project experience and expert mentorship, our internship programme enables students and schol…"
+        buttonText = "Apply For Internship"
+        buttonLink = "/work-with-us/research-internship"
+    viewAllButton:
+  courseCategories:
+  featuredInstructors:
+  testimonials:
+    overallRating:
+      rating = "4.8"
+      reviewCount = "230+"
+  blogPosts:
+  cta:
+  contentBlocks: [1]
+    #1:
+      blockType = "video"
+      videoType = "youtube"
+      videoUrl = "https://www.youtube.com/embed/FEDVRJXyTqI?si=JtBBK3xhvxI3v5NF"
+      title = "VC's Speech"
+      description = "150 Years of Vande Mataram at Shaheed bhagat singh college (November 26, 2025)"
+      autoplay = "false"
+      loop = "false"
+      aspectRatio = "16:9"
+      width = "full"
+  featuredNews:
+    title = "Featured News"
+    description = "Stay updated with our latest news and announcements"
+    enabled = "true"
+  ourStory:
+    buttonText = "Learn More About Us"
+    buttonLink = "/about"
+
+======================================================================
+[inactive] order=8 type=testimonials — Testimonials Section
+======================================================================
+  (skipped — inactive)
+
+======================================================================
+[inactive] order=9 type=course-categories — Course Categories Section
+======================================================================
+  (skipped — inactive)
+
+======================================================================
+[inactive] order=10 type=cta — CTA Section
+======================================================================
+  (skipped — inactive)

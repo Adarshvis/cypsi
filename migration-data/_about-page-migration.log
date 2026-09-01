@@ -1,0 +1,11 @@
+aboutMain + MVV : storyTimeline (image 61, 3 timeline nodes)
+  icons         : bi-bullseye→Target, bi-eye→Eye, bi-award→Award
+stats           : statistics / duccStrip, 3 stats (dark band)
+whyChooseUs     : storyTimeline (image 62, 5 check nodes) — CTA dropped, CyPSi link is "#"
+gallery         : imageGallery, 3 images
+
+page title  : About
+total blocks: 4 (was 6)
+blocks      : storyTimeline → statistics → storyTimeline → imageGallery
+
+updated page id 6 at /about (was "About")

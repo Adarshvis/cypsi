@@ -1,0 +1,199 @@
+[
+  {
+    "_id": "692897cbd3c47cfdf5da199c",
+    "createdAt": "2025-11-27T18:26:19.708Z",
+    "updatedAt": "2025-11-27T18:26:19.708Z",
+    "sectionName": "Mission Vision Values",
+    "sectionType": "mission-vision-values",
+    "status": "active",
+    "pageTitle": {},
+    "aboutMain": {},
+    "missionVisionValues": {
+      "cards": [
+        {
+          "icon": "bi-bullseye",
+          "title": "Our Mission",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo. Excepteur sint occaecat cupidatat non proident.",
+          "id": "692897cb9fb109292c5fbc97"
+        },
+        {
+          "icon": "bi-eye",
+          "title": "Our Vision",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo. Excepteur sint occaecat cupidatat non proident.",
+          "id": "692897cb9fb109292c5fbc98"
+        },
+        {
+          "icon": "bi-award",
+          "title": "Our Values",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo. Excepteur sint occaecat cupidatat non proident.",
+          "id": "692897cb9fb109292c5fbc99"
+        }
+      ]
+    },
+    "whyChooseUs": {},
+    "__v": 0
+  },
+  {
+    "_id": "692897cbd3c47cfdf5da1997",
+    "createdAt": "2025-11-27T18:26:19.426Z",
+    "updatedAt": "2026-04-06T10:38:26.985Z",
+    "sectionName": "About Page Title",
+    "sectionType": "page-title",
+    "status": "active",
+    "pageTitle": {
+      "title": "About",
+      "breadcrumbs": [
+        {
+          "label": "Home",
+          "link": "",
+          "isActive": false,
+          "id": "692897cb9fb109292c5fbc92"
+        },
+        {
+          "label": "About",
+          "link": "",
+          "isActive": true,
+          "id": "692897cb9fb109292c5fbc93"
+        }
+      ]
+    },
+    "aboutMain": {
+      "stats": []
+    },
+    "missionVisionValues": {
+      "cards": []
+    },
+    "whyChooseUs": {
+      "features": [],
+      "galleryImages": []
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "order": 0,
+    "ourStory": {
+      "timeline": [],
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  },
+  {
+    "_id": "692897cbd3c47cfdf5da1999",
+    "createdAt": "2025-11-27T18:26:19.544Z",
+    "updatedAt": "2026-04-06T10:38:41.425Z",
+    "sectionName": "About Main Section",
+    "sectionType": "about-main",
+    "status": "active",
+    "pageTitle": {
+      "breadcrumbs": []
+    },
+    "aboutMain": {
+      "image": "692897cad3c47cfdf5da1975",
+      "subtitle": "About Us",
+      "title": "Empowering Future Leaders Through Quality Education",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "stats": [
+        {
+          "count": "15",
+          "label": "Years of Experience",
+          "id": "692897cb9fb109292c5fbc94"
+        },
+        {
+          "count": "200+",
+          "label": "Expert Instructors",
+          "id": "692897cb9fb109292c5fbc95"
+        },
+        {
+          "count": "50k+",
+          "label": "Students Worldwide",
+          "id": "692897cb9fb109292c5fbc96"
+        }
+      ]
+    },
+    "missionVisionValues": {
+      "cards": []
+    },
+    "whyChooseUs": {
+      "features": [],
+      "galleryImages": []
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "order": 0,
+    "ourStory": {
+      "timeline": [],
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  },
+  {
+    "_id": "692897cbd3c47cfdf5da199e",
+    "createdAt": "2025-11-27T18:26:19.797Z",
+    "updatedAt": "2026-01-31T07:08:26.998Z",
+    "sectionName": "Why Choose Us",
+    "sectionType": "why-choose-us",
+    "status": "active",
+    "pageTitle": {
+      "breadcrumbs": []
+    },
+    "aboutMain": {
+      "stats": []
+    },
+    "missionVisionValues": {
+      "cards": []
+    },
+    "whyChooseUs": {
+      "subtitle": "Why Choose Us",
+      "title": "Transforming Education for a Better Tomorrow",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+      "features": [
+        {
+          "text": "Flexible learning options and schedules",
+          "id": "692897cb9fb109292c5fbc9a"
+        },
+        {
+          "text": "Industry-experienced instructors",
+          "id": "692897cb9fb109292c5fbc9b"
+        },
+        {
+          "text": "Interactive and engaging course content",
+          "id": "692897cb9fb109292c5fbc9c"
+        },
+        {
+          "text": "Career guidance and placement support",
+          "id": "692897cb9fb109292c5fbc9d"
+        },
+        {
+          "text": "State-of-the-art online learning platform",
+          "id": "692897cb9fb109292c5fbc9e"
+        }
+      ],
+      "buttonText": "Discover More",
+      "buttonLink": "#",
+      "galleryImages": [
+        {
+          "image": "692897cad3c47cfdf5da198e",
+          "alt": "Campus Life",
+          "id": "692897cb9fb109292c5fbc9f"
+        },
+        {
+          "image": "692897cbd3c47cfdf5da1992",
+          "alt": "Student Achievement",
+          "id": "692897cb9fb109292c5fbca0"
+        },
+        {
+          "image": "692897cbd3c47cfdf5da1995",
+          "alt": "Our Campus",
+          "id": "692897cb9fb109292c5fbca1"
+        }
+      ]
+    },
+    "__v": 0,
+    "contentBlocks": [],
+    "order": 0,
+    "ourStory": {
+      "timeline": [],
+      "missionVisionCards": [],
+      "coreValues": []
+    }
+  }
+]

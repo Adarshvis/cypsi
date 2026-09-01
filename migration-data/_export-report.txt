@@ -1,0 +1,45 @@
+=== Atlas inventory (collection: docs) ===
+    140  media
+     63  payload-preferences
+     32  page-contents
+     16  publications
+     13  news
+     10  home-pages
+      8  blog-details-pages
+      7  users
+      5  invitations
+      4  research-domains
+      4  about-pages
+      4  blog-pages
+      3  news-pages
+      3  enroll-pages
+      3  work-with-us
+      3  contact-pages
+      3  courses-pages
+      3  blog-posts
+      2  pricing-pages
+      2  instructors-pages
+      2  globals
+      1  payload-locked-documents
+      1  pages
+      1  instructors
+      0  events
+      0  pricing-plans
+      0  courses
+      0  team-pages
+      0  testimonials
+      0  payload-kvs
+      0  publications-pages
+      0  contact-infos
+      0  payload-migrations
+      0  people-pages
+
+=== research-domains: 4 docs ===
+  order=-  type=-  status=active  name=-
+  order=-  type=-  status=active  name=-
+  order=-  type=-  status=active  name=-
+  order=-  type=-  status=active  name=-
+
+media-referenced.json now holds 28 media docs (merged)
+
+=== referenced media: 0 of 4 ids resolved ===

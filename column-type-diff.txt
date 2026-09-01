@@ -1,0 +1,26 @@
+columns changed in scratch vs live: 9
+
+live header_nav_items* columns:
+  header_nav_items._order: int4
+  header_nav_items._parent_id: int4
+  header_nav_items.id: varchar
+  header_nav_items.label: varchar
+  header_nav_items.url: varchar
+  header_nav_items_children._order: int4
+  header_nav_items_children._parent_id: varchar
+  header_nav_items_children.custom_label: text
+  header_nav_items_children.custom_url: text
+  header_nav_items_children.id: varchar
+  header_nav_items_children.label: varchar
+  header_nav_items_children.page_id: int4
+  header_nav_items_children.type: text
+
+  news_blocks_embed.height: default 400 -> null
+  team_page_blocks_embed.height: default 400 -> null
+  pages_blocks_embed.height: default 400 -> null
+  header_nav_items_children.page_id: nullable NO -> YES
+  header_nav_items_children.type: type text -> USER-DEFINED; udt text -> enum_header_nav_items_children_type; default 'page'::text -> 'page'::enum_header_nav_items_children_type
+  flex_dash_mock.top_badge_value: default ''::character varying -> '1,500+'::character varying
+  header_nav_items_children.custom_label: type text -> character varying; udt text -> varchar
+  header_nav_items_children.custom_url: type text -> character varying; udt text -> varchar
+  site_settings.home_page: type text -> character varying; udt text -> varchar

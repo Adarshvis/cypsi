@@ -1,0 +1,101 @@
+[
+  {
+    "blockType": "storyTimeline",
+    "eyebrow": "About Us",
+    "heading": "Empowering Future Leaders Through Quality Education",
+    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "imagePosition": "right",
+    "image": 61,
+    "timeline": [
+      {
+        "title": "Our Mission",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo. Excepteur sint occaecat cupidatat non proident.",
+        "icon": "Target"
+      },
+      {
+        "title": "Our Vision",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo. Excepteur sint occaecat cupidatat non proident.",
+        "icon": "Eye"
+      },
+      {
+        "title": "Our Values",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo. Excepteur sint occaecat cupidatat non proident.",
+        "icon": "Award"
+      }
+    ],
+    "backgroundColor": "#FFFFFF"
+  },
+  {
+    "blockType": "statistics",
+    "layout": "duccStrip",
+    "enableCountUp": true,
+    "stats": [
+      {
+        "label": "Years of Experience",
+        "numericValue": 15
+      },
+      {
+        "label": "Expert Instructors",
+        "numericValue": 200,
+        "suffix": "+"
+      },
+      {
+        "label": "Students Worldwide",
+        "numericValue": 50,
+        "suffix": "k+"
+      }
+    ]
+  },
+  {
+    "blockType": "storyTimeline",
+    "eyebrow": "Why Choose Us",
+    "heading": "Transforming Education for a Better Tomorrow",
+    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+    "imagePosition": "left",
+    "image": 62,
+    "timeline": [
+      {
+        "title": "Flexible learning options and schedules",
+        "icon": "CircleCheck"
+      },
+      {
+        "title": "Industry-experienced instructors",
+        "icon": "CircleCheck"
+      },
+      {
+        "title": "Interactive and engaging course content",
+        "icon": "CircleCheck"
+      },
+      {
+        "title": "Career guidance and placement support",
+        "icon": "CircleCheck"
+      },
+      {
+        "title": "State-of-the-art online learning platform",
+        "icon": "CircleCheck"
+      }
+    ],
+    "backgroundColor": "#e6edf0"
+  },
+  {
+    "blockType": "imageGallery",
+    "sectionHeading": "Our Campus",
+    "headingAlignment": "center",
+    "columns": "3",
+    "images": [
+      {
+        "image": 62,
+        "caption": "Campus Life"
+      },
+      {
+        "image": 63,
+        "caption": "Student Achievement"
+      },
+      {
+        "image": 64,
+        "caption": "Our Campus"
+      }
+    ],
+    "backgroundColor": "#FFFFFF"
+  }
+]

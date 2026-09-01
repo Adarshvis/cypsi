@@ -1,0 +1,16 @@
+logo uploaded -> media id 65
+
+existing nav items : 0
+existing logo id   : 1
+cta enabled        : false
+
+nav to write:
+  Home -> /
+  About -> /about
+  Publications -> /publications
+  News -> /news
+  Team -> /team
+
+header updated: logo, nav items, centred alignment, CTA enabled
+CTA points at /publications for now — change it in the Header global once
+the enrolment destination exists.

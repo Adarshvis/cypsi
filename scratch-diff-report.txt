@@ -1,0 +1,20 @@
+new tables      : 0
+new enum types  : 1
+    + enum_header_nav_items_children_type
+new columns on existing tables : 11
+    + site_settings.listing_pages_news_description
+    + site_settings.listing_pages_news_eyebrow
+    + site_settings.listing_pages_news_meta_description
+    + site_settings.listing_pages_news_meta_title
+    + site_settings.listing_pages_news_title
+    + site_settings.listing_pages_publications_description
+    + site_settings.listing_pages_publications_eyebrow
+    + site_settings.listing_pages_publications_meta_description
+    + site_settings.listing_pages_publications_meta_title
+    + site_settings.listing_pages_publications_title
+    + site_settings.site_description
+
+--- red flags (should all be zero) ---
+dropped tables  : 0 
+dropped columns : 0 
+changed enums   : 4 enum_news_blocks_social_feeds_feeds_x_mode, enum_pages_blocks_social_feeds_feeds_x_mode, enum_team_page_blocks_social_feeds_feeds_x_mode, enum_users_roles

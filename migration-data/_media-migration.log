@@ -1,0 +1,35 @@
+CyPSi media referenced by the export: 28
+source directory: C:\Users\Admin\Desktop\CPS\learner\media
+mode: EXECUTE
+
+  CREATED  education-square-2.webp  -> media id 61
+  CREATED  education-1.webp  -> media id 62
+  CREATED  students-3.webp  -> media id 63
+  CREATED  campus-8.webp  -> media id 64
+  REUSE    phd.jpg  -> media id 37
+  REUSE    Incubation.jpg  -> media id 38
+  REUSE    Intership.jpg  -> media id 39
+  REUSE    person-f-2.webp  -> media id 40
+  REUSE    person-m-3.webp  -> media id 41
+  REUSE    person-f-6.webp  -> media id 42
+  REUSE    person-m-4.webp  -> media id 43
+  REUSE    person-f-16.webp  -> media id 44
+  REUSE    person-f-17.webp  -> media id 45
+  REUSE    person-m-12.webp  -> media id 46
+  REUSE    blog-post-4.webp  -> media id 47
+  REUSE    blog-post-5.webp  -> media id 48
+  REUSE    blog-post-6.webp  -> media id 49
+  REUSE    courses-5.webp  -> media id 50
+  REUSE    New_Hero_Image_1.jpg  -> media id 51
+  REUSE    Hero_image_2.jpg  -> media id 52
+  REUSE    Hero_image_3.jpg  -> media id 53
+  REUSE    Hero_image_4.jpg  -> media id 54
+  REUSE    H-CPS.jpg  -> media id 55
+  REUSE    hcs_1.jpg  -> media id 56
+  REUSE    H-CPS_1.jpg  -> media id 57
+  REUSE    Cybs_4.png  -> media id 58
+  REUSE    ChatGPT Image Dec 10, 2025, 11_43_23 PM.jpg  -> media id 59
+  REUSE    Futuristic_Data_Network_Animation.gif  -> media id 60
+
+created: 4   reused: 24   missing: 0
+id map written to migration-data/_media-id-map.json (28 entries)

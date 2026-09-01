@@ -1,0 +1,641 @@
+[
+  {
+    "id": "6a88a9d157012678a498f47e",
+    "mode": "carousel",
+    "layout": "split",
+    "splitDirection": "textLeft",
+    "splitTheme": "light",
+    "splitTextBehavior": "static",
+    "height": 600,
+    "textAlignment": "center",
+    "textVerticalPosition": "center",
+    "contentMaxWidth": 1200,
+    "contentPaddingX": 24,
+    "contentPaddingY": 32,
+    "constantOverlayContent": false,
+    "duccShowSlideCounter": true,
+    "duccShowPlayPause": true,
+    "blockName": null,
+    "splitFeatures": [
+      {
+        "id": "6a88a9d157012678a498f46f",
+        "icon": "ShieldCheck",
+        "text": "PHD Programs"
+      },
+      {
+        "id": "6a88a9d157012678a498f470",
+        "icon": "Award",
+        "text": "Internships"
+      },
+      {
+        "id": "6a88a9d157012678a498f471",
+        "icon": "Users",
+        "text": "Expert Faculty"
+      }
+    ],
+    "slides": [
+      {
+        "id": "6a88a9d157012678a498f474",
+        "mediaType": "image",
+        "image": 51,
+        "videoUrl": null,
+        "videoPoster": null,
+        "externalVideoUrl": null,
+        "animationUrl": null,
+        "dataVizEmbed": null,
+        "eyebrowText": null,
+        "showText": true,
+        "heading": "Driving Breakthroughs Through Research & Innovation",
+        "headingColor": "#FFFFFF",
+        "subtitle": "CyPSi Lab advances cutting-edge research in Cyber-Physical Systems to improve lives and transform industries. We collaborate with academia, government, and industry partners to build scalable and socially relevant technological solutions.",
+        "subtitleColor": "#E5E7EB",
+        "buttons": [
+          {
+            "id": "6a88a9d157012678a498f472",
+            "label": "Explore Research",
+            "url": "/publications",
+            "variant": "primary",
+            "icon": null
+          },
+          {
+            "id": "6a88a9d157012678a498f473",
+            "label": "Learn More",
+            "url": "#about",
+            "variant": "outline",
+            "icon": null
+          }
+        ]
+      },
+      {
+        "id": "6a88a9d157012678a498f477",
+        "mediaType": "image",
+        "image": 52,
+        "videoUrl": null,
+        "videoPoster": null,
+        "externalVideoUrl": null,
+        "animationUrl": null,
+        "dataVizEmbed": null,
+        "eyebrowText": null,
+        "showText": true,
+        "heading": "Driving Breakthroughs Through Research & Innovation",
+        "headingColor": "#FFFFFF",
+        "subtitle": "CyPSi Lab advances cutting-edge research in Cyber-Physical Systems to improve lives and transform industries. We collaborate with academia, government, and industry partners to build scalable and socially relevant technological solutions.",
+        "subtitleColor": "#E5E7EB",
+        "buttons": [
+          {
+            "id": "6a88a9d157012678a498f475",
+            "label": "Explore Research",
+            "url": "/publications",
+            "variant": "primary",
+            "icon": null
+          },
+          {
+            "id": "6a88a9d157012678a498f476",
+            "label": "Learn More",
+            "url": "#about",
+            "variant": "outline",
+            "icon": null
+          }
+        ]
+      },
+      {
+        "id": "6a88a9d157012678a498f47a",
+        "mediaType": "image",
+        "image": 53,
+        "videoUrl": null,
+        "videoPoster": null,
+        "externalVideoUrl": null,
+        "animationUrl": null,
+        "dataVizEmbed": null,
+        "eyebrowText": null,
+        "showText": true,
+        "heading": "Driving Breakthroughs Through Research & Innovation",
+        "headingColor": "#FFFFFF",
+        "subtitle": "CyPSi Lab advances cutting-edge research in Cyber-Physical Systems to improve lives and transform industries. We collaborate with academia, government, and industry partners to build scalable and socially relevant technological solutions.",
+        "subtitleColor": "#E5E7EB",
+        "buttons": [
+          {
+            "id": "6a88a9d157012678a498f478",
+            "label": "Explore Research",
+            "url": "/publications",
+            "variant": "primary",
+            "icon": null
+          },
+          {
+            "id": "6a88a9d157012678a498f479",
+            "label": "Learn More",
+            "url": "#about",
+            "variant": "outline",
+            "icon": null
+          }
+        ]
+      },
+      {
+        "id": "6a88a9d157012678a498f47d",
+        "mediaType": "image",
+        "image": 54,
+        "videoUrl": null,
+        "videoPoster": null,
+        "externalVideoUrl": null,
+        "animationUrl": null,
+        "dataVizEmbed": null,
+        "eyebrowText": null,
+        "showText": true,
+        "heading": "Driving Breakthroughs Through Research & Innovation",
+        "headingColor": "#FFFFFF",
+        "subtitle": "CyPSi Lab advances cutting-edge research in Cyber-Physical Systems to improve lives and transform industries. We collaborate with academia, government, and industry partners to build scalable and socially relevant technological solutions.",
+        "subtitleColor": "#E5E7EB",
+        "buttons": [
+          {
+            "id": "6a88a9d157012678a498f47b",
+            "label": "Explore Research",
+            "url": "/publications",
+            "variant": "primary",
+            "icon": null
+          },
+          {
+            "id": "6a88a9d157012678a498f47c",
+            "label": "Learn More",
+            "url": "#about",
+            "variant": "outline",
+            "icon": null
+          }
+        ]
+      }
+    ],
+    "blockType": "hero",
+    "constantOverlay": {
+      "showText": true,
+      "heading": null,
+      "headingColor": "#FFFFFF",
+      "subtitle": null,
+      "subtitleColor": "#E5E7EB",
+      "buttons": []
+    },
+    "overlay": {
+      "enabled": true,
+      "color": "#000000",
+      "opacity": 50
+    },
+    "headerGlass": {
+      "enabled": true,
+      "fillColor": "#FFFFFF",
+      "fillOpacity": 20,
+      "blurAmount": 16,
+      "showDivider": true
+    },
+    "carouselSettings": {
+      "autoPlay": true,
+      "autoPlayInterval": 5000,
+      "showArrows": true,
+      "showDots": true
+    },
+    "singleSlide": {
+      "mediaType": "image",
+      "image": null,
+      "videoUrl": null,
+      "videoPoster": null,
+      "externalVideoUrl": null,
+      "animationUrl": null,
+      "dataVizEmbed": null,
+      "eyebrowText": null,
+      "showText": true,
+      "heading": null,
+      "headingColor": "#FFFFFF",
+      "subtitle": null,
+      "subtitleColor": "#E5E7EB",
+      "buttons": []
+    },
+    "duccFloatingCard": {
+      "enabled": true,
+      "badgeLabel": "Live Snapshot",
+      "footerText": "Updated Real-time",
+      "footerLink": "/about",
+      "footerLinkLabel": "View dashboard →",
+      "stats": []
+    },
+    "quickAccessBar": {
+      "enabled": false,
+      "overlapAmount": 80,
+      "items": []
+    }
+  },
+  {
+    "id": "6a88a9d157012678a498f483",
+    "sectionHeading": "Research Domains",
+    "sectionDescription": "Explore our cutting-edge research areas and innovative solutions",
+    "headingAlignment": "center",
+    "cardStyle": "clean",
+    "columns": "4",
+    "accentColor": "#3B82F6",
+    "backgroundColor": "#F9FAFB",
+    "blockName": null,
+    "cards": [
+      {
+        "id": "6a88a9d157012678a498f47f",
+        "title": "Human-Centered Systems",
+        "image": 55,
+        "caption": null,
+        "logo": null,
+        "subtitle": null,
+        "description": "Human-Centered Systems address the challenges of rapid cyberization as technology becomes deeply integrated into everyday life. Our research focuses on designing usable, sustainable, and socially responsible CPS that interact seamlessly with humans.",
+        "featured": false,
+        "featuredLabel": "Featured",
+        "url": "/research-domains/human-centered-systems",
+        "icon": null
+      },
+      {
+        "id": "6a88a9d157012678a498f480",
+        "title": "Healthcare",
+        "image": 57,
+        "caption": null,
+        "logo": null,
+        "subtitle": null,
+        "description": "Healthcare-CPS focuses on advancing remote and intelligent healthcare as technology transforms how medical challenges are addressed. With rapid evolution across telemedicine, connected-health, mobile-health and intelligent-health systems, CPS enables enhanced care delivery.",
+        "featured": false,
+        "featuredLabel": "Featured",
+        "url": "/research-domains/data-science-analytics",
+        "icon": null
+      },
+      {
+        "id": "6a88a9d157012678a498f481",
+        "title": "Cybersecurity",
+        "image": 58,
+        "caption": null,
+        "logo": null,
+        "subtitle": null,
+        "description": "Cyber-Physical Systems combine sensing, computing, networking, and feedback-driven automation through highly connected smart devices. This enhanced functionality and connectivity also introduce unprecedented cybersecurity risks. Ensuring safety, security, and privacy.",
+        "featured": false,
+        "featuredLabel": "Featured",
+        "url": "/research-domains/cybersecurity-privacy",
+        "icon": null
+      },
+      {
+        "id": "6a88a9d157012678a498f482",
+        "title": "Wearables",
+        "image": 56,
+        "caption": null,
+        "logo": null,
+        "subtitle": null,
+        "description": "Advances in sensors, IoT, and microelectronics have accelerated the rise of smart wearables, creating major research opportunities. These devices operate as complex networks processing real-time data and functioning autonomously for long durations.",
+        "featured": false,
+        "featuredLabel": "Featured",
+        "url": null,
+        "icon": null
+      }
+    ],
+    "blockType": "showcaseCards",
+    "overlaySettings": {
+      "overlayColor": "#000000",
+      "overlayOpacity": 40,
+      "cardHeight": 300
+    },
+    "bottomLink": {
+      "enabled": false,
+      "label": "View All",
+      "url": null
+    }
+  },
+  {
+    "id": "6a88a9d157012678a498f488",
+    "eyebrow": "About Us",
+    "heading": "Advancing Cyber-Physical Systems for Societal Impact",
+    "body": "The CyPSi Lab, established in 1999 at the Institute of Informatics and Communication (IIC) of University of Delhi has contributed to a wide range of domains from Educational Technologies, to scientific research papers and to Cyber Physical Systems (CPS)\n\n",
+    "imagePosition": "right",
+    "image": 59,
+    "ctaLabel": "Learn More About Us",
+    "ctaUrl": "/about",
+    "backgroundColor": "#e6edf0",
+    "blockName": null,
+    "timeline": [
+      {
+        "id": "6a88a9d157012678a498f484",
+        "title": "Research Expansion",
+        "description": "The lab expanded into educational technologies, applied computing, and interdisciplinary research, producing high-quality academic publications.",
+        "icon": null
+      },
+      {
+        "id": "6a88a9d157012678a498f485",
+        "title": "Focus on CPS",
+        "description": "Dedicated research in Cyber-Physical Systems integrated computation, communication, and physical processes for real-life solutions.",
+        "icon": null
+      }
+    ],
+    "highlightCards": [
+      {
+        "id": "6a88a9d157012678a498f486",
+        "title": "Our Mission",
+        "description": "To lead research in Cyber-Physical Systems and allied disciplines, addressing real-world challenges through innovation."
+      },
+      {
+        "id": "6a88a9d157012678a498f487",
+        "title": "Our Vision",
+        "description": "To be a globally recognized lab connecting academia, industry, and society through scalable, impactful research solutions."
+      }
+    ],
+    "blockType": "storyTimeline"
+  },
+  {
+    "id": "6a88a9d157012678a498f489",
+    "sectionHeading": "Featured News",
+    "sectionDescription": "Stay updated with our latest news and announcements",
+    "headingAlignment": "center",
+    "layout": "spotlight",
+    "entryType": "collection",
+    "columns": "3",
+    "backgroundColor": "#F9FAFB",
+    "blockName": null,
+    "articles": [],
+    "blockType": "newsUpdates",
+    "collectionSource": {
+      "limit": 5,
+      "sortBy": "latest",
+      "category": null,
+      "featuredOnly": false
+    },
+    "bottomLink": {
+      "enabled": false,
+      "label": "View All News",
+      "url": null
+    }
+  },
+  {
+    "id": "6a88a9d157012678a498f48a",
+    "sectionHeading": "Our Past Activites ",
+    "sectionDescription": "Professor Sanjeev Singh, joint director of the University of Delhi South Campus, took the stage at AWS Summit New Delhi to share the story of the Samarth eGov Suite, a purpose-built platform for higher education institutions (HEIs) that uses AWS to deploy an e-governance system for administration and management of higher education processes. ",
+    "headingAlignment": "center",
+    "embedType": "iframe",
+    "html": null,
+    "iframeUrl": "https://www.youtube.com/embed/sFnwxnU0MN0",
+    "width": "full",
+    "height": 400,
+    "blockName": null,
+    "blockType": "embed"
+  },
+  {
+    "id": "6a88a9d157012678a498f48e",
+    "sectionHeading": "Work with us",
+    "sectionDescription": "Turn ideas into deployed solutions with our research community.",
+    "headingAlignment": "center",
+    "backgroundColor": "#FFFFFF",
+    "eyebrow": null,
+    "ctaLabel": null,
+    "ctaLink": null,
+    "cardLayout": "classic",
+    "columns": "3",
+    "cardTheme": "light",
+    "showCardNumbers": false,
+    "showCardButton": true,
+    "blockName": null,
+    "cards": [
+      {
+        "id": "6a88a9d157012678a498f48b",
+        "icon": null,
+        "image": 37,
+        "title": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "tag": "h4",
+                "type": "heading",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "PHD Programme",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr"
+              }
+            ],
+            "direction": "ltr"
+          }
+        },
+        "description": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Our PhD programme equips scholars to conduct pioneering research across domains like smart healthcare, cybersecurity, wearables, IoT, and human-centered systems contributing to the future of Cyber-Physical Systems.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr",
+                "textFormat": 0
+              }
+            ],
+            "direction": "ltr"
+          }
+        },
+        "link": "/work-with-us/phd-programme",
+        "tag": null,
+        "external": false,
+        "buttonLabel": "Read More ",
+        "buttonUrl": "/work-with-us/phd-programme",
+        "status": null,
+        "progress": null,
+        "level": null,
+        "duration": null,
+        "mode": null,
+        "audience": null,
+        "date": null,
+        "features": []
+      },
+      {
+        "id": "6a88a9d157012678a498f48c",
+        "icon": null,
+        "image": 38,
+        "title": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "tag": "h4",
+                "type": "heading",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Incubation",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr"
+              }
+            ],
+            "direction": "ltr"
+          }
+        },
+        "description": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "From idea validation to prototype development, our incubation programme empowers students and researchers to convert innovative concepts into real-world solutions through expert mentoring",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr",
+                "textFormat": 0
+              }
+            ],
+            "direction": "ltr"
+          }
+        },
+        "link": "/work-with-us/incubation",
+        "tag": null,
+        "external": false,
+        "buttonLabel": "Read More",
+        "buttonUrl": "/work-with-us/incubation",
+        "status": null,
+        "progress": null,
+        "level": null,
+        "duration": null,
+        "mode": null,
+        "audience": null,
+        "date": null,
+        "features": []
+      },
+      {
+        "id": "6a88a9d157012678a498f48d",
+        "icon": null,
+        "image": 39,
+        "title": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "tag": "h4",
+                "type": "heading",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Research Internship",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr"
+              }
+            ],
+            "direction": "ltr"
+          }
+        },
+        "description": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Through hands-on project experience and expert mentorship, our internship programme enables students and scholars to apply advanced concepts to real-world challenges and contribute to Cyber-Physical Systems innovations.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr",
+                "textFormat": 0
+              }
+            ],
+            "direction": "ltr"
+          }
+        },
+        "link": "/work-with-us/research-internship",
+        "tag": null,
+        "external": false,
+        "buttonLabel": "Apply For Internship ",
+        "buttonUrl": "/work-with-us/research-internship",
+        "status": null,
+        "progress": null,
+        "level": null,
+        "duration": null,
+        "mode": null,
+        "audience": null,
+        "date": null,
+        "features": []
+      }
+    ],
+    "blockType": "featureCards"
+  },
+  {
+    "id": "6a88a9d157012678a498f48f",
+    "sectionHeading": "VC's Speech ",
+    "sectionDescription": " 150 Years of Vande Mataram at Shaheed bhagat singh college (November 26, 2025)",
+    "headingAlignment": "center",
+    "embedType": "iframe",
+    "html": null,
+    "iframeUrl": "https://www.youtube.com/embed/FEDVRJXyTqI",
+    "width": "fullBleed",
+    "height": 400,
+    "blockName": null,
+    "blockType": "embed"
+  }
+]

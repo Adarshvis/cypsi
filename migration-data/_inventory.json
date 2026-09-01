@@ -1,0 +1,138 @@
+[
+  {
+    "collection": "media",
+    "docs": 140
+  },
+  {
+    "collection": "payload-preferences",
+    "docs": 63
+  },
+  {
+    "collection": "page-contents",
+    "docs": 32
+  },
+  {
+    "collection": "publications",
+    "docs": 16
+  },
+  {
+    "collection": "news",
+    "docs": 13
+  },
+  {
+    "collection": "home-pages",
+    "docs": 10
+  },
+  {
+    "collection": "blog-details-pages",
+    "docs": 8
+  },
+  {
+    "collection": "users",
+    "docs": 7
+  },
+  {
+    "collection": "invitations",
+    "docs": 5
+  },
+  {
+    "collection": "research-domains",
+    "docs": 4
+  },
+  {
+    "collection": "about-pages",
+    "docs": 4
+  },
+  {
+    "collection": "blog-pages",
+    "docs": 4
+  },
+  {
+    "collection": "news-pages",
+    "docs": 3
+  },
+  {
+    "collection": "enroll-pages",
+    "docs": 3
+  },
+  {
+    "collection": "work-with-us",
+    "docs": 3
+  },
+  {
+    "collection": "contact-pages",
+    "docs": 3
+  },
+  {
+    "collection": "courses-pages",
+    "docs": 3
+  },
+  {
+    "collection": "blog-posts",
+    "docs": 3
+  },
+  {
+    "collection": "pricing-pages",
+    "docs": 2
+  },
+  {
+    "collection": "instructors-pages",
+    "docs": 2
+  },
+  {
+    "collection": "globals",
+    "docs": 2
+  },
+  {
+    "collection": "payload-locked-documents",
+    "docs": 1
+  },
+  {
+    "collection": "pages",
+    "docs": 1
+  },
+  {
+    "collection": "instructors",
+    "docs": 1
+  },
+  {
+    "collection": "events",
+    "docs": 0
+  },
+  {
+    "collection": "pricing-plans",
+    "docs": 0
+  },
+  {
+    "collection": "courses",
+    "docs": 0
+  },
+  {
+    "collection": "team-pages",
+    "docs": 0
+  },
+  {
+    "collection": "testimonials",
+    "docs": 0
+  },
+  {
+    "collection": "payload-kvs",
+    "docs": 0
+  },
+  {
+    "collection": "publications-pages",
+    "docs": 0
+  },
+  {
+    "collection": "contact-infos",
+    "docs": 0
+  },
+  {
+    "collection": "payload-migrations",
+    "docs": 0
+  },
+  {
+    "collection": "people-pages",
+    "docs": 0
+  }
+]

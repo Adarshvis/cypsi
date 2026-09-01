@@ -1,0 +1,93 @@
+
+======================================================================
+[ACTIVE] order=undefined type=mission-vision-values — Mission Vision Values
+======================================================================
+  missionVisionValues:
+    cards: [3]
+      #1:
+        icon = "bi-bullseye"
+        title = "Our Mission"
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvin…"
+      #2:
+        icon = "bi-eye"
+        title = "Our Vision"
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvin…"
+      #3:
+        icon = "bi-award"
+        title = "Our Values"
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvin…"
+
+======================================================================
+[ACTIVE] order=0 type=page-title — About Page Title
+======================================================================
+  pageTitle:
+    title = "About"
+    breadcrumbs: [2]
+      #1:
+        label = "Home"
+        isActive = "false"
+      #2:
+        label = "About"
+        isActive = "true"
+  aboutMain:
+  missionVisionValues:
+  whyChooseUs:
+  ourStory:
+
+======================================================================
+[ACTIVE] order=0 type=about-main — About Main Section
+======================================================================
+  pageTitle:
+  aboutMain:
+    image = [media: education-square-2.webp]
+    subtitle = "About Us"
+    title = "Empowering Future Leaders Through Quality Education"
+    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore …"
+    stats: [3]
+      #1:
+        count = "15"
+        label = "Years of Experience"
+      #2:
+        count = "200+"
+        label = "Expert Instructors"
+      #3:
+        count = "50k+"
+        label = "Students Worldwide"
+  missionVisionValues:
+  whyChooseUs:
+  ourStory:
+
+======================================================================
+[ACTIVE] order=0 type=why-choose-us — Why Choose Us
+======================================================================
+  pageTitle:
+  aboutMain:
+  missionVisionValues:
+  whyChooseUs:
+    subtitle = "Why Choose Us"
+    title = "Transforming Education for a Better Tomorrow"
+    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvin…"
+    features: [5]
+      #1:
+        text = "Flexible learning options and schedules"
+      #2:
+        text = "Industry-experienced instructors"
+      #3:
+        text = "Interactive and engaging course content"
+      #4:
+        text = "Career guidance and placement support"
+      #5:
+        text = "State-of-the-art online learning platform"
+    buttonText = "Discover More"
+    buttonLink = "#"
+    galleryImages: [3]
+      #1:
+        image = [media: education-1.webp]
+        alt = "Campus Life"
+      #2:
+        image = [media: students-3.webp]
+        alt = "Student Achievement"
+      #3:
+        image = [media: campus-8.webp]
+        alt = "Our Campus"
+  ourStory:
