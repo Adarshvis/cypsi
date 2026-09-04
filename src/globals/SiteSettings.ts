@@ -157,7 +157,21 @@ export const SiteSettings: GlobalConfig = {
         { label: 'Theme B (Teal & Dark)', value: 'learner' },
       ],
       admin: {
-        description: 'One-click theme change. Selecting a preset changes colors, fonts, and layout styles across the entire site.',
+        /*
+         * Hidden from the admin UI, not removed.
+         *
+         * `admin.hidden` is the right switch here: the field keeps its column,
+         * its stored value and its REST/GraphQL presence, so the frontend still
+         * reads the preset and the colour and layout hooks keep working. The
+         * field-level `hidden: true` would have dropped it from the API too.
+         *
+         * Hidden because switching presets rewrites layout values on every
+         * block across the site — a single click with very wide consequences.
+         * Remove this flag to expose the control again.
+         */
+        hidden: true,
+        description:
+          'One-click theme change. Selecting a preset changes colors, fonts, and layout styles across the entire site.',
       },
     },
     {
