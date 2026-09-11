@@ -40,6 +40,7 @@ export const enum_users_allowed_collections = pgEnum('enum_users_allowed_collect
   'work-with-us',
   'team-page',
   'media',
+  'documents',
 ])
 export const enum_invitations_allowed_collections = pgEnum('enum_invitations_allowed_collections', [
   'pages',
@@ -50,6 +51,7 @@ export const enum_invitations_allowed_collections = pgEnum('enum_invitations_all
   'work-with-us',
   'team-page',
   'media',
+  'documents',
 ])
 export const enum_invitations_role = pgEnum('enum_invitations_role', [
   'author',
@@ -131,6 +133,14 @@ export const enum_pages_blocks_marquee_speed = pgEnum('enum_pages_blocks_marquee
   'normal',
   'fast',
 ])
+export const enum_pages_blocks_document_downloads_heading_alignment = pgEnum(
+  'enum_pages_blocks_document_downloads_heading_alignment',
+  ['left', 'center', 'right'],
+)
+export const enum_pages_blocks_document_downloads_layout = pgEnum(
+  'enum_pages_blocks_document_downloads_layout',
+  ['rows', 'twoColumn'],
+)
 export const enum_pages_blocks_showcase_cards_heading_alignment = pgEnum(
   'enum_pages_blocks_showcase_cards_heading_alignment',
   ['left', 'center', 'right'],
@@ -667,6 +677,14 @@ export const enum_news_blocks_marquee_speed = pgEnum('enum_news_blocks_marquee_s
   'normal',
   'fast',
 ])
+export const enum_news_blocks_document_downloads_heading_alignment = pgEnum(
+  'enum_news_blocks_document_downloads_heading_alignment',
+  ['left', 'center', 'right'],
+)
+export const enum_news_blocks_document_downloads_layout = pgEnum(
+  'enum_news_blocks_document_downloads_layout',
+  ['rows', 'twoColumn'],
+)
 export const enum_news_blocks_showcase_cards_heading_alignment = pgEnum(
   'enum_news_blocks_showcase_cards_heading_alignment',
   ['left', 'center', 'right'],
@@ -1152,6 +1170,14 @@ export const enum_team_page_blocks_marquee_speed = pgEnum('enum_team_page_blocks
   'normal',
   'fast',
 ])
+export const enum_team_page_blocks_document_downloads_heading_alignment = pgEnum(
+  'enum_team_page_blocks_document_downloads_heading_alignment',
+  ['left', 'center', 'right'],
+)
+export const enum_team_page_blocks_document_downloads_layout = pgEnum(
+  'enum_team_page_blocks_document_downloads_layout',
+  ['rows', 'twoColumn'],
+)
 export const enum_team_page_blocks_showcase_cards_heading_alignment = pgEnum(
   'enum_team_page_blocks_showcase_cards_heading_alignment',
   ['left', 'center', 'right'],
@@ -1771,6 +1797,35 @@ export const media = pgTable(
   ],
 )
 
+export const documents = pgTable(
+  'documents',
+  {
+    id: serial('id').primaryKey(),
+    title: varchar('title').notNull(),
+    description: varchar('description'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    url: varchar('url'),
+    thumbnailURL: varchar('thumbnail_u_r_l'),
+    filename: varchar('filename'),
+    mimeType: varchar('mime_type'),
+    filesize: numeric('filesize', { mode: 'number' }),
+    width: numeric('width', { mode: 'number' }),
+    height: numeric('height', { mode: 'number' }),
+    focalX: numeric('focal_x', { mode: 'number' }),
+    focalY: numeric('focal_y', { mode: 'number' }),
+  },
+  (columns) => [
+    index('documents_updated_at_idx').on(columns.updatedAt),
+    index('documents_created_at_idx').on(columns.createdAt),
+    uniqueIndex('documents_filename_idx').on(columns.filename),
+  ],
+)
+
 export const pages_blocks_hero_split_features = pgTable(
   'pages_blocks_hero_split_features',
   {
@@ -2149,6 +2204,60 @@ export const pages_blocks_marquee = pgTable(
       columns: [columns['_parentID']],
       foreignColumns: [pages.id],
       name: 'pages_blocks_marquee_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const pages_blocks_document_downloads_items = pgTable(
+  'pages_blocks_document_downloads_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    file: integer('file_id')
+      .notNull()
+      .references(() => documents.id, {
+        onDelete: 'set null',
+      }),
+    label: varchar('label'),
+    description: varchar('description'),
+  },
+  (columns) => [
+    index('pages_blocks_document_downloads_items_order_idx').on(columns._order),
+    index('pages_blocks_document_downloads_items_parent_id_idx').on(columns._parentID),
+    index('pages_blocks_document_downloads_items_file_idx').on(columns.file),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages_blocks_document_downloads.id],
+      name: 'pages_blocks_document_downloads_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const pages_blocks_document_downloads = pgTable(
+  'pages_blocks_document_downloads',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: varchar('id').primaryKey(),
+    sectionHeading: varchar('section_heading'),
+    sectionDescription: varchar('section_description'),
+    headingAlignment:
+      enum_pages_blocks_document_downloads_heading_alignment('heading_alignment').default('center'),
+    backgroundColor: varchar('background_color').default('#FFFFFF'),
+    layout: enum_pages_blocks_document_downloads_layout('layout').default('rows'),
+    showFileMeta: boolean('show_file_meta').default(true),
+    blockName: varchar('block_name'),
+  },
+  (columns) => [
+    index('pages_blocks_document_downloads_order_idx').on(columns._order),
+    index('pages_blocks_document_downloads_parent_id_idx').on(columns._parentID),
+    index('pages_blocks_document_downloads_path_idx').on(columns._path),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [pages.id],
+      name: 'pages_blocks_document_downloads_parent_id_fk',
     }).onDelete('cascade'),
   ],
 )
@@ -4630,6 +4739,60 @@ export const news_blocks_marquee = pgTable(
   ],
 )
 
+export const news_blocks_document_downloads_items = pgTable(
+  'news_blocks_document_downloads_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    file: integer('file_id')
+      .notNull()
+      .references(() => documents.id, {
+        onDelete: 'set null',
+      }),
+    label: varchar('label'),
+    description: varchar('description'),
+  },
+  (columns) => [
+    index('news_blocks_document_downloads_items_order_idx').on(columns._order),
+    index('news_blocks_document_downloads_items_parent_id_idx').on(columns._parentID),
+    index('news_blocks_document_downloads_items_file_idx').on(columns.file),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [news_blocks_document_downloads.id],
+      name: 'news_blocks_document_downloads_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const news_blocks_document_downloads = pgTable(
+  'news_blocks_document_downloads',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: varchar('id').primaryKey(),
+    sectionHeading: varchar('section_heading'),
+    sectionDescription: varchar('section_description'),
+    headingAlignment:
+      enum_news_blocks_document_downloads_heading_alignment('heading_alignment').default('center'),
+    backgroundColor: varchar('background_color').default('#FFFFFF'),
+    layout: enum_news_blocks_document_downloads_layout('layout').default('rows'),
+    showFileMeta: boolean('show_file_meta').default(true),
+    blockName: varchar('block_name'),
+  },
+  (columns) => [
+    index('news_blocks_document_downloads_order_idx').on(columns._order),
+    index('news_blocks_document_downloads_parent_id_idx').on(columns._parentID),
+    index('news_blocks_document_downloads_path_idx').on(columns._path),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [news.id],
+      name: 'news_blocks_document_downloads_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
 export const news_blocks_states_onboarded_states = pgTable(
   'news_blocks_states_onboarded_states',
   {
@@ -7058,6 +7221,62 @@ export const team_page_blocks_marquee = pgTable(
   ],
 )
 
+export const team_page_blocks_document_downloads_items = pgTable(
+  'team_page_blocks_document_downloads_items',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    file: integer('file_id')
+      .notNull()
+      .references(() => documents.id, {
+        onDelete: 'set null',
+      }),
+    label: varchar('label'),
+    description: varchar('description'),
+  },
+  (columns) => [
+    index('team_page_blocks_document_downloads_items_order_idx').on(columns._order),
+    index('team_page_blocks_document_downloads_items_parent_id_idx').on(columns._parentID),
+    index('team_page_blocks_document_downloads_items_file_idx').on(columns.file),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [team_page_blocks_document_downloads.id],
+      name: 'team_page_blocks_document_downloads_items_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const team_page_blocks_document_downloads = pgTable(
+  'team_page_blocks_document_downloads',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    _path: text('_path').notNull(),
+    id: varchar('id').primaryKey(),
+    sectionHeading: varchar('section_heading'),
+    sectionDescription: varchar('section_description'),
+    headingAlignment:
+      enum_team_page_blocks_document_downloads_heading_alignment('heading_alignment').default(
+        'center',
+      ),
+    backgroundColor: varchar('background_color').default('#FFFFFF'),
+    layout: enum_team_page_blocks_document_downloads_layout('layout').default('rows'),
+    showFileMeta: boolean('show_file_meta').default(true),
+    blockName: varchar('block_name'),
+  },
+  (columns) => [
+    index('team_page_blocks_document_downloads_order_idx').on(columns._order),
+    index('team_page_blocks_document_downloads_parent_id_idx').on(columns._parentID),
+    index('team_page_blocks_document_downloads_path_idx').on(columns._path),
+    foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [team_page.id],
+      name: 'team_page_blocks_document_downloads_parent_id_fk',
+    }).onDelete('cascade'),
+  ],
+)
+
 export const team_page_blocks_states_onboarded_states = pgTable(
   'team_page_blocks_states_onboarded_states',
   {
@@ -9354,6 +9573,7 @@ export const payload_locked_documents_rels = pgTable(
     usersID: integer('users_id'),
     invitationsID: integer('invitations_id'),
     mediaID: integer('media_id'),
+    documentsID: integer('documents_id'),
     pagesID: integer('pages_id'),
     newsID: integer('news_id'),
     'blog-postsID': integer('blog_posts_id'),
@@ -9371,6 +9591,7 @@ export const payload_locked_documents_rels = pgTable(
     index('payload_locked_documents_rels_users_id_idx').on(columns.usersID),
     index('payload_locked_documents_rels_invitations_id_idx').on(columns.invitationsID),
     index('payload_locked_documents_rels_media_id_idx').on(columns.mediaID),
+    index('payload_locked_documents_rels_documents_id_idx').on(columns.documentsID),
     index('payload_locked_documents_rels_pages_id_idx').on(columns.pagesID),
     index('payload_locked_documents_rels_news_id_idx').on(columns.newsID),
     index('payload_locked_documents_rels_blog_posts_id_idx').on(columns['blog-postsID']),
@@ -9403,6 +9624,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['mediaID']],
       foreignColumns: [media.id],
       name: 'payload_locked_documents_rels_media_fk',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['documentsID']],
+      foreignColumns: [documents.id],
+      name: 'payload_locked_documents_rels_documents_fk',
     }).onDelete('cascade'),
     foreignKey({
       columns: [columns['pagesID']],
@@ -9840,6 +10066,7 @@ export const relations_invitations = relations(invitations, ({ one, many }) => (
   }),
 }))
 export const relations_media = relations(media, () => ({}))
+export const relations_documents = relations(documents, () => ({}))
 export const relations_pages_blocks_hero_split_features = relations(
   pages_blocks_hero_split_features,
   ({ one }) => ({
@@ -10019,6 +10246,34 @@ export const relations_pages_blocks_marquee = relations(pages_blocks_marquee, ({
     relationName: 'items',
   }),
 }))
+export const relations_pages_blocks_document_downloads_items = relations(
+  pages_blocks_document_downloads_items,
+  ({ one }) => ({
+    _parentID: one(pages_blocks_document_downloads, {
+      fields: [pages_blocks_document_downloads_items._parentID],
+      references: [pages_blocks_document_downloads.id],
+      relationName: 'items',
+    }),
+    file: one(documents, {
+      fields: [pages_blocks_document_downloads_items.file],
+      references: [documents.id],
+      relationName: 'file',
+    }),
+  }),
+)
+export const relations_pages_blocks_document_downloads = relations(
+  pages_blocks_document_downloads,
+  ({ one, many }) => ({
+    _parentID: one(pages, {
+      fields: [pages_blocks_document_downloads._parentID],
+      references: [pages.id],
+      relationName: '_blocks_documentDownloads',
+    }),
+    items: many(pages_blocks_document_downloads_items, {
+      relationName: 'items',
+    }),
+  }),
+)
 export const relations_pages_blocks_states_onboarded_states = relations(
   pages_blocks_states_onboarded_states,
   ({ one }) => ({
@@ -11016,6 +11271,9 @@ export const relations_pages = relations(pages, ({ one, many }) => ({
   _blocks_marquee: many(pages_blocks_marquee, {
     relationName: '_blocks_marquee',
   }),
+  _blocks_documentDownloads: many(pages_blocks_document_downloads, {
+    relationName: '_blocks_documentDownloads',
+  }),
   _blocks_statesOnboarded: many(pages_blocks_states_onboarded, {
     relationName: '_blocks_statesOnboarded',
   }),
@@ -11264,6 +11522,34 @@ export const relations_news_blocks_marquee = relations(news_blocks_marquee, ({ o
     relationName: 'items',
   }),
 }))
+export const relations_news_blocks_document_downloads_items = relations(
+  news_blocks_document_downloads_items,
+  ({ one }) => ({
+    _parentID: one(news_blocks_document_downloads, {
+      fields: [news_blocks_document_downloads_items._parentID],
+      references: [news_blocks_document_downloads.id],
+      relationName: 'items',
+    }),
+    file: one(documents, {
+      fields: [news_blocks_document_downloads_items.file],
+      references: [documents.id],
+      relationName: 'file',
+    }),
+  }),
+)
+export const relations_news_blocks_document_downloads = relations(
+  news_blocks_document_downloads,
+  ({ one, many }) => ({
+    _parentID: one(news, {
+      fields: [news_blocks_document_downloads._parentID],
+      references: [news.id],
+      relationName: '_blocks_documentDownloads',
+    }),
+    items: many(news_blocks_document_downloads_items, {
+      relationName: 'items',
+    }),
+  }),
+)
 export const relations_news_blocks_states_onboarded_states = relations(
   news_blocks_states_onboarded_states,
   ({ one }) => ({
@@ -12128,6 +12414,9 @@ export const relations_news = relations(news, ({ one, many }) => ({
   _blocks_marquee: many(news_blocks_marquee, {
     relationName: '_blocks_marquee',
   }),
+  _blocks_documentDownloads: many(news_blocks_document_downloads, {
+    relationName: '_blocks_documentDownloads',
+  }),
   _blocks_statesOnboarded: many(news_blocks_states_onboarded, {
     relationName: '_blocks_statesOnboarded',
   }),
@@ -12503,6 +12792,34 @@ export const relations_team_page_blocks_marquee = relations(
       relationName: '_blocks_marquee',
     }),
     items: many(team_page_blocks_marquee_items, {
+      relationName: 'items',
+    }),
+  }),
+)
+export const relations_team_page_blocks_document_downloads_items = relations(
+  team_page_blocks_document_downloads_items,
+  ({ one }) => ({
+    _parentID: one(team_page_blocks_document_downloads, {
+      fields: [team_page_blocks_document_downloads_items._parentID],
+      references: [team_page_blocks_document_downloads.id],
+      relationName: 'items',
+    }),
+    file: one(documents, {
+      fields: [team_page_blocks_document_downloads_items.file],
+      references: [documents.id],
+      relationName: 'file',
+    }),
+  }),
+)
+export const relations_team_page_blocks_document_downloads = relations(
+  team_page_blocks_document_downloads,
+  ({ one, many }) => ({
+    _parentID: one(team_page, {
+      fields: [team_page_blocks_document_downloads._parentID],
+      references: [team_page.id],
+      relationName: '_blocks_documentDownloads',
+    }),
+    items: many(team_page_blocks_document_downloads_items, {
       relationName: 'items',
     }),
   }),
@@ -13384,6 +13701,9 @@ export const relations_team_page = relations(team_page, ({ many }) => ({
   _blocks_marquee: many(team_page_blocks_marquee, {
     relationName: '_blocks_marquee',
   }),
+  _blocks_documentDownloads: many(team_page_blocks_document_downloads, {
+    relationName: '_blocks_documentDownloads',
+  }),
   _blocks_statesOnboarded: many(team_page_blocks_states_onboarded, {
     relationName: '_blocks_statesOnboarded',
   }),
@@ -13670,6 +13990,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [media.id],
       relationName: 'media',
     }),
+    documentsID: one(documents, {
+      fields: [payload_locked_documents_rels.documentsID],
+      references: [documents.id],
+      relationName: 'documents',
+    }),
     pagesID: one(pages, {
       fields: [payload_locked_documents_rels.pagesID],
       references: [pages.id],
@@ -13888,6 +14213,8 @@ type DatabaseSchema = {
   enum_pages_blocks_hero_single_slide_media_type: typeof enum_pages_blocks_hero_single_slide_media_type
   enum_pages_blocks_story_timeline_image_position: typeof enum_pages_blocks_story_timeline_image_position
   enum_pages_blocks_marquee_speed: typeof enum_pages_blocks_marquee_speed
+  enum_pages_blocks_document_downloads_heading_alignment: typeof enum_pages_blocks_document_downloads_heading_alignment
+  enum_pages_blocks_document_downloads_layout: typeof enum_pages_blocks_document_downloads_layout
   enum_pages_blocks_showcase_cards_heading_alignment: typeof enum_pages_blocks_showcase_cards_heading_alignment
   enum_pages_blocks_showcase_cards_card_style: typeof enum_pages_blocks_showcase_cards_card_style
   enum_pages_blocks_showcase_cards_columns: typeof enum_pages_blocks_showcase_cards_columns
@@ -14001,6 +14328,8 @@ type DatabaseSchema = {
   enum_news_blocks_hero_text_vertical_position: typeof enum_news_blocks_hero_text_vertical_position
   enum_news_blocks_hero_single_slide_media_type: typeof enum_news_blocks_hero_single_slide_media_type
   enum_news_blocks_marquee_speed: typeof enum_news_blocks_marquee_speed
+  enum_news_blocks_document_downloads_heading_alignment: typeof enum_news_blocks_document_downloads_heading_alignment
+  enum_news_blocks_document_downloads_layout: typeof enum_news_blocks_document_downloads_layout
   enum_news_blocks_showcase_cards_heading_alignment: typeof enum_news_blocks_showcase_cards_heading_alignment
   enum_news_blocks_showcase_cards_card_style: typeof enum_news_blocks_showcase_cards_card_style
   enum_news_blocks_showcase_cards_columns: typeof enum_news_blocks_showcase_cards_columns
@@ -14107,6 +14436,8 @@ type DatabaseSchema = {
   enum_team_page_blocks_hero_text_vertical_position: typeof enum_team_page_blocks_hero_text_vertical_position
   enum_team_page_blocks_hero_single_slide_media_type: typeof enum_team_page_blocks_hero_single_slide_media_type
   enum_team_page_blocks_marquee_speed: typeof enum_team_page_blocks_marquee_speed
+  enum_team_page_blocks_document_downloads_heading_alignment: typeof enum_team_page_blocks_document_downloads_heading_alignment
+  enum_team_page_blocks_document_downloads_layout: typeof enum_team_page_blocks_document_downloads_layout
   enum_team_page_blocks_showcase_cards_heading_alignment: typeof enum_team_page_blocks_showcase_cards_heading_alignment
   enum_team_page_blocks_showcase_cards_card_style: typeof enum_team_page_blocks_showcase_cards_card_style
   enum_team_page_blocks_showcase_cards_columns: typeof enum_team_page_blocks_showcase_cards_columns
@@ -14211,6 +14542,7 @@ type DatabaseSchema = {
   invitations_allowed_collections: typeof invitations_allowed_collections
   invitations: typeof invitations
   media: typeof media
+  documents: typeof documents
   pages_blocks_hero_split_features: typeof pages_blocks_hero_split_features
   pages_blocks_hero_constant_overlay_buttons: typeof pages_blocks_hero_constant_overlay_buttons
   pages_blocks_hero_single_slide_buttons: typeof pages_blocks_hero_single_slide_buttons
@@ -14224,6 +14556,8 @@ type DatabaseSchema = {
   pages_blocks_story_timeline: typeof pages_blocks_story_timeline
   pages_blocks_marquee_items: typeof pages_blocks_marquee_items
   pages_blocks_marquee: typeof pages_blocks_marquee
+  pages_blocks_document_downloads_items: typeof pages_blocks_document_downloads_items
+  pages_blocks_document_downloads: typeof pages_blocks_document_downloads
   pages_blocks_states_onboarded_states: typeof pages_blocks_states_onboarded_states
   pages_blocks_states_onboarded: typeof pages_blocks_states_onboarded
   pages_blocks_showcase_cards_cards: typeof pages_blocks_showcase_cards_cards
@@ -14313,6 +14647,8 @@ type DatabaseSchema = {
   news_blocks_hero: typeof news_blocks_hero
   news_blocks_marquee_items: typeof news_blocks_marquee_items
   news_blocks_marquee: typeof news_blocks_marquee
+  news_blocks_document_downloads_items: typeof news_blocks_document_downloads_items
+  news_blocks_document_downloads: typeof news_blocks_document_downloads
   news_blocks_states_onboarded_states: typeof news_blocks_states_onboarded_states
   news_blocks_states_onboarded: typeof news_blocks_states_onboarded
   news_blocks_showcase_cards_cards: typeof news_blocks_showcase_cards_cards
@@ -14402,6 +14738,8 @@ type DatabaseSchema = {
   team_page_blocks_hero: typeof team_page_blocks_hero
   team_page_blocks_marquee_items: typeof team_page_blocks_marquee_items
   team_page_blocks_marquee: typeof team_page_blocks_marquee
+  team_page_blocks_document_downloads_items: typeof team_page_blocks_document_downloads_items
+  team_page_blocks_document_downloads: typeof team_page_blocks_document_downloads
   team_page_blocks_states_onboarded_states: typeof team_page_blocks_states_onboarded_states
   team_page_blocks_states_onboarded: typeof team_page_blocks_states_onboarded
   team_page_blocks_showcase_cards_cards: typeof team_page_blocks_showcase_cards_cards
@@ -14510,6 +14848,7 @@ type DatabaseSchema = {
   relations_invitations_allowed_collections: typeof relations_invitations_allowed_collections
   relations_invitations: typeof relations_invitations
   relations_media: typeof relations_media
+  relations_documents: typeof relations_documents
   relations_pages_blocks_hero_split_features: typeof relations_pages_blocks_hero_split_features
   relations_pages_blocks_hero_constant_overlay_buttons: typeof relations_pages_blocks_hero_constant_overlay_buttons
   relations_pages_blocks_hero_single_slide_buttons: typeof relations_pages_blocks_hero_single_slide_buttons
@@ -14523,6 +14862,8 @@ type DatabaseSchema = {
   relations_pages_blocks_story_timeline: typeof relations_pages_blocks_story_timeline
   relations_pages_blocks_marquee_items: typeof relations_pages_blocks_marquee_items
   relations_pages_blocks_marquee: typeof relations_pages_blocks_marquee
+  relations_pages_blocks_document_downloads_items: typeof relations_pages_blocks_document_downloads_items
+  relations_pages_blocks_document_downloads: typeof relations_pages_blocks_document_downloads
   relations_pages_blocks_states_onboarded_states: typeof relations_pages_blocks_states_onboarded_states
   relations_pages_blocks_states_onboarded: typeof relations_pages_blocks_states_onboarded
   relations_pages_blocks_showcase_cards_cards: typeof relations_pages_blocks_showcase_cards_cards
@@ -14612,6 +14953,8 @@ type DatabaseSchema = {
   relations_news_blocks_hero: typeof relations_news_blocks_hero
   relations_news_blocks_marquee_items: typeof relations_news_blocks_marquee_items
   relations_news_blocks_marquee: typeof relations_news_blocks_marquee
+  relations_news_blocks_document_downloads_items: typeof relations_news_blocks_document_downloads_items
+  relations_news_blocks_document_downloads: typeof relations_news_blocks_document_downloads
   relations_news_blocks_states_onboarded_states: typeof relations_news_blocks_states_onboarded_states
   relations_news_blocks_states_onboarded: typeof relations_news_blocks_states_onboarded
   relations_news_blocks_showcase_cards_cards: typeof relations_news_blocks_showcase_cards_cards
@@ -14701,6 +15044,8 @@ type DatabaseSchema = {
   relations_team_page_blocks_hero: typeof relations_team_page_blocks_hero
   relations_team_page_blocks_marquee_items: typeof relations_team_page_blocks_marquee_items
   relations_team_page_blocks_marquee: typeof relations_team_page_blocks_marquee
+  relations_team_page_blocks_document_downloads_items: typeof relations_team_page_blocks_document_downloads_items
+  relations_team_page_blocks_document_downloads: typeof relations_team_page_blocks_document_downloads
   relations_team_page_blocks_states_onboarded_states: typeof relations_team_page_blocks_states_onboarded_states
   relations_team_page_blocks_states_onboarded: typeof relations_team_page_blocks_states_onboarded
   relations_team_page_blocks_showcase_cards_cards: typeof relations_team_page_blocks_showcase_cards_cards

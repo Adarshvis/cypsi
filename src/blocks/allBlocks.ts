@@ -27,11 +27,13 @@ import { FormLayout } from './FormLayout'
 import { GoaSchoolSnapshotBlock } from './GoaSchoolSnapshotBlock'
 import { StoryTimeline } from './StoryTimeline'
 import { SocialFeeds } from './SocialFeeds'
+import { DocumentDownloads } from './DocumentDownloads'
 
 export const allBlocks = [
   Hero,
   StoryTimeline,
   Marquee,
+  DocumentDownloads,
   StatesOnboarded,
   ShowcaseCards,
   Statistics,
@@ -61,6 +63,7 @@ export const allBlocks = [
 export const collectionBlocks = [
   Hero,
   Marquee,
+  DocumentDownloads,
   StatesOnboarded,
   ShowcaseCards,
   Statistics,

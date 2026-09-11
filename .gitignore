@@ -59,3 +59,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 nul
+
+# Uploaded documents (PDF, Word, Excel) for the Document Downloads block.
+# Uncomment to keep them out of the repository, as with /media above.
+#documents

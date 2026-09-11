@@ -1,4 +1,4 @@
-columns changed in scratch vs live: 9
+columns changed in scratch vs live: 8
 
 live header_nav_items* columns:
   header_nav_items._order: int4
@@ -20,7 +20,6 @@ live header_nav_items* columns:
   pages_blocks_embed.height: default 400 -> null
   header_nav_items_children.page_id: nullable NO -> YES
   header_nav_items_children.type: type text -> USER-DEFINED; udt text -> enum_header_nav_items_children_type; default 'page'::text -> 'page'::enum_header_nav_items_children_type
-  flex_dash_mock.top_badge_value: default ''::character varying -> '1,500+'::character varying
   header_nav_items_children.custom_label: type text -> character varying; udt text -> varchar
   header_nav_items_children.custom_url: type text -> character varying; udt text -> varchar
   site_settings.home_page: type text -> character varying; udt text -> varchar

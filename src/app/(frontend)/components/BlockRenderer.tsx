@@ -25,6 +25,7 @@ import StatesOnboardedBlock from './blocks/StatesOnboardedBlock'
 import FormLayoutBlock from './blocks/FormLayoutBlock'
 import GoaSchoolSnapshotBlock from './blocks/GoaSchoolSnapshotBlock'
 import SocialFeedsBlock from './blocks/SocialFeedsBlock'
+import DocumentDownloadsBlock from './blocks/DocumentDownloadsBlock'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   hero: HeroBlock,
@@ -34,6 +35,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   statistics: StatisticsBlock,
   newsUpdates: NewsUpdatesBlock,
   socialFeeds: SocialFeedsBlock,
+  documentDownloads: DocumentDownloadsBlock,
   interactiveMap: InteractiveMapBlock,
   screenshotGallery: ScreenshotGalleryBlock,
   helpSupport: HelpSupportBlock,

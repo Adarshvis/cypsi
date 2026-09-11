@@ -30,6 +30,7 @@ export const authorAssignableCollections: { label: string; value: string }[] = [
   { label: 'Work With Us', value: 'work-with-us' },
   { label: 'Team Page', value: 'team-page' },
   { label: 'Media', value: 'media' },
+  { label: 'Documents', value: 'documents' },
 ]
 
 function hasRole(user: any, allowed: Role[]): boolean {

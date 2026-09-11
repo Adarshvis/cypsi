@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     invitations: Invitation;
     media: Media;
+    documents: Document;
     pages: Page;
     news: News;
     'blog-posts': BlogPost;
@@ -90,6 +91,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     invitations: InvitationsSelect<false> | InvitationsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
@@ -168,7 +170,17 @@ export interface User {
    * Which content this Author may create and edit. Ignored for other roles, which already have full content access.
    */
   allowedCollections?:
-    | ('pages' | 'news' | 'blog-posts' | 'publications' | 'research-domains' | 'work-with-us' | 'team-page' | 'media')[]
+    | (
+        | 'pages'
+        | 'news'
+        | 'blog-posts'
+        | 'publications'
+        | 'research-domains'
+        | 'work-with-us'
+        | 'team-page'
+        | 'media'
+        | 'documents'
+      )[]
     | null;
   /**
    * Updated automatically on sign in.
@@ -217,7 +229,17 @@ export interface Invitation {
    * Which content this Author will be able to edit.
    */
   allowedCollections?:
-    | ('pages' | 'news' | 'blog-posts' | 'publications' | 'research-domains' | 'work-with-us' | 'team-page' | 'media')[]
+    | (
+        | 'pages'
+        | 'news'
+        | 'blog-posts'
+        | 'publications'
+        | 'research-domains'
+        | 'work-with-us'
+        | 'team-page'
+        | 'media'
+        | 'documents'
+      )[]
     | null;
   status: 'pending' | 'accepted' | 'expired' | 'cancelled';
   /**
@@ -253,6 +275,34 @@ export interface Media {
     status?: ('complete' | 'error') | null;
     error?: string | null;
   };
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * PDFs, Word, Excel and PowerPoint files offered for download.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  /**
+   * Shown in the download list. Give it the name a reader should see, not the filename.
+   */
+  title: string;
+  /**
+   * Optional one-line summary shown under the title.
+   */
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -661,6 +711,44 @@ export interface Page {
         id?: string | null;
         blockName?: string | null;
         blockType: 'marquee';
+      }
+    | {
+        /**
+         * Section heading displayed above this block
+         */
+        sectionHeading?: string | null;
+        /**
+         * Optional description below the heading
+         */
+        sectionDescription?: string | null;
+        headingAlignment?: ('left' | 'center' | 'right') | null;
+        /**
+         * Pick a color or enter hex value
+         */
+        backgroundColor?: string | null;
+        layout?: ('rows' | 'twoColumn') | null;
+        /**
+         * Adds a small "PDF · 240 KB" line so readers know what they are opening.
+         */
+        showFileMeta?: boolean | null;
+        items: {
+          /**
+           * Pick an existing document or upload a new one.
+           */
+          file: number | Document;
+          /**
+           * Optional. Overrides the document's own title for this list only.
+           */
+          label?: string | null;
+          /**
+           * Optional. Overrides the document's own summary for this list only.
+           */
+          description?: string | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'documentDownloads';
       }
     | {
         heading: string;
@@ -2976,6 +3064,44 @@ export interface News {
             blockType: 'marquee';
           }
         | {
+            /**
+             * Section heading displayed above this block
+             */
+            sectionHeading?: string | null;
+            /**
+             * Optional description below the heading
+             */
+            sectionDescription?: string | null;
+            headingAlignment?: ('left' | 'center' | 'right') | null;
+            /**
+             * Pick a color or enter hex value
+             */
+            backgroundColor?: string | null;
+            layout?: ('rows' | 'twoColumn') | null;
+            /**
+             * Adds a small "PDF · 240 KB" line so readers know what they are opening.
+             */
+            showFileMeta?: boolean | null;
+            items: {
+              /**
+               * Pick an existing document or upload a new one.
+               */
+              file: number | Document;
+              /**
+               * Optional. Overrides the document's own title for this list only.
+               */
+              label?: string | null;
+              /**
+               * Optional. Overrides the document's own summary for this list only.
+               */
+              description?: string | null;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'documentDownloads';
+          }
+        | {
             heading: string;
             /**
              * Optional descriptive text below the heading
@@ -5219,6 +5345,44 @@ export interface TeamPage {
             blockType: 'marquee';
           }
         | {
+            /**
+             * Section heading displayed above this block
+             */
+            sectionHeading?: string | null;
+            /**
+             * Optional description below the heading
+             */
+            sectionDescription?: string | null;
+            headingAlignment?: ('left' | 'center' | 'right') | null;
+            /**
+             * Pick a color or enter hex value
+             */
+            backgroundColor?: string | null;
+            layout?: ('rows' | 'twoColumn') | null;
+            /**
+             * Adds a small "PDF · 240 KB" line so readers know what they are opening.
+             */
+            showFileMeta?: boolean | null;
+            items: {
+              /**
+               * Pick an existing document or upload a new one.
+               */
+              file: number | Document;
+              /**
+               * Optional. Overrides the document's own title for this list only.
+               */
+              label?: string | null;
+              /**
+               * Optional. Overrides the document's own summary for this list only.
+               */
+              description?: string | null;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'documentDownloads';
+          }
+        | {
             heading: string;
             /**
              * Optional descriptive text below the heading
@@ -6973,6 +7137,10 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'documents';
+        value: number | Document;
+      } | null)
+    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -7112,6 +7280,25 @@ export interface MediaSelect<T extends boolean = true> {
         status?: T;
         error?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -7348,6 +7535,26 @@ export interface PagesSelect<T extends boolean = true> {
               speed?: T;
               pauseOnHover?: T;
               separator?: T;
+              id?: T;
+              blockName?: T;
+            };
+        documentDownloads?:
+          | T
+          | {
+              sectionHeading?: T;
+              sectionDescription?: T;
+              headingAlignment?: T;
+              backgroundColor?: T;
+              layout?: T;
+              showFileMeta?: T;
+              items?:
+                | T
+                | {
+                    file?: T;
+                    label?: T;
+                    description?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };
@@ -8488,6 +8695,26 @@ export interface NewsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        documentDownloads?:
+          | T
+          | {
+              sectionHeading?: T;
+              sectionDescription?: T;
+              headingAlignment?: T;
+              backgroundColor?: T;
+              layout?: T;
+              showFileMeta?: T;
+              items?:
+                | T
+                | {
+                    file?: T;
+                    label?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         statesOnboarded?:
           | T
           | {
@@ -9613,6 +9840,26 @@ export interface TeamPageSelect<T extends boolean = true> {
               speed?: T;
               pauseOnHover?: T;
               separator?: T;
+              id?: T;
+              blockName?: T;
+            };
+        documentDownloads?:
+          | T
+          | {
+              sectionHeading?: T;
+              sectionDescription?: T;
+              headingAlignment?: T;
+              backgroundColor?: T;
+              layout?: T;
+              showFileMeta?: T;
+              items?:
+                | T
+                | {
+                    file?: T;
+                    label?: T;
+                    description?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };

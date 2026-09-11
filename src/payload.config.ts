@@ -16,6 +16,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Invitations } from './collections/Invitations'
 import { Media } from './collections/Media'
+import { Documents } from './collections/Documents'
 import { Pages } from './collections/Pages'
 import { News } from './collections/News'
 import { BlogPosts } from './collections/BlogPosts'
@@ -89,6 +90,7 @@ export default buildConfig({
     Users,
     Invitations,
     Media,
+    Documents,
     Pages,
     News,
     BlogPosts,
