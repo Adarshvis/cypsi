@@ -29,7 +29,6 @@ export default function MarqueeBlock({
   backgroundColor,
   textColor,
   speed = 'normal',
-  pauseOnHover = true,
   separator = '•',
 }: MarqueeBlockProps) {
   if (!items || items.length === 0) return null
@@ -42,11 +41,13 @@ export default function MarqueeBlock({
 
   return (
     <div
-      className="overflow-hidden relative"
+      className="ticker overflow-hidden relative"
       style={{ backgroundColor: backgroundColor || '#1E3A5F', color: textColor || '#FFFFFF' }}
     >
+      {/* Always pauses on hover and keyboard focus (accessibility requirement),
+          so the block's "pause on hover" setting no longer turns it off. */}
       <div
-        className={`flex whitespace-nowrap animate-marquee ${pauseOnHover ? 'hover:[animation-play-state:paused]' : ''}`}
+        className="ticker-track flex whitespace-nowrap animate-marquee"
         style={{ animationDuration: duration }}
       >
         {rendered.map((item, i) => (

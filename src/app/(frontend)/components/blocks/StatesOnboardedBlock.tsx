@@ -62,7 +62,7 @@ export default function StatesOnboardedBlock({ heading, description, states }: S
                 href={state.portalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="states-onboarded__card group relative block rounded-2xl overflow-hidden text-left transition-all duration-300 transform hover:-translate-y-1 focus:outline-none"
+                className="states-onboarded__card group relative block rounded-2xl overflow-hidden text-left transition-all duration-300 transform hover:-translate-y-1"
                 style={{
                   ['--state-theme-color' as string]: themeColor,
                 }}
@@ -106,6 +106,7 @@ export default function StatesOnboardedBlock({ heading, description, states }: S
                     <span className="states-onboarded__cta inline-flex items-center gap-2 font-bold text-sm md:text-base rounded-full py-3 px-8 transition-all duration-300 shadow-sm hover:shadow">
                       Visit Portal
                       <svg
+                        aria-hidden="true"
                         className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
                         fill="none"
                         stroke="currentColor"

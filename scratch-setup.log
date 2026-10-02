@@ -1,6 +1,6 @@
 live database : cps @ localhost:5432
 scratch copy  : cps_scratch
-backup written: backups/cps_pre_add_collections_20260911180952..dump (1.11 MB)
+backup written: backups/cps_pre_add_collections_20261001123113..dump (1.19 MB)
 created empty cps_scratch
-tables — live: 299   scratch: 299
+tables — live: 319   scratch: 319
 scratch is an exact copy

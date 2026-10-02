@@ -119,7 +119,7 @@ export default function AcceptInviteForm({ token }: { token: string }) {
   const card = 'w-full max-w-md rounded-2xl bg-white p-8 shadow-[0_18px_44px_-16px_rgba(16,24,40,0.28)] border border-black/5'
   const label = 'block text-sm font-medium mb-1.5'
   const input =
-    'w-full rounded-lg border border-black/15 px-3 py-2.5 text-sm outline-none transition focus:border-[var(--cms-primary,#04415f)]'
+    'w-full rounded-lg border border-black/15 px-3 py-2.5 text-sm transition focus:border-[var(--cms-primary,#04415f)]'
 
   if (phase === 'checking') {
     return (

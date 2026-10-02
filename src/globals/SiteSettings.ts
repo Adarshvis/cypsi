@@ -1,14 +1,18 @@
 import type { GlobalConfig } from 'payload'
-import { publicAccess, adminAccess } from '../access/roles'
+import { hiddenUnlessSiteAdmin, publicAccess, siteAdminAccess } from '../access/roles'
 import { themePresets } from '../lib/themePresets'
 import { applyThemeToBlocks } from '../lib/applyThemeToBlocks'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Site Settings',
+  admin: {
+    hidden: hiddenUnlessSiteAdmin,
+  },
   access: {
     read: publicAccess,
-    update: adminAccess,
+    // Super Admin and Admin.
+    update: siteAdminAccess,
   },
   hooks: {
     beforeChange: [
@@ -131,6 +135,55 @@ export const SiteSettings: GlobalConfig = {
               admin: { description: 'Browser and search-result title. Defaults to the heading.' },
             },
             { name: 'metaDescription', type: 'textarea' },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'group',
+      name: 'accessibility',
+      label: 'Accessibility',
+      admin: {
+        description:
+          'Skip link, and the header button that opens the Accessibility Adjustments panel (font size, contrast, reading aids and more).',
+      },
+      fields: [
+        {
+          name: 'skipLinkLabel',
+          type: 'text',
+          defaultValue: 'Skip to main content',
+          admin: { description: 'Shown on the first Tab press; jumps past the header to the page content.' },
+        },
+        {
+          name: 'showHeaderLink',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Show the Accessibility Adjustments panel and its header button',
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'headerLinkLabel',
+              type: 'text',
+              defaultValue: 'Accessibility options',
+              admin: {
+                width: '50%',
+                description: 'Read by screen readers and shown as a tooltip (the button is icon-only).',
+                condition: (_, siblingData) => siblingData?.showHeaderLink !== false,
+              },
+            },
+            {
+              name: 'headerLinkUrl',
+              type: 'text',
+              defaultValue: '/help#accessibility',
+              label: 'Accessibility Statement Link',
+              admin: {
+                width: '50%',
+                description: 'Shown at the bottom of the Accessibility Adjustments panel.',
+                condition: (_, siblingData) => siblingData?.showHeaderLink !== false,
+              },
+            },
           ],
         },
       ],

@@ -28,10 +28,16 @@ import { GoaSchoolSnapshotBlock } from './GoaSchoolSnapshotBlock'
 import { StoryTimeline } from './StoryTimeline'
 import { SocialFeeds } from './SocialFeeds'
 import { DocumentDownloads } from './DocumentDownloads'
+import { ContactSection } from './ContactSection'
+import { ProjectShowcase } from './ProjectShowcase'
+import { AccessibilityStatement } from './AccessibilityStatement'
 
 export const allBlocks = [
   Hero,
   StoryTimeline,
+  ContactSection,
+  ProjectShowcase,
+  AccessibilityStatement,
   Marquee,
   DocumentDownloads,
   StatesOnboarded,

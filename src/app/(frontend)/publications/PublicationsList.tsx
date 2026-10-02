@@ -409,7 +409,7 @@ export default function PublicationsList({ publications, authors, keywords }: Pr
                   }}
                   placeholder="Search publications…"
                   aria-label="Search publications"
-                  className="w-full rounded-xl border border-black/15 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-[var(--cms-primary,#4B2E83)]"
+                  className="w-full rounded-xl border border-black/15 bg-white py-2.5 pl-10 pr-4 text-sm transition focus:border-[var(--cms-primary,#4B2E83)]"
                 />
               </div>
               <div className="flex flex-wrap items-center gap-4">

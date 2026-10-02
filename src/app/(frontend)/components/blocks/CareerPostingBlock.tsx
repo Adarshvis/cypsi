@@ -23,7 +23,21 @@ interface CareerPostingBlockProps {
   status?: 'active' | 'inactive' | null
 }
 
-function DomainAccordionItem({ domain }: { domain: ProblemDomain }) {
+/** Adds `domain=<title>` so the apply form can preselect the domain. */
+function withDomain(href: string, title: string): string {
+  const separator = href.includes('?') ? '&' : '?'
+  return `${href}${separator}domain=${encodeURIComponent(title)}`
+}
+
+function DomainAccordionItem({
+  domain,
+  applyHref,
+  applyButtonText,
+}: {
+  domain: ProblemDomain
+  applyHref: string
+  applyButtonText?: string | null
+}) {
   const [open, setOpen] = useState(false)
 
   const hasChallenges = domain.challenges && domain.challenges.length > 0
@@ -33,6 +47,7 @@ function DomainAccordionItem({ domain }: { domain: ProblemDomain }) {
   return (
     <div className="career-accordion__item">
       <button
+        type="button"
         onClick={() => setOpen(!open)}
         className={`career-accordion__trigger ${open ? 'career-accordion__trigger--open' : ''}`}
         aria-expanded={open}
@@ -88,6 +103,15 @@ function DomainAccordionItem({ domain }: { domain: ProblemDomain }) {
               )}
             </div>
           )}
+
+          {applyButtonText && domain.title ? (
+            <div style={{ marginTop: '1rem' }}>
+              <a className="career-posting__apply-btn" href={withDomain(applyHref, domain.title)}>
+                {applyButtonText}
+                <span className="sr-only"> for {domain.title}</span>
+              </a>
+            </div>
+          ) : null}
         </div>
       )}
     </div>
@@ -109,6 +133,7 @@ export default function CareerPostingBlock({
   const hasHeader = effectiveDate || excerpt
   const hasDomains = problemDomains && problemDomains.length > 0
   const hasApplyButton = Boolean(applyButtonText)
+  const applyHref = applyButtonLink || '/apply'
 
   return (
     <section className="career-posting">
@@ -140,7 +165,12 @@ export default function CareerPostingBlock({
           <h2 className="career-posting__domains-heading">Problem Domains</h2>
           <div className="career-accordion">
             {problemDomains!.map((domain, i) => (
-              <DomainAccordionItem key={domain.id || i} domain={domain} />
+              <DomainAccordionItem
+                key={domain.id || i}
+                domain={domain}
+                applyHref={applyHref}
+                applyButtonText={applyButtonText}
+              />
             ))}
           </div>
         </div>
@@ -150,7 +180,7 @@ export default function CareerPostingBlock({
       {hasApplyButton && (
         <div className="career-posting__apply">
           <a
-            href={applyButtonLink || '/applicant/login'}
+            href={applyHref}
             className="career-posting__apply-btn"
           >
             {applyButtonText}

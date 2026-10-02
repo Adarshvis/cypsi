@@ -1,5 +1,10 @@
 import type { CollectionConfig } from 'payload'
-import { collectionWriteAccess, publicAccess, siteAdminAccess } from '../access/roles'
+import {
+  collectionWriteAccess,
+  hiddenUnlessCollectionAccess,
+  publicAccess,
+  siteAdminAccess,
+} from '../access/roles'
 import { collectionBlocks } from '../blocks/allBlocks'
 
 export const TeamPage: CollectionConfig = {
@@ -9,6 +14,8 @@ export const TeamPage: CollectionConfig = {
     plural: 'Team Pages',
   },
   admin: {
+    // Shown only to people who can work on this collection.
+    hidden: hiddenUnlessCollectionAccess('team-page'),
     useAsTitle: 'pageName',
     group: 'Content',
     description: 'Team / Faculty listing pages with member profiles',

@@ -1,5 +1,7 @@
 import React from 'react'
 import SectionHeading from '../ui/SectionHeading'
+import SandboxedHtml from '../ui/SandboxedHtml'
+import { safeEmbedUrl } from '@/lib/safeEmbedUrl'
 
 interface EmbedBlockProps {
   sectionHeading?: string | null
@@ -42,13 +44,19 @@ export default function EmbedBlock({
             description={sectionDescription}
             alignment={headingAlignment}
           />
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          {/* Sandboxed: CMS HTML must never run with the site's origin */}
+          <SandboxedHtml
+            html={html}
+            title={sectionHeading || 'Embedded content'}
+            sizing={height ? { mode: 'fixed', height } : { mode: 'auto' }}
+          />
         </div>
       </section>
     )
   }
 
-  if (embedType === 'iframe' && iframeUrl) {
+  const frameSrc = safeEmbedUrl(iframeUrl)
+  if (embedType === 'iframe' && frameSrc) {
     return (
       <section className={`py-8 ${isFullBleed ? '' : 'px-6'}`}>
         <div className={container}>
@@ -68,7 +76,8 @@ export default function EmbedBlock({
             style={height ? { height } : { aspectRatio: '16 / 9' }}
           >
             <iframe
-              src={iframeUrl}
+              src={frameSrc}
+              title={sectionHeading || 'Embedded content'}
               className="absolute inset-0 w-full h-full border-0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

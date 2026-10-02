@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import {
   collectionReadAccess,
   collectionWriteAccess,
+  hiddenUnlessCollectionAccess,
   siteAdminAccess,
 } from '../access/roles'
 import { collectionBlocks } from '../blocks/allBlocks'
@@ -9,6 +10,8 @@ import { collectionBlocks } from '../blocks/allBlocks'
 export const News: CollectionConfig = {
   slug: 'news',
   admin: {
+    // Shown only to people who can work on this collection.
+    hidden: hiddenUnlessCollectionAccess('news'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'category', 'status', 'publishedDate', 'updatedAt'],
     group: 'Content',

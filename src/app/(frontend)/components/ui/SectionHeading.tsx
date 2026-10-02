@@ -21,10 +21,17 @@ export default function SectionHeading({ heading, description, alignment = 'cent
   return (
     <div className={`mb-12 max-w-3xl ${alignClasses[align]}`}>
       {heading && (
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{heading}</h2>
+        <h2
+          className="ducc-heading text-3xl md:text-4xl font-bold tracking-tight mb-3"
+          style={{ color: 'var(--cms-secondary, #111827)' }}
+        >
+          {heading}
+        </h2>
       )}
       {description && (
-        <p className="text-gray-500 text-lg">{description}</p>
+        <p className="text-lg" style={{ color: 'var(--cms-text, #111827)', opacity: 0.7 }}>
+          {description}
+        </p>
       )}
     </div>
   )

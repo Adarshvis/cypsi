@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import RichText from '../ui/RichText'
 import { AlertCircle, ChevronDown, FileText, Upload, X } from 'lucide-react'
+import { isDomainField } from '@/lib/requests/fieldHints'
 
 type FormField = {
   id?: string
@@ -78,15 +79,23 @@ function matchesAcceptedType(file: File, accept?: string): boolean {
   })
 }
 
-function getSubmissionValue(values: Record<string, FormDataEntryValue>, keys: string[]): string {
-  for (const key of keys) {
-    const value = values[key]
-    if (typeof value === 'string' && value.trim()) return value.trim()
-  }
-  return ''
+interface FormBuilderEmbedProps {
+  form: unknown
+  /** `contact` drops the card chrome so the form can sit inside another card. */
+  variant?: 'default' | 'contact'
+  /** Hide the form document's own title when the host block shows a heading. */
+  hideTitle?: boolean
+  /** Rendered beside the submit button (e.g. social links). */
+  actionsSlot?: React.ReactNode
 }
 
-export default function FormBuilderEmbed({ form }: { form: unknown }) {
+export default function FormBuilderEmbed({
+  form,
+  variant = 'default',
+  hideTitle = false,
+  actionsSlot,
+}: FormBuilderEmbedProps) {
+  const rootClass = variant === 'contact' ? 'apply-form apply-form--contact' : 'apply-form'
   const formId = getFormId(form)
   const initialFormDoc =
     typeof form === 'object' && form !== null && 'fields' in (form as object)
@@ -103,6 +112,13 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
   const [openSelect, setOpenSelect] = useState<string | null>(null)
   const [selectedFiles, setSelectedFiles] = useState<Record<string, File | null>>({})
   const [fileErrors, setFileErrors] = useState<Record<string, string>>({})
+  // The internship domain chosen on the Career Posting block (`/apply?domain=…`).
+  const [domainParam, setDomainParam] = useState<string | null>(null)
+
+  useEffect(() => {
+    const value = new URLSearchParams(window.location.search).get('domain')?.trim()
+    setDomainParam(value ? value.slice(0, 200) : null)
+  }, [])
 
   useEffect(() => {
     if (initialFormDoc || !formId) return
@@ -149,6 +165,27 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
     () => fields.some((field) => field.blockType === 'resumeUpload'),
     [fields],
   )
+  // Application forms only: the field the `?domain=` value fills in, if any.
+  const domainField = useMemo(
+    () =>
+      hasResumeUpload
+        ? fields.find((field) => field.name && field.blockType !== 'resumeUpload' && isDomainField(field))
+        : undefined,
+    [fields, hasResumeUpload],
+  )
+  const domainOption = useMemo(() => {
+    if (!domainParam || !domainField?.options) return undefined
+    const wanted = domainParam.toLowerCase()
+    return domainField.options.find(
+      (option) => option.value.toLowerCase() === wanted || option.label.toLowerCase() === wanted,
+    )
+  }, [domainField, domainParam])
+
+  useEffect(() => {
+    if (domainField?.blockType !== 'select' || !domainField.name || !domainOption) return
+    const fieldName = domainField.name
+    setSelectValues((prev) => ({ ...prev, [fieldName]: domainOption.value }))
+  }, [domainField, domainOption])
 
   useEffect(() => {
     setSelectValues((prev) => {
@@ -222,16 +259,47 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
       setSubmitting(true)
       setError(null)
 
-      const res = await fetch('/api/form-submissions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          form: String(formDoc.id),
-          submissionData,
-        }),
-      })
+      let res: Response
+
+      if (hasResumeUpload) {
+        // Internship application: the form carries a resume, so it goes to
+        // /api/apply, which stores the PDF and creates an internship
+        // application. The server maps the fields (name, email, domain, ...)
+        // from the form definition; every value is sent under its field name.
+        const resumeField = fields.find((field) => field.blockType === 'resumeUpload' && field.name)
+        if (!resumeField?.name) {
+          setError('Resume upload field is misconfigured.')
+          return
+        }
+
+        const resumeFile = selectedFiles[resumeField.name] || null
+        if (!resumeFile) {
+          setFileError(resumeField.name, 'Please upload your resume.')
+          return
+        }
+
+        // The file input has no `name`, so only the chosen file is attached below.
+        const applyFormData = new FormData(formElement)
+        applyFormData.set('form', String(formDoc.id))
+        applyFormData.set('resume', resumeFile)
+        if (!domainField && domainParam) applyFormData.set('domain', domainParam)
+
+        res = await fetch('/api/apply', {
+          method: 'POST',
+          body: applyFormData,
+        })
+      } else {
+        res = await fetch('/api/form-submissions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            form: String(formDoc.id),
+            submissionData,
+          }),
+        })
+      }
 
       if (!res.ok) {
         const response = await res.json().catch(() => null)
@@ -259,13 +327,15 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
   if (!formId) return null
 
   if (loading) {
-    return <div className="apply-form">Loading form...</div>
+    return <div className={rootClass}>Loading form...</div>
   }
 
   if (error && !formDoc) {
     return (
-      <div className="apply-form">
-        <div className="apply-form__error-banner">{error}</div>
+      <div className={rootClass}>
+        <div className="apply-form__error-banner" role="alert">
+          {error}
+        </div>
       </div>
     )
   }
@@ -273,8 +343,8 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
   if (!formDoc) return null
 
   return (
-    <div className="apply-form">
-      {formDoc.title ? (
+    <div className={rootClass}>
+      {formDoc.title && !hideTitle ? (
         <h3 className="apply-page__title" style={{ marginBottom: '0' }}>
           {formDoc.title}
         </h3>
@@ -288,7 +358,17 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-          {error ? <div className="apply-form__error-banner">{error}</div> : null}
+          {error ? (
+            <div className="apply-form__error-banner" role="alert">
+              {error}
+            </div>
+          ) : null}
+
+          {hasResumeUpload && !domainField && domainParam ? (
+            <p className="apply-form__hint">
+              Applying for: <strong>{domainParam}</strong>
+            </p>
+          ) : null}
 
           <div className="apply-form__grid" style={{ marginTop: error ? '1.25rem' : 0 }}>
             {fields.map((field, index) => {
@@ -327,7 +407,9 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
                       {field.label || name}
                       {field.required ? <span className="apply-form__required">*</span> : null}
                     </label>
-                    <p className="apply-form__hint">{helperText}</p>
+                    <p className="apply-form__hint" id={`${name}-help`}>
+                      {helperText}
+                    </p>
 
                     {!selectedFile ? (
                       <label className="apply-form__dropzone" htmlFor={`${name}-upload`}>
@@ -340,6 +422,10 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
                           id={`${name}-upload`}
                           type="file"
                           accept={field.accept || 'application/pdf'}
+                          aria-describedby={
+                            fileErrors[name] ? `${name}-help ${name}-error` : `${name}-help`
+                          }
+                          aria-invalid={fileErrors[name] ? true : undefined}
                           className="apply-form__file-input"
                           onChange={(event) => {
                             const file = event.target.files?.[0] || null
@@ -366,8 +452,8 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
                     )}
 
                     {fileErrors[name] ? (
-                      <p className="apply-form__field-error">
-                        <AlertCircle size={14} /> {fileErrors[name]}
+                      <p className="apply-form__field-error" id={`${name}-error`} role="alert">
+                        <AlertCircle size={14} aria-hidden="true" /> {fileErrors[name]}
                       </p>
                     ) : null}
                   </div>
@@ -375,7 +461,6 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
               }
 
               if (field.blockType === 'select') {
-                const isWorkStatus = /work.?status/i.test(name) || /work.?status/i.test(field.label || '')
                 const currentSelectVal = selectValues[name] || ''
                 const searchValue = selectSearch[name] || ''
                 const options = field.options || []
@@ -471,30 +556,15 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
                         ) : null}
                       </div>
                     </label>
-                    {isWorkStatus && currentSelectVal.toLowerCase() === 'experienced' && (
-                      <label className={fieldClass}>
-                        <span className="apply-form__label">
-                          Year of Experience
-                          <span className="apply-form__required">*</span>
-                        </span>
-                        <input
-                          type="number"
-                          name="yearOfExperience"
-                          required
-                          min="1"
-                          max="50"
-                          placeholder="Enter Year of Experience"
-                          className="apply-form__input"
-                        />
-                      </label>
-                    )}
                   </React.Fragment>
                 )
               }
 
               if (field.blockType === 'radio') {
+                const isDomain = field === domainField
                 return (
-                  <fieldset key={key} className={fieldClass}>
+                  // Remounts once `?domain=` is read so the preselection applies.
+                  <fieldset key={isDomain ? `${key}-${domainParam ?? ''}` : key} className={fieldClass}>
                     <legend className="apply-form__label">
                       {field.label || name}
                       {field.required ? <span className="apply-form__required">*</span> : null}
@@ -510,6 +580,7 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
                           name={name}
                           value={option.value}
                           required={Boolean(field.required)}
+                          defaultChecked={isDomain && domainOption?.value === option.value}
                         />
                         <span>{option.label}</span>
                       </label>
@@ -569,8 +640,10 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
                 )
               }
 
+              const isDomainText = field === domainField && Boolean(domainParam)
               return (
-                <label key={key} className={fieldClass}>
+                // Remounts once `?domain=` is read so the prefill applies.
+                <label key={isDomainText ? `${key}-${domainParam}` : key} className={fieldClass}>
                   <span className="apply-form__label">
                     {field.label || name}
                     {field.required ? <span className="apply-form__required">*</span> : null}
@@ -580,9 +653,11 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
                     name={name}
                     required={Boolean(field.required)}
                     defaultValue={
-                      typeof field.defaultValue === 'string' || typeof field.defaultValue === 'number'
-                        ? String(field.defaultValue)
-                        : ''
+                      isDomainText && domainParam
+                        ? domainParam
+                        : typeof field.defaultValue === 'string' || typeof field.defaultValue === 'number'
+                          ? String(field.defaultValue)
+                          : ''
                     }
                     placeholder={field.placeholder || ''}
                     className="apply-form__input"
@@ -596,6 +671,7 @@ export default function FormBuilderEmbed({ form }: { form: unknown }) {
             <button type="submit" disabled={submitting} className="apply-form__submit">
               {submitting ? 'Submitting...' : formDoc.submitButtonLabel || 'Submit Application'}
             </button>
+            {actionsSlot}
           </div>
         </form>
       )}

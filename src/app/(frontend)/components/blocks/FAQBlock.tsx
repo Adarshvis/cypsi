@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import RichText from '../ui/RichText'
 import SectionHeading from '../ui/SectionHeading'
@@ -19,18 +19,22 @@ interface FAQBlockProps {
 
 function FAQItem({ question, answer }: { question: string; answer: any }) {
   const [open, setOpen] = useState(false)
+  const panelId = useId()
 
   return (
     <div className="border-b border-gray-700">
       <button
+        type="button"
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls={panelId}
         className="w-full flex justify-between items-center py-5 text-left text-white hover:text-blue-400 transition-colors"
       >
         <span className="text-lg font-medium pr-4">{question}</span>
         <ChevronDown className={`shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} size={20} />
       </button>
       {open && (
-        <div className="pb-5 prose prose-invert prose-sm max-w-none">
+        <div id={panelId} className="pb-5 prose prose-invert prose-sm max-w-none">
           <RichText data={answer} />
         </div>
       )}
@@ -40,6 +44,7 @@ function FAQItem({ question, answer }: { question: string; answer: any }) {
 
 function DuccFAQItem({ question, answer }: { question: string; answer: any }) {
   const [open, setOpen] = useState(false)
+  const panelId = useId()
 
   return (
     <div
@@ -47,7 +52,10 @@ function DuccFAQItem({ question, answer }: { question: string; answer: any }) {
       style={{ borderColor: 'color-mix(in srgb, var(--cms-primary, #4B2E83) 20%, transparent)' }}
     >
       <button
+        type="button"
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls={panelId}
         className="w-full flex justify-between items-center py-5 text-left font-semibold hover:no-underline transition-colors"
         style={{ color: 'var(--cms-secondary, #1A103D)' }}
       >
@@ -59,7 +67,7 @@ function DuccFAQItem({ question, answer }: { question: string; answer: any }) {
         />
       </button>
       {open && (
-        <div className="pb-5 text-gray-600 leading-relaxed">
+        <div id={panelId} className="pb-5 text-gray-600 leading-relaxed">
           <RichText data={answer} />
         </div>
       )}

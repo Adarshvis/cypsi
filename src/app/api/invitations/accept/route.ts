@@ -16,6 +16,7 @@ import config from '@/payload.config'
 import { sendEmail } from '@/lib/email/sendEmail'
 import { getPublicUrl } from '@/lib/email/config'
 import { welcomeEmail, welcomeSubject } from '@/lib/email/templates'
+import { SCOPED_ROLES } from '@/access/roles'
 
 /** Payload's own default; enforced here so the error arrives before the create. */
 const MIN_PASSWORD_LENGTH = 8
@@ -26,6 +27,7 @@ interface InvitationDoc {
   name?: string | null
   role: string
   allowedCollections?: string[] | null
+  allowedPages?: (string | number | { id: string | number } | null)[] | null
   status: 'pending' | 'accepted' | 'expired' | 'cancelled'
   expiresAt: string
 }
@@ -165,7 +167,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const isAuthorRole = invitation.role === 'author'
+    // Content Editor and Author are both scoped to what the invitation assigns.
+    const isScopedRole = SCOPED_ROLES.includes(invitation.role as never)
+    const pageIds = (invitation.allowedPages || [])
+      .map((p) => (p && typeof p === 'object' ? p.id : p))
+      .filter((p): p is string | number => p !== null && p !== undefined)
 
     const user = await payload.create({
       collection: 'users',
@@ -177,7 +183,8 @@ export async function POST(request: NextRequest) {
         lastName: (body.lastName || '').trim() || undefined,
         // Role and scope come from the invitation, never from the request.
         roles: [invitation.role],
-        allowedCollections: isAuthorRole ? invitation.allowedCollections || [] : [],
+        allowedCollections: isScopedRole ? invitation.allowedCollections || [] : [],
+        allowedPages: isScopedRole ? pageIds : [],
       } as never,
     })
 

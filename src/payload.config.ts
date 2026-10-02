@@ -24,11 +24,15 @@ import { Publications } from './collections/Publications'
 import { ResearchDomains } from './collections/ResearchDomains'
 import { WorkWithUs } from './collections/WorkWithUs'
 import { TeamPage } from './collections/TeamPage'
+import { Resumes } from './collections/Resumes'
+import { InternshipApplications } from './collections/InternshipApplications'
 import { SiteSettings } from './globals/SiteSettings'
 import { Header } from './globals/Header'
 import { Footer } from './globals/Footer'
+import { hiddenUnlessSiteAdmin, publicAccess, siteAdminAccess } from './access/roles'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { getSmtpConfig } from './lib/email/config'
+import { ENQUIRY_STATUSES } from './lib/requests/statuses'
 
 /**
  * Builds the email adapter from environment configuration.
@@ -85,6 +89,11 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      // Requests Dashboard (internship applications + contact enquiries).
+      // Renders only for Super Admins and Admins.
+      afterDashboard: ['@/components/admin/RequestsDashboard/RequestsDashboard#RequestsDashboard'],
+    },
   },
   collections: [
     Users,
@@ -98,6 +107,8 @@ export default buildConfig({
     ResearchDomains,
     WorkWithUs,
     TeamPage,
+    Resumes,
+    InternshipApplications,
   ],
   globals: [SiteSettings, Header, Footer],
   editor: lexicalEditor({
@@ -145,28 +156,161 @@ export default buildConfig({
     formBuilderPlugin({
       redirectRelationships: ['pages'],
       fields: {
+        // A PDF upload for internship application forms. A form that contains
+        // one is submitted to /api/apply (Internship Applications) instead of
+        // /api/form-submissions.
+        resumeUpload: {
+          slug: 'resumeUpload',
+          labels: {
+            singular: 'Resume Upload',
+            plural: 'Resume Upload Fields',
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'name',
+                  type: 'text',
+                  label: 'Name (lowercase, no special characters)',
+                  required: true,
+                  admin: {
+                    width: '50%',
+                  },
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  label: 'Label',
+                  localized: true,
+                  admin: {
+                    width: '50%',
+                  },
+                },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'accept',
+                  type: 'text',
+                  label: 'Accepted MIME Types',
+                  defaultValue: 'application/pdf',
+                  admin: {
+                    width: '50%',
+                    description: 'Comma-separated list, e.g. application/pdf,image/*',
+                  },
+                },
+                {
+                  name: 'maxSizeMB',
+                  type: 'number',
+                  label: 'Max File Size (MB)',
+                  defaultValue: 5,
+                  min: 1,
+                  // The server accepts at most 5 MB, so a higher limit here would only mislead.
+                  max: 5,
+                  admin: {
+                    width: '50%',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'helperText',
+              type: 'text',
+              label: 'Helper Text',
+              defaultValue: 'Only PDF files accepted. Maximum size: 5 MB.',
+            },
+            {
+              name: 'required',
+              type: 'checkbox',
+              label: 'Required',
+              defaultValue: true,
+            },
+          ],
+          // Cast: the plugin accepts a whole custom block here at runtime, but its
+          // FieldConfig type only describes overrides of the built-in fields.
+        } as never,
         payment: false,
       },
       formOverrides: {
         fields: ({ defaultFields }) => {
-          return defaultFields.map((field) => {
-            if ('name' in field && field.name === 'title') {
-              return {
-                ...field,
-                required: false,
+          return [
+            ...defaultFields.map((field) => {
+              if ('name' in field && field.name === 'title') {
+                return {
+                  ...field,
+                  required: false,
+                }
               }
-            }
 
-            return field
-          })
+              return field
+            }),
+            {
+              name: 'showInContactEnquiries',
+              type: 'checkbox',
+              label: 'Show submissions in Contact Enquiries',
+              defaultValue: false,
+              admin: {
+                position: 'sidebar',
+                description:
+                  'List this form’s submissions in the Contact Enquiries tab of the Requests Dashboard.',
+              },
+            },
+          ]
         },
         admin: {
-          hidden: true,
+          // Not in the sidebar or dashboard cards; pages still reachable by URL
+          // (/admin/collections/forms) for site admins.
+          group: false,
+          hidden: hiddenUnlessSiteAdmin,
+        },
+        access: {
+          // The public site loads form definitions to render them.
+          read: publicAccess,
+          create: siteAdminAccess,
+          update: siteAdminAccess,
+          delete: siteAdminAccess,
         },
       },
       formSubmissionOverrides: {
+        fields: ({ defaultFields }) => [
+          ...defaultFields,
+          {
+            name: 'status',
+            type: 'select',
+            label: 'Status',
+            options: ENQUIRY_STATUSES.map((s) => ({ ...s })),
+            defaultValue: 'new',
+            required: true,
+            admin: {
+              position: 'sidebar',
+              description: 'Used by the Contact Enquiries tab of the Requests Dashboard.',
+            },
+          },
+        ],
+        hooks: {
+          beforeChange: [
+            // Submissions are created publicly, so a visitor must not pick the status.
+            ({ data, operation }) => {
+              if (operation === 'create') data.status = 'new'
+              return data
+            },
+          ],
+        },
         admin: {
-          hidden: true,
+          // Not in the sidebar or dashboard cards; pages still reachable by URL
+          // (/admin/collections/forms) for site admins.
+          group: false,
+          hidden: hiddenUnlessSiteAdmin,
+        },
+        access: {
+          // Visitors submit forms; only site admins may read what was sent (PII).
+          create: publicAccess,
+          read: siteAdminAccess,
+          update: siteAdminAccess,
+          delete: siteAdminAccess,
         },
       },
     }),

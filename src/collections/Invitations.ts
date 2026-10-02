@@ -1,9 +1,12 @@
-import type { CollectionConfig } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 import crypto from 'crypto'
 import {
   adminAccess,
   authorAssignableCollections,
+  hiddenUnlessSiteAdmin,
+  isAdmin,
   isSiteAdmin,
+  SCOPED_ROLES,
   siteAdminAccess,
 } from '../access/roles'
 import { sendEmail, isEmailConfigured, missingSmtpVars } from '../lib/email/sendEmail'
@@ -23,13 +26,30 @@ function getExpiryDate(): string {
   return date.toISOString()
 }
 
-/** Roles that may be handed out by invitation. Super Admin deliberately is not. */
+/**
+ * Roles that may be handed out by invitation. Super Admin deliberately is not.
+ * Admin appears only for the Super Admin (see `filterOptions` and `validate`).
+ */
+// Order matches the existing Postgres enum; reordering would be a schema change.
 const INVITABLE_ROLES = [
-  { label: 'Author — edit only assigned collections', value: 'author' },
-  { label: 'Content Editor — create and edit all content', value: 'content_editor' },
-  { label: 'Admin — full access to content and settings', value: 'admin' },
+  { label: 'Author — same as Content Editor (legacy)', value: 'author' },
+  { label: 'Content Editor — only assigned pages and collections', value: 'content_editor' },
+  { label: 'Admin — all content and settings, invites editors', value: 'admin' },
   { label: 'Viewer — read only', value: 'viewer' },
 ]
+
+const isScopedRole = (role: unknown) => SCOPED_ROLES.includes(role as never)
+
+/**
+ * Invitation edits. The Super Admin may edit any invitation. An Admin may edit
+ * everything except Admin invitations, so they cannot redirect a pending Admin
+ * invite to another address.
+ */
+const invitationUpdateAccess: Access = ({ req: { user } }) => {
+  if (isAdmin(user)) return true
+  if (isSiteAdmin(user)) return { role: { not_equals: 'admin' } }
+  return false
+}
 
 export const Invitations: CollectionConfig = {
   slug: 'invitations',
@@ -40,7 +60,7 @@ export const Invitations: CollectionConfig = {
     group: 'Admin',
     description:
       'Invite someone to help manage content. Saving a new invitation emails them a link to set their own password.',
-    hidden: ({ user }) => !isSiteAdmin(user),
+    hidden: hiddenUnlessSiteAdmin,
   },
   access: {
     /*
@@ -49,8 +69,9 @@ export const Invitations: CollectionConfig = {
      * claim the invitation and create the account themselves.
      */
     create: siteAdminAccess,
+    // Admins see all invitations, including the Super Admin's.
     read: siteAdminAccess,
-    update: siteAdminAccess,
+    update: invitationUpdateAccess,
     delete: adminAccess,
   },
   fields: [
@@ -108,8 +129,19 @@ export const Invitations: CollectionConfig = {
       name: 'role',
       type: 'select',
       required: true,
-      defaultValue: 'author',
+      defaultValue: 'content_editor',
       options: INVITABLE_ROLES,
+      // Admins do not even see the Admin option; validate enforces it server-side.
+      filterOptions: ({ options, req }) =>
+        isAdmin(req.user)
+          ? options
+          : options.filter((o) => (typeof o === 'string' ? o : o.value) !== 'admin'),
+      validate: (value: unknown, { req }: any) => {
+        if (value === 'admin' && !isAdmin(req?.user)) {
+          return 'Only the Super Admin can invite Admins.'
+        }
+        return true
+      },
       admin: { description: 'Role granted when the invitation is accepted.' },
     },
     {
@@ -118,8 +150,19 @@ export const Invitations: CollectionConfig = {
       hasMany: true,
       options: authorAssignableCollections,
       admin: {
-        description: 'Which content this Author will be able to edit.',
-        condition: (data) => data?.role === 'author',
+        description: 'Collections this editor will be able to create and edit in full.',
+        condition: (data) => isScopedRole(data?.role),
+      },
+    },
+    {
+      name: 'allowedPages',
+      type: 'relationship',
+      relationTo: 'pages',
+      hasMany: true,
+      admin: {
+        description:
+          'Or pick individual pages. Not needed if "Pages (all pages)" is ticked above. They can also add new pages and keep editing those.',
+        condition: (data) => isScopedRole(data?.role),
       },
     },
     {
@@ -266,6 +309,12 @@ export const Invitations: CollectionConfig = {
 
           if (!invitation) {
             return Response.json({ error: 'Invitation not found' }, { status: 404 })
+          }
+          if (invitation.role === 'admin' && !isAdmin(req.user)) {
+            return Response.json(
+              { error: 'Only the Super Admin can resend an Admin invitation.' },
+              { status: 403 },
+            )
           }
           if (invitation.status !== 'pending') {
             return Response.json(

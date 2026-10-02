@@ -63,3 +63,5 @@ nul
 # Uploaded documents (PDF, Word, Excel) for the Document Downloads block.
 # Uncomment to keep them out of the repository, as with /media above.
 #documents
+# Resume PDFs from internship applications are personal data; never commit them.
+/resumes/

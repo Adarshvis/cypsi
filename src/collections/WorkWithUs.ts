@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import {
   collectionReadAccess,
   collectionWriteAccess,
+  hiddenUnlessCollectionAccess,
   siteAdminAccess,
 } from '../access/roles'
 
@@ -12,6 +13,8 @@ export const WorkWithUs: CollectionConfig = {
     plural: 'Work With Us',
   },
   admin: {
+    // Shown only to people who can work on this collection.
+    hidden: hiddenUnlessCollectionAccess('work-with-us'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'status', 'sortOrder', 'updatedAt'],
     group: 'Opportunities',

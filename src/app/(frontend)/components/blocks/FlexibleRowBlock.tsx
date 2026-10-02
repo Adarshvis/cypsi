@@ -4,6 +4,9 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import RichText from '../ui/RichText'
 import DynamicIcon from '../ui/DynamicIcon'
+import SandboxedHtml from '../ui/SandboxedHtml'
+import { usePrefersReducedMotion } from '../ui/usePrefersReducedMotion'
+import { safeEmbedUrl } from '@/lib/safeEmbedUrl'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -281,12 +284,17 @@ function FlexCarousel({
   const next = useCallback(() => setCurrent((p) => (p + 1) % total), [total])
   const prev = useCallback(() => setCurrent((p) => (p - 1 + total) % total), [total])
 
+  // Autoplay stops for reduced motion, and pauses while pointed at or focused
+  // so a slide can be read or its controls used.
+  const reducedMotion = usePrefersReducedMotion()
+  const [paused, setPaused] = useState(false)
+
   useEffect(() => {
-    if (autoplay && total > 1) {
+    if (autoplay && total > 1 && !reducedMotion && !paused) {
       timerRef.current = setInterval(next, interval || 5000)
       return () => clearInterval(timerRef.current)
     }
-  }, [autoplay, interval, next, total])
+  }, [autoplay, interval, next, total, reducedMotion, paused])
 
   if (total === 0) return null
 
@@ -331,13 +339,24 @@ function FlexCarousel({
   }
 
   return (
-    <div className="relative aspect-video rounded-lg overflow-hidden group">
+    <div
+      className="relative aspect-video rounded-lg overflow-hidden group"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setPaused(false)
+      }}
+    >
       {validSlides.map((slide, i) => (
         <div
           key={slide.id || i}
           className={`absolute inset-0 transition-opacity duration-700 ${
             i === current ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
+          // Faded-out slides must not be reachable by Tab or read out.
+          inert={i !== current}
+          aria-hidden={i !== current}
         >
           {renderSlide(slide)}
         </div>
@@ -402,17 +421,21 @@ function FlexMapEmbed({
 }) {
   if (embedType === 'html' && html) {
     return (
-      <div
-        className="rounded-lg overflow-hidden"
-        style={{ height: height || 400 }}
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <div className="rounded-lg overflow-hidden">
+        {/* Sandboxed: CMS HTML must never run with the site's origin */}
+        <SandboxedHtml
+          html={html}
+          title="Embedded map"
+          sizing={{ mode: 'fixed', height: height || 400 }}
+        />
+      </div>
     )
   }
-  if (iframeUrl) {
+  const frameSrc = safeEmbedUrl(iframeUrl)
+  if (frameSrc) {
     return (
       <iframe
-        src={iframeUrl}
+        src={frameSrc}
         className="w-full rounded-lg border-0"
         style={{ height: height || 400 }}
         loading="lazy"

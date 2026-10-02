@@ -5,6 +5,7 @@ import config from '@/payload.config'
 import { getPayload } from '@/lib/payload'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import AccessibilityWidget from './components/ui/AccessibilityWidget'
 import { getSiteMeta } from '@/lib/siteMeta'
 import './styles.css'
 
@@ -113,6 +114,16 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const mutedBackgroundColor = siteSettings?.themeColors?.mutedBackgroundColor || '#F8F4FF'
   const textColor = siteSettings?.themeColors?.textColor || '#1A103D'
 
+  // Accessibility settings. Fallbacks mirror the field defaults, for a Site
+  // Settings record saved before these fields existed.
+  const a11ySettings = (siteSettings as any)?.accessibility || {}
+  const a11y = {
+    skipLinkLabel: a11ySettings.skipLinkLabel?.trim() || 'Skip to main content',
+    showHeaderLink: a11ySettings.showHeaderLink !== false,
+    headerLinkLabel: a11ySettings.headerLinkLabel?.trim() || 'Accessibility options',
+    headerLinkUrl: a11ySettings.headerLinkUrl?.trim() || '/help#accessibility',
+  }
+
   // Theme preset — determines layout overrides
   const themePreset = (siteSettings as any)?.themePreset || 'ducc'
   const headingFont = (siteSettings as any)?.headingFont || 'Playfair Display'
@@ -154,11 +165,31 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className={allFontVars}>
       <body className="flex flex-col min-h-screen" style={themeStyle} data-theme={themePreset}>
+        {/* First focusable element on every page. Hidden until it receives
+            keyboard focus. z-[101] rather than 100: the fixed header is z-100
+            and comes later in the DOM, so at equal z-index it would cover this. */}
+        <a
+          href="#main"
+          // Padding is focus-scoped: Tailwind v4's not-sr-only resets padding to 0.
+          className="skip-link sr-only rounded-lg bg-maroon text-sm font-semibold text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[101] focus:px-4 focus:py-2"
+        >
+          {a11y.skipLinkLabel}
+        </a>
         {/* siteName is passed so the header can show a wordmark when no logo
             image is uploaded, instead of a hardcoded brand. */}
-        <Header data={headerData || {}} siteName={siteSettings?.siteName || undefined} />
-        <main className="site-main flex-1">{children}</main>
+        <Header
+          data={headerData || {}}
+          siteName={siteSettings?.siteName || undefined}
+          accessibilityLink={
+            a11y.showHeaderLink ? { label: a11y.headerLinkLabel, url: a11y.headerLinkUrl } : undefined
+          }
+        />
+        <main id="main" className="site-main flex-1">
+          {children}
+        </main>
         <Footer data={footerData || {}} siteSettings={siteSettings || {}} />
+        {/* Accessibility Adjustments panel, opened from the header button. */}
+        {a11y.showHeaderLink && <AccessibilityWidget statementUrl={a11y.headerLinkUrl} />}
       </body>
     </html>
   )

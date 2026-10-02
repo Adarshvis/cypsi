@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import SectionHeading from '../ui/SectionHeading'
 import ScrollReveal from '../ui/ScrollReveal'
@@ -47,17 +47,47 @@ function Lightbox({
   onClose: () => void
 }) {
   const imgUrl = typeof screenshot.image === 'object' && screenshot.image?.url ? screenshot.image.url : null
+  const closeRef = useRef<HTMLButtonElement>(null)
+  // Held in a ref so a new onClose each parent render does not re-run the effect.
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
+  // Escape closes; focus moves into the dialog and returns to the thumbnail after.
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null
+    closeRef.current?.focus()
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCloseRef.current()
+      // The close button is the only control, so Tab stays on it.
+      if (e.key === 'Tab') {
+        e.preventDefault()
+        closeRef.current?.focus()
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      opener?.focus()
+    }
+  }, [])
+
   if (!imgUrl) return null
 
   return (
     <div
       className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={screenshot.title || screenshot.image?.alt || undefined}
     >
       <button
+        ref={closeRef}
+        type="button"
         onClick={onClose}
         className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
         aria-label="Close"
+        title="Close"
       >
         <X size={32} />
       </button>
@@ -103,6 +133,20 @@ function ScreenshotCard({
             : 'rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300'
         }`}
         onClick={onLightbox}
+        // Keyboard users can open the lightbox too; the image alt names the control.
+        {...(onLightbox
+          ? {
+              role: 'button',
+              tabIndex: 0,
+              'aria-haspopup': 'dialog' as const,
+              onKeyDown: (e: React.KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onLightbox()
+                }
+              },
+            }
+          : {})}
       >
         {imgUrl && (
           <div className="relative aspect-video">

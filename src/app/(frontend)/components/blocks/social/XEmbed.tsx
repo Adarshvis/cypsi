@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { ExternalLink, Info } from 'lucide-react'
+import { ExternalLink, Info, RotateCw } from 'lucide-react'
 import { tweetId, xHandle } from '@/lib/socialFeeds'
 
 const WIDGET_SRC = 'https://platform.twitter.com/widgets.js'
@@ -11,13 +11,35 @@ const X_MIN_WIDTH = 250
 const X_MAX_WIDTH = 550
 
 /**
- * How long to give the widget factory before treating it as failed.
+ * How long to wait on a widget factory call before moving on.
  *
- * Needed because `createTimeline` does not always settle: when X declines to
- * serve a timeline it can leave the promise pending indefinitely, which left the
- * card showing its loading skeleton forever.
+ * Needed because `createTimeline` / `createTweet` do not always settle: when X
+ * declines to serve a timeline it can leave the promise pending indefinitely.
+ * A timeout is NOT treated as "this post failed" — X's syndication CDN is often
+ * just slow — so the slot is kept and a late render still shows (see the
+ * MutationObserver below).
  */
-const WIDGET_DEADLINE_MS = 8000
+const WIDGET_DEADLINE_MS = 12000
+
+/** X's embed service fails transiently (rate limits, cold CDN); one retry clears most of it. */
+const MAX_ATTEMPTS = 2
+const RETRY_DELAY_MS = 2500
+
+/** How long to wait for `window.twttr.widgets` when the script tag already exists. */
+const SCRIPT_READY_TIMEOUT_MS = 10000
+
+/** Marker for "the call did not settle in time", as distinct from X answering with nothing. */
+const TIMED_OUT = Symbol('timed-out')
+
+/**
+ * How long to wait for the profile timeline to become visible before showing
+ * the curated posts. A timeline that X actually serves (signed-in visitor)
+ * draws well inside this.
+ */
+const TIMELINE_WAIT_MS = 6000
+
+/** Below this an X iframe is a placeholder, not a drawn embed. */
+const MIN_VISIBLE_HEIGHT = 20
 
 declare global {
   interface Window {
@@ -39,17 +61,66 @@ declare global {
   }
 }
 
-/** Resolves undefined if the wrapped promise has not settled in time. */
-function withDeadline<T>(promise: Promise<T> | undefined, ms: number): Promise<T | undefined> {
+/** Resolves TIMED_OUT if the wrapped promise has not settled in time; never rejects. */
+function withDeadline<T>(
+  promise: Promise<T> | undefined,
+  ms: number,
+): Promise<T | undefined | typeof TIMED_OUT> {
   if (!promise) return Promise.resolve(undefined)
   return Promise.race([
-    promise,
-    new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), ms)),
+    promise.catch(() => undefined),
+    new Promise<typeof TIMED_OUT>((resolve) => setTimeout(() => resolve(TIMED_OUT), ms)),
   ])
+}
+
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
+
+/**
+ * True only when X has really drawn something.
+ *
+ * Class names cannot be trusted: when X refuses a timeline (HTTP 429 for
+ * logged-out visitors) widgets.js still tags the wrapper
+ * `twitter-timeline-rendered` and leaves a hidden, 0px iframe behind. So check
+ * the iframe itself: visible, with a real height.
+ */
+function hasRenderedEmbed(host: HTMLElement): boolean {
+  return Array.from(host.querySelectorAll('iframe')).some(
+    (frame) =>
+      frame.style.visibility !== 'hidden' &&
+      frame.getBoundingClientRect().height > MIN_VISIBLE_HEIGHT,
+  )
+}
+
+/** Polls until an embed is visible, the time runs out, or the run is cancelled. */
+async function waitForRendered(
+  host: HTMLElement,
+  ms: number,
+  isCancelled: () => boolean,
+): Promise<boolean> {
+  const until = Date.now() + ms
+  while (Date.now() < until) {
+    if (isCancelled()) return false
+    if (hasRenderedEmbed(host)) return true
+    await sleep(250)
+  }
+  return hasRenderedEmbed(host)
 }
 
 /** Loads widgets.js once per page, no matter how many embeds are on it. */
 let scriptPromise: Promise<void> | null = null
+
+/** Resolves once `window.twttr.widgets` exists, polling because `load` may already have fired. */
+function waitForWidgets(timeoutMs: number): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const started = Date.now()
+    const tick = () => {
+      if (window.twttr?.widgets) return resolve()
+      if (Date.now() - started > timeoutMs) return reject(new Error('widgets unavailable'))
+      setTimeout(tick, 100)
+    }
+    tick()
+  })
+}
 
 function loadWidgetScript(): Promise<void> {
   if (typeof window === 'undefined') return Promise.resolve()
@@ -59,17 +130,25 @@ function loadWidgetScript(): Promise<void> {
   scriptPromise = new Promise<void>((resolve, reject) => {
     const existing = document.querySelector<HTMLScriptElement>(`script[src="${WIDGET_SRC}"]`)
     if (existing) {
-      existing.addEventListener('load', () => resolve())
+      // The tag may have finished loading before we got here, in which case its
+      // `load` event will never fire again — so poll for the global instead.
       existing.addEventListener('error', () => reject(new Error('blocked')))
+      waitForWidgets(SCRIPT_READY_TIMEOUT_MS).then(resolve, reject)
       return
     }
     const s = document.createElement('script')
     s.src = WIDGET_SRC
     s.async = true
     s.charset = 'utf-8'
-    s.onload = () => resolve()
+    s.onload = () => waitForWidgets(SCRIPT_READY_TIMEOUT_MS).then(resolve, reject)
     s.onerror = () => reject(new Error('blocked'))
     document.head.appendChild(s)
+  }).catch((err) => {
+    // Never cache a failure: drop the dead tag so the next attempt (a retry, or
+    // another X card on the page) can request the script again.
+    scriptPromise = null
+    document.querySelector(`script[src="${WIDGET_SRC}"]`)?.remove()
+    throw err
   })
 
   return scriptPromise
@@ -90,9 +169,11 @@ interface XEmbedProps {
 function Notice({
   handle,
   children,
+  onRetry,
 }: {
   handle: string
   children: React.ReactNode
+  onRetry?: () => void
 }) {
   return (
     <div className="h-full flex flex-col items-center justify-center gap-2.5 px-6 py-5 text-center">
@@ -129,6 +210,17 @@ function Notice({
           <ExternalLink size={13} />
         </a>
       )}
+      {onRetry && (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="inline-flex items-center gap-1.5 font-semibold hover:underline"
+          style={{ fontSize: '0.8125rem', color: 'var(--cms-primary, #04415f)' }}
+        >
+          <RotateCw size={13} />
+          Try again
+        </button>
+      )}
     </div>
   )
 }
@@ -163,6 +255,10 @@ export default function XEmbed({
   const outerRef = useRef<HTMLDivElement>(null)
   const hostRef = useRef<HTMLDivElement>(null)
   const [state, setState] = useState<'loading' | 'ready' | 'failed'>('loading')
+  /** Why the last run failed: the script never loaded, or X answered with nothing. */
+  const [failure, setFailure] = useState<'blocked' | 'unavailable'>('unavailable')
+  /** Bumped by "Try again" to rebuild from scratch. */
+  const [reloadKey, setReloadKey] = useState(0)
   const [width, setWidth] = useState<number | null>(null)
 
   const clean = xHandle(handle)
@@ -200,88 +296,126 @@ export default function XEmbed({
     // A widget cannot be resized, so any change rebuilds from scratch.
     host.replaceChildren()
 
-    /** Renders the curated posts, returning how many X actually built. */
-    const renderPosts = async (widgets: NonNullable<Window['twttr']>['widgets']) => {
-      let rendered = 0
-      for (const id of idsKey.split(',').filter(Boolean)) {
-        if (cancelled) return rendered
-        // Each post gets its own slot, so one failure does not lose the rest.
-        const slot = document.createElement('div')
-        host.appendChild(slot)
-        const el = await withDeadline(
-          widgets?.createTweet?.(id, slot, {
-            theme: theme || 'light',
-            width: frameWidth,
-            dnt: true,
-            align: 'center',
-            conversation: 'none',
-          }),
-          WIDGET_DEADLINE_MS,
-        )
-        if (el) rendered++
-        else slot.remove()
-      }
-      return rendered
+    /*
+     * The DOM is the source of truth, not the widget promises. X regularly
+     * draws an embed after its promise has timed out (or never resolves it at
+     * all), so whenever a rendered embed appears the card flips to ready —
+     * even if this run had already given up and shown the failure notice.
+     */
+    const observer = new MutationObserver(() => {
+      if (!cancelled && hasRenderedEmbed(host)) setState('ready')
+    })
+    // `style` matters: X reveals a drawn frame by changing its inline style.
+    observer.observe(host, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style'],
+    })
+
+    const tweetOptions = {
+      theme: theme || 'light',
+      width: frameWidth,
+      dnt: true,
+      align: 'center',
+      conversation: 'none',
     }
 
-    loadWidgetScript()
-      .then(async () => {
-        if (cancelled) return
-        const widgets = window.twttr?.widgets
-        if (!widgets) throw new Error('widgets unavailable')
+    /**
+     * Renders the curated posts in parallel, keeping their order. Returns true
+     * if at least one post drew. Timed-out slots are kept, and the observer
+     * picks them up if X draws them late.
+     */
+    const renderPosts = async (widgets: NonNullable<NonNullable<Window['twttr']>['widgets']>) => {
+      const ids = idsKey.split(',').filter(Boolean)
+      // Slots are created up front so the stack keeps the editor's order
+      // regardless of which post X returns first.
+      const slots = ids.map(() => {
+        const slot = document.createElement('div')
+        host.appendChild(slot)
+        return slot
+      })
+      const results = await Promise.all(
+        ids.map((id, i) =>
+          withDeadline(widgets.createTweet?.(id, slots[i], tweetOptions), WIDGET_DEADLINE_MS),
+        ),
+      )
+      results.forEach((result, i) => {
+        // X answered "no such post" (deleted, private, blocked): drop the empty slot.
+        // A timed-out slot stays, since slow is not the same as failed.
+        if (result === undefined) slots[i].remove()
+      })
+      return results.some((r) => r && r !== TIMED_OUT)
+    }
 
-        if (!usePost && clean) {
-          const el = await withDeadline(
-            widgets.createTimeline?.(
-              { sourceType: 'profile', screenName: clean },
-              host,
-              {
-                theme: theme || 'light',
-                width: frameWidth,
-                height: scale < 1 ? Math.round(height / scale) : height,
-                chrome: 'noheader noborders transparent',
-                dnt: true,
-              },
-            ),
-            WIDGET_DEADLINE_MS,
-          )
-          if (cancelled) return
+    const attempt = async (): Promise<'ready' | 'blocked' | 'unavailable'> => {
+      try {
+        await loadWidgetScript()
+      } catch {
+        return 'blocked'
+      }
+      const widgets = window.twttr?.widgets
+      if (!widgets) return 'blocked'
+      if (cancelled) return 'unavailable'
 
-          if (el) {
-            setState('ready')
-            return
-          }
+      if (!usePost && clean) {
+        /*
+         * The promise is ignored on purpose. When X refuses the timeline (HTTP
+         * 429 for visitors not signed in to x.com) it either never settles or
+         * resolves with a hidden empty frame, so waiting on it only delays the
+         * fallback. Watch for a visible frame instead.
+         */
+        widgets
+          .createTimeline?.({ sourceType: 'profile', screenName: clean }, host, {
+            theme: theme || 'light',
+            width: frameWidth,
+            height: scale < 1 ? Math.round(height / scale) : height,
+            chrome: 'noheader noborders transparent',
+            dnt: true,
+          })
+          ?.catch(() => undefined)
+        if (await waitForRendered(host, TIMELINE_WAIT_MS, () => cancelled)) return 'ready'
+        if (cancelled) return 'unavailable'
 
-          /*
-           * X answered with nothing, or never answered. Whether it serves a
-           * timeline depends on the visitor's x.com session, so rather than
-           * deciding up front which mode is correct, fall through to any curated
-           * posts — those render regardless of session. The card shows the live
-           * feed when X allows it and the chosen posts when it does not, with no
-           * configuration change needed either way.
-           */
+        /*
+         * X answered with nothing, or never answered. Whether it serves a
+         * timeline depends on the visitor's x.com session, so fall through to
+         * any curated posts — those render regardless of session.
+         */
+        host.replaceChildren()
+        if (!idsKey) return 'unavailable'
+      }
+
+      const ok = await renderPosts(widgets)
+      if (cancelled) return 'unavailable'
+      return ok || hasRenderedEmbed(host) ? 'ready' : 'unavailable'
+    }
+
+    void (async () => {
+      let outcome: 'ready' | 'blocked' | 'unavailable' = 'unavailable'
+      for (let n = 1; n <= MAX_ATTEMPTS && !cancelled; n++) {
+        outcome = await attempt()
+        if (cancelled || outcome === 'ready' || hasRenderedEmbed(host)) break
+        if (n < MAX_ATTEMPTS) {
+          await sleep(RETRY_DELAY_MS)
+          if (cancelled || hasRenderedEmbed(host)) break
           host.replaceChildren()
-          if (idsKey) {
-            const rendered = await renderPosts(widgets)
-            if (!cancelled) setState(rendered > 0 ? 'ready' : 'failed')
-            return
-          }
-
-          setState('failed')
-          return
         }
-
-        const rendered = await renderPosts(widgets)
-        if (!cancelled) setState(rendered > 0 ? 'ready' : 'failed')
-      })
-      .catch(() => {
-        if (!cancelled) setState('failed')
-      })
+      }
+      if (cancelled) return
+      if (outcome === 'ready' || hasRenderedEmbed(host)) {
+        setState('ready')
+      } else {
+        setFailure(outcome === 'blocked' ? 'blocked' : 'unavailable')
+        setState('failed')
+      }
+    })()
 
     return () => {
       cancelled = true
+      observer.disconnect()
     }
-  }, [clean, idsKey, usePost, theme, height, frameWidth, scale])
+  }, [clean, idsKey, usePost, theme, height, frameWidth, scale, reloadKey])
 
   if (!clean && !idsKey) {
     return <Notice handle="">Set an X handle or profile URL, e.g. x.com/CyberDost</Notice>
@@ -295,18 +429,27 @@ export default function XEmbed({
     )
   }
 
-  if (state === 'failed') {
-    return (
-      <Notice handle={clean}>
-        {idsKey
-          ? 'These posts could not load. A browser privacy setting or extension is usually blocking x.com.'
-          : 'X did not return this account\u2019s feed. It only serves feeds to visitors signed in to x.com \u2014 add a few post URLs under Posts and they will show for everyone.'}
-      </Notice>
-    )
-  }
+  // Only claim a blocker when the script itself could not load. When the script
+  // loaded but X sent nothing back, it is X being slow or rate limiting.
+  const failureMessage =
+    failure === 'blocked'
+      ? 'Posts from X could not load. A browser privacy setting or extension may be blocking x.com.'
+      : idsKey
+        ? 'X did not respond in time. This is usually temporary on X\u2019s side.'
+        : 'X did not return this account\u2019s feed. It only serves feeds to visitors signed in to x.com \u2014 add a few post URLs under Posts and they will show for everyone.'
 
   return (
     <div ref={outerRef} className="relative h-full w-full overflow-hidden">
+      {/* Overlay rather than replacement: the host stays mounted, so a post
+          that X draws late still appears and clears this notice. */}
+      {state === 'failed' && (
+        <div className="absolute inset-0 z-10" style={{ background: 'var(--cms-surface, #ffffff)' }}>
+          <Notice handle={clean} onRetry={() => setReloadKey((k) => k + 1)}>
+            {failureMessage}
+          </Notice>
+        </div>
+      )}
+
       {state === 'loading' && (
         <div className="absolute inset-0 py-1.5" aria-hidden>
           {[0, 1, 2].map((i) => (

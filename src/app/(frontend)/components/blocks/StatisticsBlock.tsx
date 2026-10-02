@@ -99,7 +99,8 @@ function CircularRing({
   const offset = circumference - (fillPercent / 100) * circumference
 
   return (
-    <svg width={size} height={size} className="transform -rotate-90">
+    // Decorative: the figure itself is shown as text beside the ring.
+    <svg width={size} height={size} className="transform -rotate-90" aria-hidden="true">
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -453,24 +454,37 @@ export default function StatisticsBlock(props: StatisticsBlockProps) {
     return (
       <section
         ref={ref}
-        className="py-16 px-6"
+        className="relative overflow-hidden py-12 md:py-14 px-6"
         style={{ background: 'var(--cms-secondary, #1A103D)' }}
       >
-        <div className="max-w-7xl mx-auto">
+        {/* Soft glow in the primary colour so the band isn't a flat slab */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse 60% 120% at 15% 0%, color-mix(in srgb, var(--cms-primary, #4B2E83) 45%, transparent), transparent 70%), radial-gradient(ellipse 50% 100% at 90% 100%, color-mix(in srgb, var(--cms-primary, #4B2E83) 30%, transparent), transparent 70%)',
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto">
           {/* The strip was built for six stats; with fewer, a fixed 6-column
               grid leaves the row half empty. Track count instead. */}
-          <div className={`grid gap-6 ${stripColumnClasses[Math.min(stats.length, 6)] || stripColumnClasses[6]}`}>
+          <div
+            className={`grid gap-y-10 lg:divide-x lg:divide-white/10 ${
+              stripColumnClasses[Math.min(stats.length, 6)] || stripColumnClasses[6]
+            }`}
+          >
             {stats.map((stat, i) => (
-              <div key={stat.id || i} className="text-center">
+              <div key={stat.id || i} className="px-4 text-center">
                 {stat.icon && (
                   <DynamicIcon
                     name={stat.icon}
-                    size={24}
-                    className="mx-auto mb-3"
+                    size={26}
+                    className="mx-auto mb-4"
                     color="var(--cms-accent, #EAB308)"
                   />
                 )}
-                <div className="text-3xl md:text-4xl font-bold text-white">
+                <div className="ducc-heading text-4xl md:text-5xl font-bold text-white tabular-nums">
                   <AnimatedNumber
                     value={stat.numericValue}
                     prefix={stat.prefix}
@@ -478,7 +492,12 @@ export default function StatisticsBlock(props: StatisticsBlockProps) {
                     animate={enableCountUp !== false && inView}
                   />
                 </div>
-                <div className="text-xs uppercase tracking-wider text-white/60 mt-2">
+                <span
+                  aria-hidden
+                  className="mx-auto mt-4 block h-0.5 w-10 rounded-full"
+                  style={{ background: 'var(--cms-accent, #EAB308)' }}
+                />
+                <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70 mt-4">
                   {stat.label}
                 </div>
               </div>

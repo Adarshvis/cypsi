@@ -1,12 +1,16 @@
 import type { GlobalConfig } from 'payload'
-import { publicAccess, adminAccess } from '../access/roles'
+import { hiddenUnlessSiteAdmin, publicAccess, siteAdminAccess } from '../access/roles'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
   label: 'Footer',
+  admin: {
+    hidden: hiddenUnlessSiteAdmin,
+  },
   access: {
     read: publicAccess,
-    update: adminAccess,
+    // Super Admin and Admin.
+    update: siteAdminAccess,
   },
   fields: [
     {

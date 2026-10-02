@@ -26,10 +26,16 @@ import FormLayoutBlock from './blocks/FormLayoutBlock'
 import GoaSchoolSnapshotBlock from './blocks/GoaSchoolSnapshotBlock'
 import SocialFeedsBlock from './blocks/SocialFeedsBlock'
 import DocumentDownloadsBlock from './blocks/DocumentDownloadsBlock'
+import ContactSectionBlock from './blocks/ContactSectionBlock'
+import ProjectShowcaseBlock from './blocks/ProjectShowcaseBlock'
+import AccessibilityStatementBlock from './blocks/AccessibilityStatementBlock'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   hero: HeroBlock,
   storyTimeline: StoryTimelineBlock,
+  contactSection: ContactSectionBlock,
+  projectShowcase: ProjectShowcaseBlock,
+  accessibilityStatement: AccessibilityStatementBlock,
   marquee: MarqueeBlock,
   showcaseCards: ShowcaseCardsBlock,
   statistics: StatisticsBlock,

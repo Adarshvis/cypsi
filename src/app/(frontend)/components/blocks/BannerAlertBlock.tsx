@@ -37,7 +37,13 @@ export default function BannerAlertBlock({ sectionHeading, sectionDescription, h
           <a href={link.url} className="text-blue-400 hover:underline shrink-0 font-medium">{link.label}</a>
         )}
         {dismissible && (
-          <button onClick={() => setVisible(false)} className="text-gray-400 hover:text-white shrink-0">
+          <button
+            type="button"
+            onClick={() => setVisible(false)}
+            className="text-gray-400 hover:text-white shrink-0"
+            aria-label="Dismiss"
+            title="Dismiss"
+          >
             <X size={18} />
           </button>
         )}

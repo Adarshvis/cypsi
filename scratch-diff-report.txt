@@ -1,7 +1,13 @@
-new tables      : 0
-new enum types  : 1
+new tables      : 1
+    + internship_applications
+new enum types  : 3
+    + enum_form_submissions_status
     + enum_header_nav_items_children_type
-new columns on existing tables : 0
+    + enum_internship_applications_status
+new columns on existing tables : 3
+    + form_submissions.status
+    + forms.show_in_contact_enquiries
+    + payload_locked_documents_rels.internship_applications_id
 
 --- red flags (should all be zero) ---
 dropped tables  : 0 

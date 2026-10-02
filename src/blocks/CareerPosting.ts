@@ -104,7 +104,8 @@ export const CareerPosting: Block = {
       name: 'applyButtonLink',
       type: 'text',
       admin: {
-        description: 'URL the button points to. Leave blank to use the built-in /apply page.',
+        description:
+          'URL the buttons point to. Leave blank to use /apply (a page with slug "apply" containing a Form Layout block whose form has a Resume Upload field). Each domain\'s button adds ?domain=<domain title>.',
       },
     },
     {

@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { ChevronLeft, ChevronRight, Play, Pause, ArrowRight, ArrowUpRight } from 'lucide-react'
 import Lottie from 'lottie-react'
 import DynamicIcon from '../ui/DynamicIcon'
+import SandboxedHtml from '../ui/SandboxedHtml'
+import { usePrefersReducedMotion } from '../ui/usePrefersReducedMotion'
 
 const mediaFillStyle: React.CSSProperties = {
   position: 'absolute',
@@ -302,7 +304,14 @@ function SlideMedia({ slide }: { slide: SlideData }) {
 
   if (type === 'dataViz' && slide.dataVizEmbed) {
     return (
-      <div style={mediaFillStyle} dangerouslySetInnerHTML={{ __html: slide.dataVizEmbed }} />
+      <div style={mediaFillStyle}>
+        {/* Sandboxed: CMS HTML must never run with the site's origin */}
+        <SandboxedHtml
+          html={slide.dataVizEmbed}
+          title={slide.eyebrowText || 'Data visualisation'}
+          sizing={{ mode: 'fill' }}
+        />
+      </div>
     )
   }
 
@@ -429,13 +438,14 @@ export default function HeroBlock(props: HeroBlockProps) {
     })
   }, [allSlides.length])
 
-  // Auto-play
+  // Auto-play. Off when the system asks for reduced motion; the arrows and dots still work.
+  const reducedMotion = usePrefersReducedMotion()
   useEffect(() => {
     if (mode !== 'carousel' || !carouselSettings?.autoPlay || allSlides.length <= 1) return
-    if (!isPlaying) return
+    if (!isPlaying || reducedMotion) return
     const interval = setInterval(next, carouselSettings.autoPlayInterval || 5000)
     return () => clearInterval(interval)
-  }, [mode, carouselSettings, allSlides.length, next, isPlaying])
+  }, [mode, carouselSettings, allSlides.length, next, isPlaying, reducedMotion])
 
   useEffect(() => {
     if (layout !== 'fullscreenOverlayCarousel') return
@@ -549,7 +559,10 @@ export default function HeroBlock(props: HeroBlockProps) {
           {/* Slides — opacity crossfade with Ken Burns zoom */}
           {allSlides.map((slide, i) => (
             <div
-              key={slide.id || `ducc-slide-${i}`}
+              key={slide.id || `ducc-slide-${i}`}
+              // Hidden slides must not be reachable by Tab or read out.
+              inert={i !== current}
+              aria-hidden={i !== current}
               className={`absolute inset-0 transition-opacity duration-[1200ms] ease-out ${
                 i === current ? 'opacity-100' : 'opacity-0 pointer-events-none'
               }`}
@@ -881,7 +894,10 @@ export default function HeroBlock(props: HeroBlockProps) {
       >
         {allSlides.map((slide, i) => (
           <div
-            key={slide.id || `fullscreen-slide-${i}`}
+            key={slide.id || `fullscreen-slide-${i}`}
+            // Hidden slides must not be reachable by Tab or read out.
+            inert={i !== current}
+            aria-hidden={i !== current}
             className={`hero-fs-slide ${i === current ? 'is-active' : i === previous ? 'is-leaving' : 'is-idle'}`}
           >
             <div className="hero-fs-slide-media">
@@ -1012,7 +1028,10 @@ export default function HeroBlock(props: HeroBlockProps) {
                     const s = hasTextContent(slide) ? slide : allSlides.find(hasTextContent) || allSlides[0]
                     return (
                       <div
-                        key={slide.id || `split-text-${i}`}
+                        key={slide.id || `split-text-${i}`}
+                        // Hidden slides must not be reachable by Tab or read out.
+                        inert={i !== current}
+                        aria-hidden={i !== current}
                         className={`transition-opacity duration-500 ease-in-out ${
                           i === current ? 'opacity-100 relative' : 'opacity-0 absolute inset-0 pointer-events-none'
                         }`}
@@ -1069,7 +1088,10 @@ export default function HeroBlock(props: HeroBlockProps) {
                   const mediaSlide = hasMediaContent(slide) ? slide : fallbackMediaSlide
                   return (
                     <div
-                      key={slide.id || `split-media-${i}`}
+                      key={slide.id || `split-media-${i}`}
+                      // Hidden slides must not be reachable by Tab or read out.
+                      inert={i !== current}
+                      aria-hidden={i !== current}
                       className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
                         i === current ? 'opacity-100' : 'opacity-0 pointer-events-none'
                       }`}
@@ -1140,7 +1162,9 @@ export default function HeroBlock(props: HeroBlockProps) {
       {/* Slides */}
       {allSlides.map((slide, i) => (
         <div
-          key={slide.id || i}
+          key={slide.id || i}
+          inert={i !== current}
+          aria-hidden={i !== current}
           className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
             i === current ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}

@@ -147,9 +147,9 @@ export default function GoaSchoolSnapshotSection({ data }: GoaSchoolSnapshotSect
           {normalized.summaryCards.enabled && summaryCards.length > 0 && (
             <div className="min-w-0 flex-1">
               {shouldAnimateSummary ? (
-                <div className="group overflow-hidden">
+                <div className="ticker overflow-hidden">
                   <div
-                    className="flex w-max items-center [animation:goa-summary-marquee_var(--summary-duration)_linear_infinite] group-hover:[animation-play-state:paused]"
+                    className="ticker-track flex w-max items-center [animation:goa-summary-marquee_var(--summary-duration)_linear_infinite]"
                     style={{
                       gap: summaryGap,
                       ['--summary-duration' as string]: marqueeDuration,

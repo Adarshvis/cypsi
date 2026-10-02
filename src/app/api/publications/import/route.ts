@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import config from '@/payload.config'
 import { getPayload } from '@/lib/payload'
-import { isEditor } from '@/access/roles'
+import { canWriteCollection } from '@/access/roles'
 
 /**
  * Imports publications from an external source.
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
     // Importing writes rows with overrideAccess, so gate on the same role that
     // is allowed to create publications normally.
-    if (!isEditor(user)) {
+    if (!canWriteCollection(user, 'publications')) {
       return NextResponse.json(
         { error: 'You do not have permission to import publications' },
         { status: 403 },

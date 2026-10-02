@@ -54,8 +54,8 @@ function button(href: string, label: string): string {
  */
 const ROLE_SUMMARY: Record<string, string> = {
   super_admin: 'full access, including user management',
-  admin: 'full access to all content and settings',
-  content_editor: 'permission to create and edit all content',
+  admin: 'full access to all content and settings, and inviting editors',
+  content_editor: 'permission to work on the pages and content assigned to you',
   author: 'permission to work on the content assigned to you',
   viewer: 'read-only access',
 }

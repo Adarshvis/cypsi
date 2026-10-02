@@ -43,6 +43,21 @@ export const StoryTimeline: Block = {
       admin: { description: 'Supporting image, shown above the highlight cards' },
     },
     {
+      name: 'layoutStyle',
+      type: 'select',
+      label: 'Milestone Display',
+      defaultValue: 'timeline',
+      options: [
+        { label: 'Vertical Timeline', value: 'timeline' },
+        { label: 'Feature Cards (full width, below intro)', value: 'cards' },
+        { label: 'Checklist (two-column ticks)', value: 'checklist' },
+      ],
+      admin: {
+        description:
+          'How the milestones below are rendered. Cards suit items with descriptions (e.g. Mission / Vision / Values); Checklist suits short one-line points.',
+      },
+    },
+    {
       name: 'timeline',
       type: 'array',
       label: 'Milestones',

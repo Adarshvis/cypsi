@@ -1,5 +1,10 @@
 import type { CollectionConfig } from 'payload'
-import { collectionWriteAccess, publicAccess, siteAdminAccess } from '../access/roles'
+import {
+  collectionWriteAccess,
+  hiddenUnlessCollectionAccess,
+  publicAccess,
+  siteAdminAccess,
+} from '../access/roles'
 
 /**
  * Uploaded documents: reports, forms, notices and the like.
@@ -18,6 +23,8 @@ export const Documents: CollectionConfig = {
   slug: 'documents',
   labels: { singular: 'Document', plural: 'Documents' },
   admin: {
+    // Shown only to people who can work on this collection.
+    hidden: hiddenUnlessCollectionAccess('documents'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'filename', 'mimeType', 'filesize', 'updatedAt'],
     group: 'Content',

@@ -90,6 +90,7 @@ if (mainDoc?.aboutMain?.title) {
     body: a.description,
     imagePosition: 'right',
     image: mediaId(a.image),
+    layoutStyle: 'cards',
     timeline: mvv.map((c: any) => ({
       title: c.title,
       description: c.description,
@@ -137,6 +138,7 @@ if (whyDoc?.whyChooseUs?.title) {
     body: w.description,
     imagePosition: 'left',
     image: gallery[0]?.id,
+    layoutStyle: 'checklist',
     timeline: (w.features || [])
       .filter((f: any) => f?.text)
       .map((f: any) => ({ title: f.text, icon: 'CircleCheck' })),

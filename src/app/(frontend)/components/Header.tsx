@@ -5,6 +5,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Search, ChevronDown } from 'lucide-react'
+import { Accessibility } from './ui/AccessibilityIcon'
+import {
+  ACCESSIBILITY_PANEL_ID,
+  accessibilityPanel,
+  useAccessibilityPanelOpen,
+} from './ui/accessibilityPanelStore'
 
 interface HeaderData {
   topBar?: {
@@ -55,17 +61,127 @@ interface HeaderProps {
   data: HeaderData
   /** From Site Settings; shown as a wordmark when no logo image is set. */
   siteName?: string
+  /** From Site Settings → Accessibility. Omitted when the button is switched off. */
+  accessibilityLink?: { label: string; url: string }
 }
 
-export default function Header({ data, siteName }: HeaderProps) {
+/** Icon-only button that opens the Accessibility Adjustments panel; lg and up. */
+function AccessibilityLink({ link }: { link?: { label: string; url: string } }) {
+  const open = useAccessibilityPanelOpen()
+  if (!link) return null
+  return (
+    <button
+      type="button"
+      onClick={(e) => accessibilityPanel.toggle(e.currentTarget)}
+      aria-label={link.label}
+      title={link.label}
+      aria-haspopup="dialog"
+      aria-expanded={open}
+      aria-controls={ACCESSIBILITY_PANEL_ID}
+      className="hidden lg:inline-flex rounded-lg p-2 text-primary-blue transition-colors hover:bg-primary-blue/10 aria-expanded:bg-primary-blue/10"
+    >
+      <Accessibility className="h-5 w-5" />
+    </button>
+  )
+}
+
+/** The same panel from the mobile menu, where the header icon is not shown. */
+function MobileAccessibilityItem({ link }: { link?: { label: string; url: string } }) {
+  if (!link) return null
+  return (
+    <button
+      type="button"
+      onClick={(e) => accessibilityPanel.open(e.currentTarget)}
+      aria-haspopup="dialog"
+      aria-controls={ACCESSIBILITY_PANEL_ID}
+      className="mt-2 flex w-full items-center gap-2 rounded-lg py-2.5 text-left text-base font-medium text-primary-blue"
+    >
+      <Accessibility className="h-5 w-5" />
+      {link.label}
+    </button>
+  )
+}
+
+const MOBILE_NAV_ID = 'site-mobile-nav'
+const MOBILE_SEARCH_ID = 'site-mobile-search'
+const submenuId = (key: string) => `site-submenu-${key.replace(/[^a-zA-Z0-9_-]+/g, '-')}`
+
+export default function Header({ data, siteName, accessibilityLink }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [hoveredNav, setHoveredNav] = useState<string | null>(null)
+  /** Desktop dropdown opened by click or keyboard (hover opens it visually too). */
+  const [openMenu, setOpenMenu] = useState<string | null>(null)
   const [theme, setTheme] = useState<string>('ducc')
   const [scrolled, setScrolled] = useState(false)
   const headerRef = useRef<HTMLElement | null>(null)
+  const mobileToggleRef = useRef<HTMLButtonElement | null>(null)
+  const searchToggleRef = useRef<HTMLButtonElement | null>(null)
   const pathname = usePathname()
+
+  const searchLabel = data.searchBar?.placeholder?.trim() || 'Search'
+
+  /*
+   * Escape closes whatever is open, innermost first, and puts focus back on the
+   * control that opened it so keyboard users are not dropped at the page top.
+   */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      if (openMenu) {
+        const trigger = document.querySelector<HTMLElement>(`[aria-controls="${submenuId(openMenu)}"]`)
+        setOpenMenu(null)
+        trigger?.focus()
+      } else if (mobileOpen) {
+        setMobileOpen(false)
+        mobileToggleRef.current?.focus()
+      } else if (searchOpen) {
+        setSearchOpen(false)
+        searchToggleRef.current?.focus()
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [openMenu, mobileOpen, searchOpen])
+
+  // A click anywhere outside an open dropdown closes it.
+  useEffect(() => {
+    if (!openMenu) return
+    const onPointer = (e: PointerEvent) => {
+      const wrapper = document.getElementById(submenuId(openMenu))?.parentElement
+      if (wrapper && !wrapper.contains(e.target as Node)) setOpenMenu(null)
+    }
+    document.addEventListener('pointerdown', onPointer)
+    return () => document.removeEventListener('pointerdown', onPointer)
+  }, [openMenu])
+
+  // Navigating closes everything.
+  useEffect(() => {
+    setOpenMenu(null)
+    setMobileOpen(false)
+  }, [pathname])
+
+  /** Wrapper props for a desktop nav item: closes its dropdown once focus leaves it. */
+  const menuWrapperProps = (key: string) => ({
+    onBlur: (e: React.FocusEvent<HTMLDivElement>) => {
+      if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+        setOpenMenu((cur) => (cur === key ? null : cur))
+      }
+    },
+  })
+
+  /** Props for a dropdown's trigger button. */
+  const menuTriggerProps = (key: string) => ({
+    type: 'button' as const,
+    'aria-expanded': openMenu === key,
+    'aria-controls': submenuId(key),
+    'aria-haspopup': 'true' as const,
+    onClick: () => setOpenMenu((cur) => (cur === key ? null : key)),
+  })
+
+  /** Submenu visibility: open via keyboard/click, or on mouse hover. */
+  const submenuVisibility = (key: string) => (openMenu === key ? 'block' : 'hidden group-hover:block')
 
   // Helper function to get child URL and label
   const getChildData = (child: any) => {
@@ -181,7 +297,7 @@ export default function Header({ data, siteName }: HeaderProps) {
                   <Link href={data.leftLogo?.url || '/'} className="block">
                     <Image
                       src={leftImg.url}
-                      alt={leftImg.alt || 'Logo'}
+                      alt={leftImg.alt || siteName || ''}
                       width={leftMaxWidth}
                       height={leftHeight}
                       style={{ height: `${leftHeight}px`, width: 'auto', maxWidth: `${leftMaxWidth}px` }}
@@ -193,7 +309,7 @@ export default function Header({ data, siteName }: HeaderProps) {
                     {centerImg?.url && (
                       <Image
                         src={centerImg.url}
-                        alt={centerImg.alt || 'Logo'}
+                        alt={centerImg.alt || data.centerLogo?.title || siteName || ''}
                         width={centerMaxWidth}
                         height={centerRenderHeight}
                         quality={100}
@@ -235,8 +351,10 @@ export default function Header({ data, siteName }: HeaderProps) {
                       }) || false
                     : isActive(item.url)
 
+                  const menuKey = item.id || item.label
+
                   return (
-                    <div key={item.id || item.label} className="relative group">
+                    <div key={menuKey} className="relative group" {...menuWrapperProps(menuKey)}>
                       {!hasChildren ? (
                         <Link
                           href={item.url || '#'}
@@ -262,10 +380,10 @@ export default function Header({ data, siteName }: HeaderProps) {
                         </Link>
                       ) : (
                         <>
-                          <a
-                            href="#"
-                            onClick={(e) => e.preventDefault()}
-                            className="text-[15px] font-medium pb-1 border-b-2 transition-all duration-200 inline-flex items-center gap-1"
+                          {/* A real button: it opens the submenu by keyboard as well as hover. */}
+                          <button
+                            {...menuTriggerProps(menuKey)}
+                            className="text-[15px] font-medium pb-1 border-b-2 transition-all duration-200 inline-flex items-center gap-1 bg-transparent"
                             style={{
                               color: active ? 'var(--cms-primary, #04415f)' : 'var(--cms-text, #010608)',
                               borderColor: active ? 'var(--cms-primary, #04415f)' : 'transparent',
@@ -273,10 +391,16 @@ export default function Header({ data, siteName }: HeaderProps) {
                             }}
                           >
                             {item.label}
-                            <ChevronDown size={14} />
-                          </a>
+                            <ChevronDown
+                              size={14}
+                              className={`transition-transform ${openMenu === menuKey ? 'rotate-180' : ''}`}
+                            />
+                          </button>
                           {item.children && item.children.length > 0 && (
-                            <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-100 py-1 min-w-[200px] hidden group-hover:block z-50">
+                            <div
+                              id={submenuId(menuKey)}
+                              className={`absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-100 py-1 min-w-[200px] z-50 ${submenuVisibility(menuKey)}`}
+                            >
                               {item.children.map((child) => {
                                 const { url: childUrl, label: childLabel } = getChildData(child)
                                 const childActive = isActive(childUrl)
@@ -310,12 +434,19 @@ export default function Header({ data, siteName }: HeaderProps) {
               <div className="shrink-0 flex items-center gap-3">
                 {data.searchBar?.enabled && (
                   <button
+                    ref={searchToggleRef}
+                    type="button"
                     className="hidden md:flex text-gray-500 hover:text-gray-700 p-2"
                     onClick={() => setSearchOpen(!searchOpen)}
+                    aria-label={searchLabel}
+                    title={searchLabel}
+                    aria-expanded={searchOpen}
+                    aria-controls={MOBILE_SEARCH_ID}
                   >
                     <Search size={18} />
                   </button>
                 )}
+                <AccessibilityLink link={accessibilityLink} />
                 {data.ctaButton?.enabled && data.ctaButton.label && (
                   <a
                     href={data.ctaButton.url || '#'}
@@ -326,8 +457,13 @@ export default function Header({ data, siteName }: HeaderProps) {
                   </a>
                 )}
                 <button
+                  ref={mobileToggleRef}
+                  type="button"
                   className="md:hidden text-gray-600 hover:text-gray-900"
                   onClick={() => setMobileOpen(!mobileOpen)}
+                  aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+                  aria-expanded={mobileOpen}
+                  aria-controls={MOBILE_NAV_ID}
                 >
                   {mobileOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
@@ -336,15 +472,20 @@ export default function Header({ data, siteName }: HeaderProps) {
 
             {/* Search bar expanded */}
             {searchOpen && data.searchBar?.enabled && (
-              <div className="border-t px-4 py-3" style={{ borderColor: 'var(--cms-muted-bg, #e6edf0)' }}>
+              <div
+                id={MOBILE_SEARCH_ID}
+                className="border-t px-4 py-3"
+                style={{ borderColor: 'var(--cms-muted-bg, #e6edf0)' }}
+              >
                 <div className="max-w-7xl mx-auto flex items-center bg-gray-50 rounded-lg px-3 py-2 gap-2">
                   <Search size={16} className="text-gray-400 shrink-0" />
                   <input
-                    type="text"
+                    type="search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={data.searchBar.placeholder || 'Search...'}
-                    className="bg-transparent text-sm text-gray-700 outline-none w-full placeholder-gray-400"
+                    aria-label={searchLabel}
+                    className="bg-transparent text-sm text-gray-700 w-full placeholder-gray-400"
                     autoFocus
                   />
                 </div>
@@ -354,7 +495,11 @@ export default function Header({ data, siteName }: HeaderProps) {
 
           {/* Mobile Nav */}
           {mobileOpen && data.navItems && data.navItems.length > 0 && (
-            <nav className="md:hidden bg-white border-t px-4 py-3" style={{ borderColor: 'var(--cms-muted-bg, #e6edf0)' }}>
+            <nav
+              id={MOBILE_NAV_ID}
+              className="md:hidden bg-white border-t px-4 py-3"
+              style={{ borderColor: 'var(--cms-muted-bg, #e6edf0)' }}
+            >
               {data.navItems.map((item) => {
                 const hasChildren = item.children && item.children.length > 0
                 const active = hasChildren
@@ -404,6 +549,7 @@ export default function Header({ data, siteName }: HeaderProps) {
                   </div>
                 )
               })}
+              <MobileAccessibilityItem link={accessibilityLink} />
               {data.ctaButton?.enabled && data.ctaButton.label && (
                 <a
                   href={data.ctaButton.url || '#'}
@@ -481,7 +627,7 @@ export default function Header({ data, siteName }: HeaderProps) {
                 {centerImg?.url && (
                   <Image
                     src={centerImg.url}
-                    alt={centerImg.alt || data.centerLogo?.title || 'Center Logo'}
+                    alt={centerImg.alt || data.centerLogo?.title || siteName || ''}
                     width={centerMaxWidth}
                     height={centerRenderHeight}
                     quality={100}
@@ -514,8 +660,10 @@ export default function Header({ data, siteName }: HeaderProps) {
                         }) || false
                       : isActive(item.url)
 
+                    const menuKey = item.id || item.label
+
                     return (
-                      <div key={item.id || item.label} className="relative group">
+                      <div key={menuKey} className="relative group" {...menuWrapperProps(menuKey)}>
                         {!hasChildren ? (
                           <a
                             href={item.url || '#'}
@@ -541,12 +689,12 @@ export default function Header({ data, siteName }: HeaderProps) {
                           </a>
                         ) : (
                           <>
-                            <a
-                              href="#"
-                              onClick={(e) => e.preventDefault()}
+                            {/* A real button: it opens the submenu by keyboard as well as hover. */}
+                            <button
+                              {...menuTriggerProps(menuKey)}
                               onMouseEnter={() => setHoveredNav(item.id || item.label)}
                               onMouseLeave={() => setHoveredNav(null)}
-                              className="header-nav-link inline-flex items-center gap-1 text-sm font-medium pb-1 border-b-[3px] leading-none"
+                              className="header-nav-link inline-flex items-center gap-1 text-sm font-medium pb-1 border-b-[3px] leading-none bg-transparent"
                               style={{
                                 color: hoveredNav === (item.id || item.label)
                                   ? '#FFAA01'
@@ -564,10 +712,16 @@ export default function Header({ data, siteName }: HeaderProps) {
                               }}
                             >
                               {item.label}
-                              <ChevronDown size={14} />
-                            </a>
+                              <ChevronDown
+                                size={14}
+                                className={`transition-transform ${openMenu === menuKey ? 'rotate-180' : ''}`}
+                              />
+                            </button>
                             {item.children && item.children.length > 0 && (
-                              <div className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-lg border border-gray-200 py-1 min-w-[200px] hidden group-hover:block z-50">
+                              <div
+                                id={submenuId(menuKey)}
+                                className={`absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-lg border border-gray-200 py-1 min-w-[200px] z-50 ${submenuVisibility(menuKey)}`}
+                              >
                                 {item.children.map((child) => {
                                   const { url: childUrl, label: childLabel } = getChildData(child)
                                   const childActive = isActive(childUrl)
@@ -615,25 +769,38 @@ export default function Header({ data, siteName }: HeaderProps) {
                 <div className="hidden md:flex items-center bg-gray-100 rounded-lg px-3 py-2 gap-2 w-56">
                   <Search size={16} className="text-gray-400 shrink-0" />
                   <input
-                    type="text"
+                    type="search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={data.searchBar.placeholder || 'Search...'}
-                    className="bg-transparent text-sm text-gray-700 outline-none w-full placeholder-gray-400"
+                    aria-label={searchLabel}
+                    className="bg-transparent text-sm text-gray-700 w-full placeholder-gray-400"
                   />
                 </div>
                 {/* Mobile search toggle */}
                 <button
+                  ref={searchToggleRef}
+                  type="button"
                   className="md:hidden text-gray-600 hover:text-gray-900"
                   onClick={() => setSearchOpen(!searchOpen)}
+                  aria-label={searchLabel}
+                  title={searchLabel}
+                  aria-expanded={searchOpen}
+                  aria-controls={MOBILE_SEARCH_ID}
                 >
                   <Search size={20} />
                 </button>
               </>
             )}
+            <AccessibilityLink link={accessibilityLink} />
             <button
+              ref={mobileToggleRef}
+              type="button"
               className="md:hidden text-gray-600 hover:text-gray-900"
               onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
+              aria-controls={MOBILE_NAV_ID}
             >
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -642,15 +809,16 @@ export default function Header({ data, siteName }: HeaderProps) {
 
         {/* Mobile search bar (expanded) */}
         {searchOpen && data.searchBar?.enabled && (
-          <div className={mobileSearchClass}>
+          <div id={MOBILE_SEARCH_ID} className={mobileSearchClass}>
             <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2 gap-2">
               <Search size={16} className="text-gray-400 shrink-0" />
               <input
-                type="text"
+                type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={data.searchBar.placeholder || 'Search...'}
-                className="bg-transparent text-sm text-gray-700 outline-none w-full placeholder-gray-400"
+                aria-label={searchLabel}
+                className="bg-transparent text-sm text-gray-700 w-full placeholder-gray-400"
                 autoFocus
               />
             </div>
@@ -664,7 +832,7 @@ export default function Header({ data, siteName }: HeaderProps) {
 
           {/* Mobile Nav */}
           {mobileOpen && (
-            <div className="md:hidden border-t border-gray-200 px-4 py-3 bg-white">
+            <div id={MOBILE_NAV_ID} className="md:hidden border-t border-gray-200 px-4 py-3 bg-white">
               {data.navItems.map((item) => {
                 const hasChildren = item.children && item.children.length > 0
                 const active = hasChildren
@@ -713,6 +881,7 @@ export default function Header({ data, siteName }: HeaderProps) {
                 </div>
                 )
               })}
+              <MobileAccessibilityItem link={accessibilityLink} />
               {data.ctaButton?.enabled && data.ctaButton.label && (
                 <a
                   href={data.ctaButton.url || '#'}

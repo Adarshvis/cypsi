@@ -1,14 +1,56 @@
-import type { CollectionConfig } from 'payload'
+import type { Access, CollectionConfig, FieldAccess } from 'payload'
 import {
   adminAccess,
-  adminOrSelf,
   authorAssignableCollections,
-  isAuthor,
-  isEditor,
+  hiddenUnlessSiteAdmin,
+  isAdmin,
+  isScoped,
   isSiteAdmin,
+  onlyAdminManageableRoles,
   roles,
-  siteAdminFieldAccess,
+  siteAdminOrSelf,
 } from '../access/roles'
+
+const sameId = (a: unknown, b: unknown) => a != null && b != null && String(a) === String(b)
+
+/**
+ * Account edits. Everyone may edit their own profile (name, password). The
+ * Super Admin may edit anyone. An Admin may also edit editor and viewer
+ * accounts, which is how they change an editor's access after the invitation
+ * is accepted, but never another Admin or the Super Admin.
+ */
+const userUpdateAccess: Access = async ({ req, id }) => {
+  const { user } = req
+  if (!user) return false
+  if (isAdmin(user)) return true
+  const self = { id: { equals: user.id } }
+  if (!isSiteAdmin(user) || id == null) return self
+  if (sameId(id, user.id)) return true
+  const target = await req.payload.findByID({
+    collection: 'users',
+    id,
+    depth: 0,
+    overrideAccess: true,
+    req,
+  })
+  return onlyAdminManageableRoles((target as any)?.roles)
+}
+
+/** Scope fields: Super Admin on anyone but themselves; Admin on editor and viewer accounts only. */
+const canChangeScope: FieldAccess = ({ req: { user }, id, doc }) => {
+  if (!user) return false
+  if (sameId(id ?? doc?.id, user.id)) return false
+  if (isAdmin(user)) return true
+  return isSiteAdmin(user) && onlyAdminManageableRoles(doc?.roles)
+}
+
+/** Roles: as scope, and an Admin may only assign editor or viewer roles. */
+const canChangeRoles: FieldAccess = (args) => {
+  if (!canChangeScope(args)) return false
+  if (isAdmin(args.req.user)) return true
+  const incoming = args.data?.roles
+  return incoming === undefined || onlyAdminManageableRoles(incoming)
+}
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -16,16 +58,18 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
     defaultColumns: ['email', 'firstName', 'lastName', 'roles', 'lastLogin'],
     group: 'Admin',
-    // Authors have no reason to browse the user list; hiding it keeps their
-    // sidebar to what they can actually work on. Access rules below are what
-    // actually enforce this — `hidden` is presentation only.
-    hidden: ({ user }) => !isEditor(user),
+    // Only site admins manage people. Everyone else reaches their own account
+    // from the avatar menu. Access rules below are what actually enforce this —
+    // `hidden` is presentation only.
+    hidden: hiddenUnlessSiteAdmin,
   },
   auth: true,
   access: {
-    read: adminOrSelf,
+    // Admins see every account, because they manage editors' access.
+    read: siteAdminOrSelf,
+    // New accounts come from invitations; direct creation stays Super Admin only.
     create: adminAccess,
-    update: adminOrSelf,
+    update: userUpdateAccess,
     delete: adminAccess,
     // Every role that can be invited needs the admin panel. Viewers are
     // included deliberately: read-only access is the point of that role.
@@ -54,14 +98,21 @@ export const Users: CollectionConfig = {
       },
       access: {
         /*
-         * Only a Super Admin may change roles, and that includes their own.
+         * Nobody may change their own roles. That rule is what stops an Admin
+         * (who may edit their own record) from promoting themselves to Super
+         * Admin, and an editor from widening their own access.
          *
-         * The obvious alternative — letting a user edit their own roles "for
-         * initial setup" — is a privilege escalation: any invited Author could
-         * promote themselves. The first Super Admin is created by seeding or
-         * directly in the database instead.
+         * The Super Admin may set any role on anyone else. An Admin may change
+         * roles only on editor and viewer accounts, and only to editor or
+         * viewer roles — so an Admin can never create another Admin.
+         *
+         * Invitation acceptance sets roles with `overrideAccess: true`, so it is
+         * unaffected. No field-level `create` rule: collection `create` is
+         * already Super Admin only, and Payload's first-user screen runs with
+         * no user, so a create rule here would leave a fresh install without
+         * any admin.
          */
-        update: siteAdminFieldAccess,
+        update: canChangeRoles,
       },
     },
     {
@@ -73,12 +124,28 @@ export const Users: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description:
-          'Which content this Author may create and edit. Ignored for other roles, which already have full content access.',
-        condition: (data) => Array.isArray(data?.roles) && data.roles.includes('author'),
+          'Collections this editor may create and edit in full. Admins already have full content access.',
+        condition: (data) => isScoped({ roles: data?.roles }),
       },
       access: {
-        // Same reasoning as roles: an Author must not widen their own scope.
-        update: siteAdminFieldAccess,
+        // Same rule as roles: never your own, and an Admin only on editors.
+        update: canChangeScope,
+      },
+    },
+    {
+      name: 'allowedPages',
+      type: 'relationship',
+      relationTo: 'pages',
+      hasMany: true,
+      saveToJWT: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Individual pages this editor may edit. Not needed if "Pages (all pages)" is ticked above. Pages they create themselves are always editable by them.',
+        condition: (data) => isScoped({ roles: data?.roles }),
+      },
+      access: {
+        update: canChangeScope,
       },
     },
     {
@@ -136,12 +203,13 @@ export const Users: CollectionConfig = {
          * real Author's assignments on every sign in.
          */
         const touchingRoles = data.roles !== undefined
-        const touchingScope = data.allowedCollections !== undefined
+        const touchingScope = data.allowedCollections !== undefined || data.allowedPages !== undefined
         if (!touchingRoles && !touchingScope) return data
 
         const effectiveRoles = data.roles ?? originalDoc?.roles
-        if (!isAuthor({ roles: effectiveRoles })) {
+        if (!isScoped({ roles: effectiveRoles })) {
           data.allowedCollections = []
+          data.allowedPages = []
         }
         return data
       },

@@ -3,10 +3,58 @@
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
-  --color-warning-500: var(--cms-accent, #FFAA01);
-  --color-primary-blue: var(--cms-primary, #1A73E9);
   --animate-marquee: marquee linear infinite;
   --animate-fade-in-up: fadeInUp 0.6s ease-out both;
+
+  /* Accessibility palette: focus ring, skip link, accessibility card.
+     Fixed rather than theme-driven so focus stays recognisable on every theme. */
+  --color-maroon: #8b1d1f;
+  --color-maroon-50: #fdf1f0;
+  --color-ink: #16233f;
+  --color-ink-soft: #33405c;
+  --color-line-warm: #eedfd5;
+  --color-sand: #faeade;
+  --shadow-card: 0 1px 2px rgb(22 35 63 / 0.04), 0 8px 24px -12px rgb(22 35 63 / 0.14);
+}
+
+/* Tokens that follow the CMS theme colours. `inline` makes utilities read the
+   CMS variable where they are used: --cms-* is set on <body>, so a regular
+   theme token (defined on :root, above body) would freeze on its fallback. */
+@theme inline {
+  --color-warning-500: var(--cms-accent, #FFAA01);
+  --color-primary-blue: var(--cms-primary, #1A73E9);
+}
+
+@layer base {
+  /* One visible focus style for everything reached by keyboard. Component CSS
+     must not set outline: none, or this is lost (unlayered rules win). */
+  :focus-visible {
+    outline: 2px solid var(--color-maroon);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    /* Stops every looping animation (tickers, marquees, carousel effects) and
+       makes the rest effectively instant. JS-driven autoplay checks the same
+       media query separately (usePrefersReducedMotion). */
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @keyframes marquee {
@@ -62,6 +110,13 @@
   .dashboard-sync-footer-text {
     font-size: 1.65rem;
   }
+}
+
+/* Auto-scrolling tickers pause while pointed at or while a link inside has
+   keyboard focus, so their content can be read and reached. */
+.ticker:hover .ticker-track,
+.ticker:focus-within .ticker-track {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -155,19 +210,22 @@ body {
   color: #fff !important;
 }
 
-/* Ensure button nav items align with anchor nav items */
-button.header-nav-link {
-  vertical-align: baseline;
-  padding: 0;
-  margin: 0;
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-  font: inherit;
-  line-height: inherit;
-  appearance: none;
-  -webkit-appearance: none;
+/* Ensure button nav items (dropdown triggers) align with anchor nav items.
+   In the components layer so the item's own Tailwind classes (text-sm,
+   font-medium, pb-1) win, keeping it identical to the links beside it. */
+@layer components {
+  button.header-nav-link {
+    vertical-align: baseline;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+  }
 }
 
 /* Force all nav items to same alignment */
@@ -392,15 +450,15 @@ img {
   display: block;
 }
 
-a {
+/* No `outline: none` here: it removed the keyboard focus ring from every link.
+   The skip link is exempt from the fade so it shows at full colour over the header. */
+a:not(.skip-link) {
   &:focus {
     opacity: 0.8;
-    outline: none;
   }
 
   &:active {
     opacity: 0.7;
-    outline: none;
   }
 }
 
@@ -408,454 +466,145 @@ svg {
   vertical-align: middle;
 }
 
-.widget-container {
-  position: fixed;
-  left: 1rem;
-  bottom: 1rem;
-  z-index: 2147483000;
-}
-
-.a11y-trigger {
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  border: 0;
-  background: var(--brand-primary);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 20%);
-  cursor: pointer;
-}
-
-.widget-container__trap {
-  width: min(780px, calc(100vw - 2rem));
-  height: min(86vh, 900px);
-}
-
-.widget-container__main {
-  background: var(--brand-primary);
-  border-radius: 20px;
-  overflow: hidden;
-  color: #1f2937;
-  box-shadow: 0 18px 40px rgb(0 0 0 / 25%);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.main {
-  padding: 1rem;
-  overflow: auto;
-  height: 100%;
-}
-
-.header-row {
-  display: grid;
-  grid-template-columns: 32px 1fr 32px;
-  align-items: center;
-  color: #fff;
-  margin-bottom: 0.75rem;
-}
-
-.header-option {
-  width: 32px;
-  height: 32px;
-  border: 0;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 20%);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.header-title {
-  text-align: center;
-  font-size: 2rem;
-  line-height: 1.2;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.75rem;
-}
-
-.hero-button {
-  border: 0;
-  border-radius: 999px;
-  background: var(--bg-muted);
-  color: var(--brand-primary);
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1rem;
-  cursor: pointer;
-}
-
-.search-form {
-  background: var(--brand-primary);
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #fff;
-  padding: 0.6rem 0.9rem;
-  margin-bottom: 1rem;
-}
-
-.search-form .input {
-  background: transparent;
-  border: 0;
-  outline: none;
-  color: #fff;
-  width: 100%;
-}
-
-.search-form .input::placeholder {
-  color: rgb(255 255 255 / 85%);
-}
-
-.action-section {
-  background: #f3f4f6;
-  border-radius: 20px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.action-title {
-  margin: 0 0 0.75rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-.profiles {
-  display: grid;
-  gap: 0.625rem;
-}
-
-.profile-row {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid #e5e7eb;
-  padding: 0.75rem;
-  display: grid;
-  grid-template-columns: 170px 1fr 44px;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.profile-name {
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-.profile-text {
-  color: #64748b;
-  margin-top: 0.15rem;
-}
-
-.profile-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  background: #eef2f7;
-  color: #334155;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toggle-group {
-  border-radius: 999px;
-  background: #e8edf3;
-  padding: 4px;
-  display: inline-flex;
-  gap: 4px;
-}
-
-.toggle-btn {
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: #1f2937;
-  min-width: 62px;
-  min-height: 34px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.toggle-btn.active {
-  background: #fff;
-}
-
-.toggle-group--small .toggle-btn {
-  min-width: 54px;
-  min-height: 30px;
-}
-
-.action-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.action-card {
-  background: #e8edf3;
-  border-radius: 14px;
-  border: 1px solid #dde4ec;
-  padding: 0.8rem;
-  display: grid;
-  gap: 0.6rem;
-}
-
-.action-card--active {
-  outline: 2px solid var(--brand-primary);
-}
-
-.action-card--wide {
-  grid-column: span 2;
-}
-
-.action-card__icon {
-  color: #1f2937;
-}
-
-.action-card__title {
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-.range-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  background: #fff;
-  border-radius: 999px;
-  padding: 0.35rem;
-}
-
-.range-btn {
-  border: 0;
-  background: var(--brand-primary);
-  color: #fff;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-
-.range-value {
-  color: var(--brand-primary);
-  font-weight: 600;
-}
-
-.color-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.color-dot {
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  border: 2px solid transparent;
-  cursor: pointer;
-}
-
-.color-dot.active {
-  border-color: var(--brand-primary);
-}
-
-.color-cancel {
-  border: 0;
-  background: transparent;
-  color: #334155;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.base-select {
-  border-radius: 999px;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #1f2937;
-  padding: 0.6rem 0.8rem;
-  width: 100%;
-}
-
-@media (max-width: 820px) {
-  .widget-container {
-    left: 0.5rem;
-    right: 0.5rem;
-    bottom: 0.5rem;
-  }
-
-  .widget-container__trap {
-    width: calc(100vw - 1rem);
-    height: min(90vh, 900px);
-  }
-
-  .header-title {
-    font-size: 1.4rem;
-  }
-
-  .profile-row {
-    grid-template-columns: 1fr;
-  }
-
-  .action-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .action-card--wide {
-    grid-column: span 2;
-  }
-}
-
-@media (max-width: 520px) {
-  .action-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .action-card--wide {
-    grid-column: span 1;
-  }
-}
+/* ── Accessibility Adjustments: page effects ─────────────────────────────
+   Classes are set on <html> by components/ui/AccessibilityWidget.tsx. The
+   panel itself (.a11y-panel) and the header button that opens it are excluded,
+   so a visitor can always find their way back to switch a setting off.
+   Most rules need !important: they override component styles on purpose. */
 
 html {
   font-size: calc(16px * var(--a11y-font-scale, 1));
 }
 
-body {
-  line-height: var(--a11y-line-height, 1.6);
-  letter-spacing: var(--a11y-letter-spacing, normal);
+/* Content scaling zooms the page content, not the header or the panel. */
+html.a11y-zoom main#main {
+  zoom: var(--a11y-zoom, 1);
 }
 
-.a11y-readable-font body {
-  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif !important;
+html.a11y-line-height body *:not(.a11y-panel, .a11y-panel *) {
+  line-height: var(--a11y-line-height) !important;
 }
 
-.a11y-highlight-titles h1,
-.a11y-highlight-titles h2,
-.a11y-highlight-titles h3,
-.a11y-highlight-titles h4,
-.a11y-highlight-titles h5,
-.a11y-highlight-titles h6 {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+html.a11y-letter-spacing body *:not(.a11y-panel, .a11y-panel *) {
+  letter-spacing: var(--a11y-letter-spacing) !important;
 }
 
-.a11y-highlight-links a {
+html.a11y-readable-font body *:not(.a11y-panel, .a11y-panel *) {
+  font-family: Arial, Verdana, 'Segoe UI', sans-serif !important;
+}
+
+html.a11y-highlight-titles :is(h1, h2, h3, h4, h5, h6):not(.a11y-panel *) {
+  outline: 2px solid var(--cms-primary, #04415f) !important;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+html.a11y-highlight-links a:not(.a11y-panel *) {
   text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
   text-underline-offset: 3px;
+  outline: 2px dashed var(--cms-primary, #04415f);
+  outline-offset: 2px;
 }
 
-.a11y-hide-images img,
-.a11y-hide-images svg,
-.a11y-hide-images video,
-.a11y-hide-images picture,
-.a11y-hide-images canvas {
+html.a11y-hide-images body :is(img, picture, video, canvas, svg, iframe):not(.a11y-panel *, [aria-controls='a11y-panel'] *) {
   visibility: hidden !important;
 }
 
-.a11y-stop-animations *,
-.a11y-stop-animations *::before,
-.a11y-stop-animations *::after {
+html.a11y-hide-images body [style*='background-image']:not(.a11y-panel *) {
+  background-image: none !important;
+}
+
+/* Thin scrollbar inside the panel */
+.a11y-panel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--cms-primary, #04415f) 35%, transparent) transparent;
+}
+
+html.a11y-stop-animations *,
+html.a11y-stop-animations *::before,
+html.a11y-stop-animations *::after {
   animation: none !important;
   transition: none !important;
   scroll-behavior: auto !important;
 }
 
-.a11y-read-mode body,
-.a11y-adhd-friendly body,
-.a11y-cognitive-disability body {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Read mode: text only, in a comfortable column. */
+html.a11y-read-mode main#main :is(img, picture, video, iframe, canvas, svg) {
+  display: none !important;
 }
 
-.a11y-align-left body {
+html.a11y-read-mode main#main :is(p, li, dd, blockquote) {
+  font-size: 1.125rem !important;
+  max-width: 70ch;
+}
+
+html.a11y-align-left body *:not(.a11y-panel, .a11y-panel *) {
   text-align: left !important;
 }
 
-.a11y-align-center body {
+html.a11y-align-center body *:not(.a11y-panel, .a11y-panel *) {
   text-align: center !important;
 }
 
-.a11y-align-right body {
+html.a11y-align-right body *:not(.a11y-panel, .a11y-panel *) {
   text-align: right !important;
 }
 
-.a11y-dark-contrast {
-  filter: contrast(1.2) brightness(0.9);
-  background: #0b0f14 !important;
+/* Contrast modes recolour every element; images keep their own pixels. */
+html.a11y-dark-contrast body,
+html.a11y-dark-contrast body *:not(.a11y-panel, .a11y-panel *, img, video, svg, svg *) {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #6b7280 !important;
 }
 
-.a11y-light-contrast {
-  filter: contrast(1.1) brightness(1.08);
+html.a11y-dark-contrast body a:not(.a11y-panel *) {
+  color: #ffd84d !important;
 }
 
-.a11y-high-contrast {
-  filter: contrast(1.4);
+html.a11y-light-contrast body,
+html.a11y-light-contrast body *:not(.a11y-panel, .a11y-panel *, img, video, svg, svg *) {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-color: #000 !important;
 }
 
-.a11y-high-saturation {
-  filter: saturate(1.3);
+html.a11y-light-contrast body a:not(.a11y-panel *) {
+  color: #0000ee !important;
 }
 
-.a11y-low-saturation {
-  filter: saturate(0.75);
+html.a11y-big-black-cursor,
+html.a11y-big-black-cursor * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><polygon points="3,3 34,17 20,20 26,34 20,37 14,23 3,29" fill="black" stroke="white" stroke-width="2"/></svg>') 3 3, auto !important;
 }
 
-.a11y-monochrome {
-  filter: grayscale(1);
+html.a11y-big-white-cursor,
+html.a11y-big-white-cursor * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><polygon points="3,3 34,17 20,20 26,34 20,37 14,23 3,29" fill="white" stroke="black" stroke-width="2"/></svg>') 3 3, auto !important;
 }
 
-.a11y-big-black-cursor,
-.a11y-big-black-cursor * {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><polygon points="2,2 24,12 14,14 18,24 14,26 10,16 2,20" fill="black" stroke="white" stroke-width="1"/></svg>') 0 0, auto !important;
-}
-
-.a11y-big-white-cursor,
-.a11y-big-white-cursor * {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><polygon points="2,2 24,12 14,14 18,24 14,26 10,16 2,20" fill="white" stroke="black" stroke-width="1"/></svg>') 0 0, auto !important;
-}
-
-.a11y-highlight-hover a:hover,
-.a11y-highlight-hover button:hover,
-.a11y-highlight-hover [role="button"]:hover {
-  outline: 3px solid var(--brand-primary) !important;
+html.a11y-highlight-hover :is(a, button, [role='button'], input, select, textarea, summary):hover {
+  outline: 3px solid var(--cms-primary, #04415f) !important;
   outline-offset: 2px;
 }
 
-.a11y-highlight-focus *:focus-visible {
-  outline: 3px solid var(--brand-primary) !important;
-  outline-offset: 2px;
+html.a11y-highlight-focus *:focus-visible {
+  outline: 4px solid var(--color-maroon) !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px rgb(253 241 240 / 0.9) !important;
 }
 
-.a11y-custom-text-color {
+html.a11y-custom-text-color body :is(p, li, span, a, td, th, label, dd, dt, blockquote, figcaption, small, strong, em):not(.a11y-panel *) {
   color: var(--a11y-text-color) !important;
 }
 
-.a11y-custom-title-color h1,
-.a11y-custom-title-color h2,
-.a11y-custom-title-color h3,
-.a11y-custom-title-color h4,
-.a11y-custom-title-color h5,
-.a11y-custom-title-color h6 {
+html.a11y-custom-title-color body :is(h1, h2, h3, h4, h5, h6):not(.a11y-panel *) {
   color: var(--a11y-title-color) !important;
 }
 
-.a11y-custom-bg-color body {
+html.a11y-custom-bg-color body,
+html.a11y-custom-bg-color body :is(main, section, header, footer, article, aside, nav, div):not(.a11y-panel, .a11y-panel *) {
   background-color: var(--a11y-bg-color) !important;
 }
 
@@ -1329,7 +1078,6 @@ body {
   padding: 0.65rem 0.875rem;
   font-size: 0.95rem;
   color: var(--text-main);
-  outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   font-family: inherit;
   background: var(--bg-surface);
@@ -1375,7 +1123,6 @@ body {
 }
 
 .apply-form__custom-select-trigger:focus-visible {
-  outline: none;
   border-color: var(--brand-primary);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 20%, transparent);
 }
@@ -1412,10 +1159,6 @@ body {
   font-size: 0.9rem;
   color: var(--text-main);
   background: color-mix(in srgb, var(--bg-muted) 35%, var(--bg-surface));
-}
-
-.apply-form__custom-select-search:focus {
-  outline: none;
 }
 
 .apply-form__custom-select-options {
@@ -1490,8 +1233,23 @@ body {
   color: color-mix(in srgb, var(--text-main) 45%, transparent);
 }
 
+/* Visually hidden but still focusable, so the upload works from the keyboard. */
 .apply-form__file-input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.apply-form__dropzone:has(.apply-form__file-input:focus-visible) {
+  outline: 2px solid var(--color-maroon);
+  outline-offset: 2px;
+  border-color: var(--brand-primary);
 }
 
 /* File selected state */
@@ -1552,6 +1310,76 @@ body {
 .apply-form__actions {
   display: flex;
   justify-content: flex-end;
+}
+
+/* ── Contact variant: form sits inside the contact block's own card ── */
+.apply-form--contact {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  max-width: none;
+  margin: 0;
+  overflow: visible;
+}
+
+.apply-form--contact .apply-form__input,
+.apply-form--contact .apply-form__custom-select-trigger {
+  padding: 14px 20px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--cms-muted-bg, #f1f5f7) 60%, var(--cms-surface, #fff));
+  border: 1px solid color-mix(in srgb, var(--cms-text, #010608) 10%, transparent);
+  transition: all 0.3s ease;
+}
+
+.apply-form--contact .apply-form__input:focus {
+  background: var(--cms-surface, #fff);
+  border-color: var(--cms-primary, #04415f);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cms-primary, #04415f) 15%, transparent);
+}
+
+.apply-form--contact textarea.apply-form__input {
+  min-height: 140px;
+}
+
+.apply-form--contact .apply-form__actions {
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media (max-width: 576px) {
+  .apply-form--contact .apply-form__actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.apply-form--contact .apply-form__submit {
+  background: var(--cms-secondary, #011e2c);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.apply-form--contact .apply-form__submit:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--cms-secondary, #011e2c), #000 15%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px color-mix(in srgb, var(--cms-secondary, #011e2c) 25%, transparent);
+}
+
+.contact-social-link {
+  background: color-mix(in srgb, var(--cms-muted-bg, #f1f5f7) 80%, var(--cms-surface, #fff));
+  color: var(--cms-secondary, #011e2c);
+}
+
+.contact-social-link:hover {
+  background: var(--cms-secondary, #011e2c);
+  color: #fff;
 }
 
 .apply-form__submit {
@@ -1656,11 +1484,6 @@ body {
 
 .states-onboarded__card:hover {
   box-shadow: 0 14px 28px color-mix(in srgb, var(--text-main) 14%, transparent);
-}
-
-.states-onboarded__card:focus-visible {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 2px;
 }
 
 .states-onboarded__image-fade {
@@ -1892,7 +1715,6 @@ body {
   padding: 0.7rem 0.9rem;
   font-size: 0.95rem;
   color: #1e293b;
-  outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
   background: #f8fafc;
 }
@@ -2112,6 +1934,33 @@ body {
 
 .btn-shine:hover::before {
   left: 100%;
+}
+
+/* Team member card (TeamGridBlock) */
+.team-card:hover,
+.team-card:focus-within {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 22px 44px -20px color-mix(in srgb, var(--cms-primary, #4B2E83) 45%, transparent) !important;
+}
+
+.team-card__social {
+  color: var(--cms-primary, #4B2E83);
+  background: color-mix(in srgb, var(--cms-primary, #4B2E83) 8%, transparent);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.team-card__social:hover,
+.team-card__social:focus-visible {
+  background: var(--cms-primary, #4B2E83);
+  color: #fff;
+}
+
+.team-card__link {
+  color: var(--cms-primary, #4B2E83);
+}
+
+.team-card__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* Card lift + shadow on hover */

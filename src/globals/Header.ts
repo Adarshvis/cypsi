@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { publicAccess, adminAccess } from '../access/roles'
+import { hiddenUnlessSiteAdmin, publicAccess, siteAdminAccess } from '../access/roles'
 
 async function sanitizeHeaderChildPageRefs(data: any, payload: any) {
   if (!data || !Array.isArray(data.navItems)) return data
@@ -34,9 +34,13 @@ export const Header: GlobalConfig = {
       async ({ data, req }) => sanitizeHeaderChildPageRefs(data, req.payload),
     ],
   },
+  admin: {
+    hidden: hiddenUnlessSiteAdmin,
+  },
   access: {
     read: publicAccess,
-    update: adminAccess,
+    // Super Admin and Admin.
+    update: siteAdminAccess,
   },
   fields: [
     // ── Top Bar (optional) ──

@@ -1,7 +1,9 @@
 import type { CollectionConfig } from 'payload'
 import {
-  collectionReadAccess,
-  collectionWriteAccess,
+  hiddenUnlessPageAccess,
+  pagesCreateAccess,
+  pagesReadAccess,
+  pagesUpdateAccess,
   siteAdminAccess,
 } from '../access/roles'
 import { syncNavAfterChange, syncNavAfterDelete } from '../hooks/syncNavItems'
@@ -13,14 +15,26 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'status', 'updatedAt'],
     group: 'Content',
+    hidden: hiddenUnlessPageAccess,
   },
   access: {
-    read: collectionReadAccess('pages'),
-    create: collectionWriteAccess('pages'),
-    update: collectionWriteAccess('pages'),
+    // Page-scoped editors see and edit only their assigned pages plus the
+    // ones they created. The public site reads through the Local API.
+    read: pagesReadAccess,
+    create: pagesCreateAccess,
+    update: pagesUpdateAccess,
     delete: siteAdminAccess,
   },
   hooks: {
+    beforeChange: [
+      ({ data, req, operation, originalDoc }) => {
+        if (!data) return data
+        // Server-set only: whatever a client sends is ignored.
+        data.createdBy =
+          operation === 'create' ? (req.user?.id ?? null) : (originalDoc?.createdBy ?? null)
+        return data
+      },
+    ],
     beforeValidate: [
       ({ data }) => {
         if (data && data.title && !data.slug) {
@@ -73,6 +87,16 @@ export const Pages: CollectionConfig = {
       relationTo: 'pages',
       admin: {
         description: 'Parent page for hierarchy',
+      },
+    },
+    {
+      name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Set automatically. The creator can always keep editing this page.',
       },
     },
     {
