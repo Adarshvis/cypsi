@@ -29,6 +29,7 @@ import DocumentDownloadsBlock from './blocks/DocumentDownloadsBlock'
 import ContactSectionBlock from './blocks/ContactSectionBlock'
 import ProjectShowcaseBlock from './blocks/ProjectShowcaseBlock'
 import AccessibilityStatementBlock from './blocks/AccessibilityStatementBlock'
+import BlogFeedBlock from './blocks/BlogFeedBlock'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   hero: HeroBlock,
@@ -36,6 +37,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   contactSection: ContactSectionBlock,
   projectShowcase: ProjectShowcaseBlock,
   accessibilityStatement: AccessibilityStatementBlock,
+  blogFeed: BlogFeedBlock,
   marquee: MarqueeBlock,
   showcaseCards: ShowcaseCardsBlock,
   statistics: StatisticsBlock,

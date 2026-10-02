@@ -3,7 +3,7 @@
  *
  * Exists so no route has to hardcode a title or an organisation name. Every
  * value comes from Site Settings; where a setting is empty the fallback is a
- * generic noun ("News", "Publications"), never a brand.
+ * generic noun ("News", "Publications", "Blog"), never a brand.
  */
 import { getPayload } from 'payload'
 import config from '@/payload.config'
@@ -22,6 +22,7 @@ export interface SiteMeta {
   faviconUrl?: string
   news: ListingMeta
   publications: ListingMeta
+  blog: ListingMeta
 }
 
 /**
@@ -34,6 +35,7 @@ const DEFAULT_SITE_NAME = 'Site'
 const DEFAULT_LISTING_TITLES = {
   news: 'News',
   publications: 'Publications',
+  blog: 'Blog',
 } as const
 
 let cached: SiteMeta | null = null
@@ -89,6 +91,7 @@ export async function getSiteMeta(): Promise<SiteMeta> {
       siteName,
       siteDescription,
     ),
+    blog: resolveListing(listings.blog, DEFAULT_LISTING_TITLES.blog, siteName, siteDescription),
   }
 
   cached = meta

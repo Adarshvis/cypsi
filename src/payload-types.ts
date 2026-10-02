@@ -751,6 +751,32 @@ export interface Page {
         blockType: 'accessibilityStatement';
       }
     | {
+        /**
+         * Section heading displayed above this block
+         */
+        sectionHeading?: string | null;
+        /**
+         * Optional description below the heading
+         */
+        sectionDescription?: string | null;
+        headingAlignment?: ('left' | 'center' | 'right') | null;
+        limit?: number | null;
+        /**
+         * Optional. Only posts with exactly this category.
+         */
+        category?: string | null;
+        featuredOnly?: boolean | null;
+        linkLabel?: string | null;
+        linkUrl?: string | null;
+        /**
+         * Pick a color or enter hex value
+         */
+        backgroundColor?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'blogFeed';
+      }
+    | {
         items: {
           text: string;
           /**
@@ -4929,7 +4955,7 @@ export interface BlogPost {
   id: number;
   title: string;
   /**
-   * URL path segment (auto-generated from title if left empty)
+   * Web address: /blog/<slug>. Leave empty to make it from the title. Kept when the title changes, so links keep working.
    */
   slug: string;
   /**
@@ -7894,6 +7920,21 @@ export interface PagesSelect<T extends boolean = true> {
                     text?: T;
                     id?: T;
                   };
+              id?: T;
+              blockName?: T;
+            };
+        blogFeed?:
+          | T
+          | {
+              sectionHeading?: T;
+              sectionDescription?: T;
+              headingAlignment?: T;
+              limit?: T;
+              category?: T;
+              featuredOnly?: T;
+              linkLabel?: T;
+              linkUrl?: T;
+              backgroundColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -11356,6 +11397,25 @@ export interface SiteSetting {
       metaTitle?: string | null;
       metaDescription?: string | null;
     };
+    blog?: {
+      /**
+       * Heading in the page banner. Defaults to "Blog".
+       */
+      title?: string | null;
+      /**
+       * Small label above the heading.
+       */
+      eyebrow?: string | null;
+      /**
+       * Intro text under the heading.
+       */
+      description?: string | null;
+      /**
+       * Browser and search-result title. Defaults to the heading.
+       */
+      metaTitle?: string | null;
+      metaDescription?: string | null;
+    };
     publications?: {
       /**
        * Heading in the page banner.
@@ -11675,6 +11735,15 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         news?:
+          | T
+          | {
+              title?: T;
+              eyebrow?: T;
+              description?: T;
+              metaTitle?: T;
+              metaDescription?: T;
+            };
+        blog?:
           | T
           | {
               title?: T;

@@ -1,13 +1,14 @@
 new tables      : 1
-    + internship_applications
-new enum types  : 3
-    + enum_form_submissions_status
+    + pages_blocks_blog_feed
+new enum types  : 2
     + enum_header_nav_items_children_type
-    + enum_internship_applications_status
-new columns on existing tables : 3
-    + form_submissions.status
-    + forms.show_in_contact_enquiries
-    + payload_locked_documents_rels.internship_applications_id
+    + enum_pages_blocks_blog_feed_heading_alignment
+new columns on existing tables : 5
+    + site_settings.listing_pages_blog_description
+    + site_settings.listing_pages_blog_eyebrow
+    + site_settings.listing_pages_blog_meta_description
+    + site_settings.listing_pages_blog_meta_title
+    + site_settings.listing_pages_blog_title
 
 --- red flags (should all be zero) ---
 dropped tables  : 0 

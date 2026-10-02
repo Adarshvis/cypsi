@@ -31,6 +31,7 @@ import { DocumentDownloads } from './DocumentDownloads'
 import { ContactSection } from './ContactSection'
 import { ProjectShowcase } from './ProjectShowcase'
 import { AccessibilityStatement } from './AccessibilityStatement'
+import { BlogFeed } from './BlogFeed'
 
 export const allBlocks = [
   Hero,
@@ -38,6 +39,7 @@ export const allBlocks = [
   ContactSection,
   ProjectShowcase,
   AccessibilityStatement,
+  BlogFeed,
   Marquee,
   DocumentDownloads,
   StatesOnboarded,

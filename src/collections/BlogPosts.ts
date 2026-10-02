@@ -5,6 +5,7 @@ import {
   hiddenUnlessCollectionAccess,
   siteAdminAccess,
 } from '../access/roles'
+import { uniqueSlugHook, validateSlug } from '../lib/slug'
 
 export const BlogPosts: CollectionConfig = {
   slug: 'blog-posts',
@@ -27,22 +28,14 @@ export const BlogPosts: CollectionConfig = {
     delete: siteAdminAccess,
   },
   hooks: {
-    beforeValidate: [
-      ({ data }) => {
-        if (data && data.title && !data.slug) {
-          data.slug = data.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, '')
-        }
-        return data
-      },
-    ],
+    beforeValidate: [uniqueSlugHook({ collection: 'blog-posts' })],
     beforeChange: [
-      ({ data, req, operation }) => {
-        if (operation === 'create' && req.user && !data.createdBy) {
-          data.createdBy = req.user.id
-        }
+      ({ data, req, operation, originalDoc }) => {
+        if (!data) return data
+        // Server-set only: a client-supplied value is ignored (it could credit
+        // the post to someone else, or crash the save with a bad id).
+        data.createdBy =
+          operation === 'create' ? (req.user?.id ?? null) : (originalDoc?.createdBy ?? null)
         return data
       },
     ],
@@ -59,8 +52,12 @@ export const BlogPosts: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
+      // Lets the admin save with this left empty; the hook then fills it.
+      validate: validateSlug,
       admin: {
-        description: 'URL path segment (auto-generated from title if left empty)',
+        position: 'sidebar',
+        description:
+          'Web address: /blog/<slug>. Leave empty to make it from the title. Kept when the title changes, so links keep working.',
       },
     },
     {
