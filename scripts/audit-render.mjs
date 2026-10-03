@@ -2,9 +2,14 @@
  * Structural audit of a rendered page: section order, headings, card counts,
  * empty states and anything that looks like unrendered rich text.
  */
+import nextEnv from '@next/env'
+
+// Read PORT (and the rest of .env) the same way Next does.
+nextEnv.loadEnvConfig(process.cwd())
+
 import fs from 'fs'
 
-const url = process.argv[2] || 'http://localhost:3666/cypsi-home'
+const url = process.argv[2] || `http://localhost:${process.env.PORT || 3555}/cypsi-home`
 const res = await fetch(url)
 const html = await res.text()
 const out = [`GET ${url} → ${res.status}, ${html.length} bytes`, '']

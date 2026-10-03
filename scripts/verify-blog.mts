@@ -13,7 +13,7 @@ const { default: config } = await import('../src/payload.config.js')
 const { getPayload } = await import('payload')
 const payload = await getPayload({ config })
 
-const BASE = 'http://localhost:3666'
+const BASE = `http://localhost:${process.env.PORT || 3555}`
 const tag = `bv${Date.now().toString(36)}`
 const res: string[] = []
 let pass = 0
@@ -60,7 +60,7 @@ try {
   const draft = await create(base(`${tag} draft post`, { status: 'draft' }))
 
   const up = await fetch(BASE + '/blog').then(() => true, () => false)
-  if (!up) { res.push('  SKIP  page and admin-UI checks — dev server on :3666 is not running') }
+  if (!up) { res.push(`  SKIP  page and admin-UI checks — dev server on :${process.env.PORT || 3555} is not running`) }
   if (up) {
   /* Pages over HTTP */
   const get = (u: string) => fetch(BASE + u).then(async (r) => ({ status: r.status, html: await r.text() }))

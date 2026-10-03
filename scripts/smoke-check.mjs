@@ -7,12 +7,17 @@
  * that, so the invariants are asserted here instead.
  *
  *   node scripts/smoke-check.mjs
- *   node scripts/smoke-check.mjs --base=http://localhost:3666
+ *   node scripts/smoke-check.mjs --base=http://localhost:3555
  *
  * Exits non-zero if any check fails.
  */
+import nextEnv from '@next/env'
+
+// Read PORT (and the rest of .env) the same way Next does.
+nextEnv.loadEnvConfig(process.cwd())
+
 const baseArg = process.argv.find((a) => a.startsWith('--base='))
-const BASE = (baseArg ? baseArg.split('=')[1] : 'http://localhost:3666').replace(/\/$/, '')
+const BASE = (baseArg ? baseArg.split('=')[1] : `http://localhost:${process.env.PORT || 3555}`).replace(/\/$/, '')
 
 /** Every nav link that must be present in the header on every page. */
 const NAV = ['>Home<', '>About<', '>Publications<', '>News<', '>Team<']

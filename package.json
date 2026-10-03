@@ -6,15 +6,15 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
-    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 3666",
-    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev -p 3666",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation node scripts/next.mjs dev",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation node scripts/next.mjs dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "start": "cross-env NODE_OPTIONS=--no-deprecation next start -p 3666",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation node scripts/next.mjs start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"

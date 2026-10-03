@@ -56,7 +56,12 @@ export function getPublicUrl(): string {
     process.env.NEXT_PUBLIC_APP_URL ||
     process.env.NEXT_PUBLIC_SERVER_URL ||
     process.env.PAYLOAD_PUBLIC_SERVER_URL ||
-    `http://localhost:${process.env.PORT || 3666}`
+    `http://localhost:${process.env.PORT || 3555}`
 
-  return candidate.trim().replace(/\/+$/, '')
+  // Next expands ${PORT} in .env itself; scripts that read .env by hand do not,
+  // so expand it here too.
+  return candidate
+    .replace(/\$\{PORT\}|\$PORT\b/g, process.env.PORT || '3555')
+    .trim()
+    .replace(/\/+$/, '')
 }

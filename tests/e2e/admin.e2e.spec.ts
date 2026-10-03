@@ -2,6 +2,9 @@ import { test, expect, Page } from '@playwright/test'
 import { login } from '../helpers/login'
 import { seedTestUser, cleanupTestUser, testUser } from '../helpers/seedUser'
 
+// Same port as the dev server (PORT in .env, loaded by playwright.config.ts).
+const BASE_URL = `http://localhost:${process.env.PORT || 3555}`
+
 test.describe('Admin Panel', () => {
   let page: Page
 
@@ -19,21 +22,21 @@ test.describe('Admin Panel', () => {
   })
 
   test('can navigate to dashboard', async () => {
-    await page.goto('http://localhost:3666/admin')
-    await expect(page).toHaveURL('http://localhost:3666/admin')
+    await page.goto(`${BASE_URL}/admin`)
+    await expect(page).toHaveURL(`${BASE_URL}/admin`)
     const dashboardArtifact = page.locator('span[title="Dashboard"]').first()
     await expect(dashboardArtifact).toBeVisible()
   })
 
   test('can navigate to list view', async () => {
-    await page.goto('http://localhost:3666/admin/collections/users')
-    await expect(page).toHaveURL('http://localhost:3666/admin/collections/users')
+    await page.goto(`${BASE_URL}/admin/collections/users`)
+    await expect(page).toHaveURL(`${BASE_URL}/admin/collections/users`)
     const listViewArtifact = page.locator('h1', { hasText: 'Users' }).first()
     await expect(listViewArtifact).toBeVisible()
   })
 
   test('can navigate to edit view', async () => {
-    await page.goto('http://localhost:3666/admin/collections/users/create')
+    await page.goto(`${BASE_URL}/admin/collections/users/create`)
     await expect(page).toHaveURL(/\/admin\/collections\/users\/[a-zA-Z0-9-_]+/)
     const editViewArtifact = page.locator('input[name="email"]')
     await expect(editViewArtifact).toBeVisible()

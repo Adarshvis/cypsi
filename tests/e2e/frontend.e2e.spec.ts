@@ -1,5 +1,8 @@
 import { test, expect, Page } from '@playwright/test'
 
+// Same port as the dev server (PORT in .env, loaded by playwright.config.ts).
+const BASE_URL = `http://localhost:${process.env.PORT || 3555}`
+
 test.describe('Frontend', () => {
   let page: Page
 
@@ -9,7 +12,7 @@ test.describe('Frontend', () => {
   })
 
   test('can go on homepage', async ({ page }) => {
-    await page.goto('http://localhost:3666')
+    await page.goto(`${BASE_URL}`)
 
     await expect(page).toHaveTitle(/Payload Blank Template/)
 
