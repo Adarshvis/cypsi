@@ -41,10 +41,13 @@ export default function PageBanner({
         color: 'var(--cms-text, #04415f)',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
-        <div className="min-w-0">
+      {/* The title takes the free space; the breadcrumb is capped and its last
+          crumb truncates, so a long article title never gets squeezed into a
+          narrow column by its own breadcrumb. */}
+      <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-x-10 gap-y-2">
+        <div className="min-w-0 lg:flex-1">
           <h1
-            className="ducc-heading"
+            className="ducc-heading text-balance"
             style={{ fontSize: 24, fontWeight: 700, lineHeight: 1.25 }}
           >
             {title}
@@ -56,14 +59,14 @@ export default function PageBanner({
           )}
         </div>
 
-        <div className="flex items-center gap-4 shrink-0">
-          <nav aria-label="Breadcrumb">
+        <div className="flex min-w-0 items-center gap-4 lg:max-w-[40%] lg:shrink-0">
+          <nav aria-label="Breadcrumb" className="min-w-0">
             <ol
-              className="flex flex-wrap items-center"
+              className="flex min-w-0 items-center"
               style={{ fontSize: 14, fontWeight: 400, listStyle: 'none', margin: 0, padding: 0 }}
             >
               {trail.map((crumb) => (
-                <li key={crumb.label} className="flex items-center">
+                <li key={crumb.label} className="flex shrink-0 items-center whitespace-nowrap">
                   {crumb.href ? (
                     <Link href={crumb.href} className="hover:underline">
                       {crumb.label}
@@ -76,7 +79,8 @@ export default function PageBanner({
                   </span>
                 </li>
               ))}
-              <li aria-current="page" style={{ opacity: 0.85 }}>
+              {/* Truncated with an ellipsis; the full title is the h1 beside it. */}
+              <li aria-current="page" className="min-w-0 truncate" title={title} style={{ opacity: 0.85 }}>
                 {title}
               </li>
             </ol>

@@ -5100,7 +5100,7 @@ export interface ResearchDomain {
    */
   title: string;
   /**
-   * URL path segment (auto-generated from title if left empty)
+   * Web address: /research-domains/<slug>. Leave empty to make it from the title. Kept when the title changes, so links keep working.
    */
   slug: string;
   /**
@@ -5108,7 +5108,7 @@ export interface ResearchDomain {
    */
   excerpt?: string | null;
   /**
-   * Optional Lucide icon name for the listing card, e.g. "cpu"
+   * Optional icon for the listing card.
    */
   icon?: string | null;
   /**
@@ -5158,7 +5158,7 @@ export interface WorkWithUs {
    */
   title: string;
   /**
-   * URL path segment (auto-generated from title if left empty)
+   * Web address: /work-with-us/<slug>. Leave empty to make it from the title. Kept when the title changes, so links keep working.
    */
   slug: string;
   /**
@@ -11397,6 +11397,44 @@ export interface SiteSetting {
       metaTitle?: string | null;
       metaDescription?: string | null;
     };
+    workWithUs?: {
+      /**
+       * Heading in the page banner. Defaults to "Work With Us".
+       */
+      title?: string | null;
+      /**
+       * Small label above the heading.
+       */
+      eyebrow?: string | null;
+      /**
+       * Intro text under the heading.
+       */
+      description?: string | null;
+      /**
+       * Browser and search-result title. Defaults to the heading.
+       */
+      metaTitle?: string | null;
+      metaDescription?: string | null;
+    };
+    researchDomains?: {
+      /**
+       * Heading in the page banner. Defaults to "Research Domains".
+       */
+      title?: string | null;
+      /**
+       * Small label above the heading.
+       */
+      eyebrow?: string | null;
+      /**
+       * Intro text under the heading.
+       */
+      description?: string | null;
+      /**
+       * Browser and search-result title. Defaults to the heading.
+       */
+      metaTitle?: string | null;
+      metaDescription?: string | null;
+    };
     blog?: {
       /**
        * Heading in the page banner. Defaults to "Blog".
@@ -11735,6 +11773,24 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         news?:
+          | T
+          | {
+              title?: T;
+              eyebrow?: T;
+              description?: T;
+              metaTitle?: T;
+              metaDescription?: T;
+            };
+        workWithUs?:
+          | T
+          | {
+              title?: T;
+              eyebrow?: T;
+              description?: T;
+              metaTitle?: T;
+              metaDescription?: T;
+            };
+        researchDomains?:
           | T
           | {
               title?: T;

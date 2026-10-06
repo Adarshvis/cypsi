@@ -45,7 +45,9 @@ const HINT_RULES: Record<HintKey, RegExp> = {
   phone: /phone|mobile|whatsapp|contact\s*(no|number)/,
   institution: /college|university|institut|school/,
   yearOrSemester: /\byear\b|semester|\bsem\b/,
-  domain: /domain|position|applying\s*for|area\s*of\s*interest|track/,
+  // Also tolerates the common misspellings ("domin", "domian", "doamin").
+  domain:
+    /domain|domin|domian|doamin|position|\brole\b|applying\s*for|area\s*of\s*interest|interested\s*in|track|speciali[sz]ation/,
   subject: /subject|topic|regarding/,
   message: /message|enquiry|inquiry|query|comment|details/,
   name: /applicant|full\s*name|\bname\b/,
@@ -82,9 +84,26 @@ export function classifyField(field: FormFieldDef): HintKey | null {
   return null
 }
 
-/** True when the field is the form's internship domain field. */
+/** True when the field's name/label marks it as the internship domain field. */
 export function isDomainField(field: FormFieldDef): boolean {
   return classifyField(field) === 'domain'
+}
+
+/** Choice fields that can stand in for the domain when none is named like one. */
+const DOMAIN_FALLBACK_TYPES = new Set(['select', 'radio'])
+
+function isDomainFallback(field: FormFieldDef): boolean {
+  return DOMAIN_FALLBACK_TYPES.has(field.blockType) && classifyField(field) === null
+}
+
+/**
+ * The form's internship domain field: the first field named like a domain,
+ * else the first dropdown/radio no other hint claims (e.g. a field labelled
+ * just "Select"). Matches what `mapFieldsByHint` maps to `domain`.
+ */
+export function findDomainField<T extends FormFieldDef>(fields: T[]): T | undefined {
+  const usable = fields.filter((field) => field.name && field.blockType !== 'resumeUpload')
+  return usable.find(isDomainField) ?? usable.find(isDomainFallback)
 }
 
 export type HintEntry = FormFieldDef & { name: string; value: string }
@@ -111,6 +130,15 @@ export function mapFieldsByHint(entries: HintEntry[], keys: HintKey[]): HintMapR
       continue
     }
     leftovers.push({ entry, value, classified: key !== null })
+  }
+
+  // An unlabelled dropdown/radio ("Select") is the domain when nothing else claimed it.
+  if (keys.includes('domain') && mapped.domain === undefined) {
+    const index = leftovers.findIndex((l) => !l.classified && isDomainFallback(l.entry))
+    if (index !== -1) {
+      mapped.domain = leftovers[index].value
+      leftovers.splice(index, 1)
+    }
   }
 
   // A plain textarea ("Your note") is the message when nothing else claimed it.

@@ -5,6 +5,7 @@ import {
   hiddenUnlessCollectionAccess,
   siteAdminAccess,
 } from '../access/roles'
+import { uniqueSlugHook, validateSlug } from '../lib/slug'
 
 export const WorkWithUs: CollectionConfig = {
   slug: 'work-with-us',
@@ -27,17 +28,8 @@ export const WorkWithUs: CollectionConfig = {
     delete: siteAdminAccess,
   },
   hooks: {
-    beforeValidate: [
-      ({ data }) => {
-        if (data && data.title && !data.slug) {
-          data.slug = data.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, '')
-        }
-        return data
-      },
-    ],
+    // Makes the slug from the title when empty, tidies typed ones, adds -2/-3 for duplicates.
+    beforeValidate: [uniqueSlugHook({ collection: 'work-with-us' })],
   },
   fields: [
     {
@@ -54,8 +46,12 @@ export const WorkWithUs: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
+      // Lets the admin save with this left empty; the hook then fills it.
+      validate: validateSlug,
       admin: {
-        description: 'URL path segment (auto-generated from title if left empty)',
+        position: 'sidebar',
+        description:
+          'Web address: /work-with-us/<slug>. Leave empty to make it from the title. Kept when the title changes, so links keep working.',
       },
     },
     {

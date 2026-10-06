@@ -119,6 +119,54 @@ export const SiteSettings: GlobalConfig = {
         },
         {
           type: 'group',
+          name: 'workWithUs',
+          label: 'Work With Us Listing',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              admin: { description: 'Heading in the page banner. Defaults to "Work With Us".' },
+            },
+            { name: 'eyebrow', type: 'text', admin: { description: 'Small label above the heading.' } },
+            {
+              name: 'description',
+              type: 'textarea',
+              admin: { description: 'Intro text under the heading.' },
+            },
+            {
+              name: 'metaTitle',
+              type: 'text',
+              admin: { description: 'Browser and search-result title. Defaults to the heading.' },
+            },
+            { name: 'metaDescription', type: 'textarea' },
+          ],
+        },
+        {
+          type: 'group',
+          name: 'researchDomains',
+          label: 'Research Domains Listing',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              admin: { description: 'Heading in the page banner. Defaults to "Research Domains".' },
+            },
+            { name: 'eyebrow', type: 'text', admin: { description: 'Small label above the heading.' } },
+            {
+              name: 'description',
+              type: 'textarea',
+              admin: { description: 'Intro text under the heading.' },
+            },
+            {
+              name: 'metaTitle',
+              type: 'text',
+              admin: { description: 'Browser and search-result title. Defaults to the heading.' },
+            },
+            { name: 'metaDescription', type: 'textarea' },
+          ],
+        },
+        {
+          type: 'group',
           name: 'blog',
           label: 'Blog Listing',
           fields: [

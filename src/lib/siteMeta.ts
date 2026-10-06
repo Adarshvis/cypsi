@@ -23,6 +23,8 @@ export interface SiteMeta {
   news: ListingMeta
   publications: ListingMeta
   blog: ListingMeta
+  researchDomains: ListingMeta
+  workWithUs: ListingMeta
 }
 
 /**
@@ -36,6 +38,8 @@ const DEFAULT_LISTING_TITLES = {
   news: 'News',
   publications: 'Publications',
   blog: 'Blog',
+  researchDomains: 'Research Domains',
+  workWithUs: 'Work With Us',
 } as const
 
 let cached: SiteMeta | null = null
@@ -92,6 +96,13 @@ export async function getSiteMeta(): Promise<SiteMeta> {
       siteDescription,
     ),
     blog: resolveListing(listings.blog, DEFAULT_LISTING_TITLES.blog, siteName, siteDescription),
+    workWithUs: resolveListing(listings.workWithUs, DEFAULT_LISTING_TITLES.workWithUs, siteName, siteDescription),
+    researchDomains: resolveListing(
+      listings.researchDomains,
+      DEFAULT_LISTING_TITLES.researchDomains,
+      siteName,
+      siteDescription,
+    ),
   }
 
   cached = meta

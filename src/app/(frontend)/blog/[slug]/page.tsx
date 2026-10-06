@@ -77,13 +77,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               )}
             </div>
 
-            <h2
-              className="ducc-heading mt-3 font-bold leading-tight"
-              style={{ fontSize: 'clamp(1.75rem, 3.4vw, 2.6rem)', color: SECONDARY }}
-            >
-              {post.title}
-            </h2>
-
+            {/* The title is the page banner's h1, so it is not repeated here. */}
             <p className="mt-4 text-lg leading-relaxed" style={{ color: TEXT, opacity: 0.75 }}>
               {post.shortDescription}
             </p>

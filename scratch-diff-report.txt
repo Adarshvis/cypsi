@@ -1,14 +1,12 @@
-new tables      : 1
-    + pages_blocks_blog_feed
-new enum types  : 2
+new tables      : 0
+new enum types  : 1
     + enum_header_nav_items_children_type
-    + enum_pages_blocks_blog_feed_heading_alignment
 new columns on existing tables : 5
-    + site_settings.listing_pages_blog_description
-    + site_settings.listing_pages_blog_eyebrow
-    + site_settings.listing_pages_blog_meta_description
-    + site_settings.listing_pages_blog_meta_title
-    + site_settings.listing_pages_blog_title
+    + site_settings.listing_pages_work_with_us_description
+    + site_settings.listing_pages_work_with_us_eyebrow
+    + site_settings.listing_pages_work_with_us_meta_description
+    + site_settings.listing_pages_work_with_us_meta_title
+    + site_settings.listing_pages_work_with_us_title
 
 --- red flags (should all be zero) ---
 dropped tables  : 0 

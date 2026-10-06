@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import RichText from '../ui/RichText'
 import { AlertCircle, ChevronDown, FileText, Upload, X } from 'lucide-react'
-import { isDomainField } from '@/lib/requests/fieldHints'
+import { findDomainField } from '@/lib/requests/fieldHints'
 
 type FormField = {
   id?: string
@@ -168,9 +168,7 @@ export default function FormBuilderEmbed({
   // Application forms only: the field the `?domain=` value fills in, if any.
   const domainField = useMemo(
     () =>
-      hasResumeUpload
-        ? fields.find((field) => field.name && field.blockType !== 'resumeUpload' && isDomainField(field))
-        : undefined,
+      hasResumeUpload ? findDomainField(fields) : undefined,
     [fields, hasResumeUpload],
   )
   const domainOption = useMemo(() => {
