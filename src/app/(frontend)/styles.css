@@ -973,6 +973,245 @@ html.a11y-custom-bg-color body :is(main, section, header, footer, article, aside
   transform: translateY(0);
 }
 
+/* ── Document detail layout (Research Domains, Work With Us) ──
+   Mirrors the learner site's single-column reading page: centred header over
+   an 800px body on the plain page background. */
+.cms-doc {
+  --doc-text: var(--cms-text, #010608);
+  --doc-heading: var(--cms-secondary, #011e2c);
+  --doc-rule: color-mix(in srgb, var(--doc-text) 10%, transparent);
+  padding: 3.5rem 1.5rem 4rem;
+  color: var(--doc-text);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.cms-doc__header {
+  max-width: 50rem;
+  margin: 0 auto 3rem;
+  padding-bottom: 2.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--doc-rule);
+}
+
+.cms-doc__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.875rem;
+  background: color-mix(in srgb, var(--cms-primary, #04415f) 10%, transparent);
+}
+
+.cms-doc__date {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--doc-text) 60%, transparent);
+}
+
+.cms-doc__title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--doc-heading);
+  text-wrap: balance;
+}
+
+.cms-doc__intro {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--doc-text) 80%, transparent);
+}
+
+.cms-doc__body {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+/* Featured image and images inside the content share one size cap. Payload
+   and next/image both emit the full intrinsic width/height, so without it a
+   large upload filled the whole column. */
+.cms-doc__figure {
+  margin: 0 0 2.5rem;
+}
+
+.cms-doc__figure img,
+.cms-doc__content .cms-richtext img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 36rem);
+  height: auto;
+  max-height: 22rem;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 0.75rem;
+}
+
+/* Same CMS heading font as the title (`.ducc-heading`). */
+.cms-doc__content .cms-richtext :is(h1, h2, h3, h4) {
+  font-family: var(--font-heading, inherit);
+  letter-spacing: -0.01em;
+  /* Raleway's default old-style digits make "1." sit low next to capitals. */
+  font-variant-numeric: lining-nums;
+}
+
+.cms-doc__content .cms-richtext h1,
+.cms-doc__content .cms-richtext h2 {
+  margin: 3rem 0 1.25rem;
+  font-size: clamp(1.5rem, 2.6vw, 1.8rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--doc-heading);
+}
+
+.cms-doc__content .cms-richtext h3 {
+  margin: 2rem 0 1rem;
+  font-size: clamp(1.25rem, 2vw, 1.4rem);
+  font-weight: 500;
+  color: var(--doc-heading);
+}
+
+.cms-doc__content .cms-richtext h4 {
+  margin: 1.5rem 0 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--doc-heading);
+}
+
+.cms-doc__content .cms-richtext > :first-child {
+  margin-top: 0;
+}
+
+.cms-doc__content .cms-richtext p {
+  margin: 0 0 1.25rem;
+  color: var(--doc-text);
+  line-height: 1.75;
+}
+
+/* The paragraph converter pads every paragraph inline; keep it only on
+   highlighted ones, where it frames the background colour. */
+.cms-doc__content .cms-richtext p:not([style*='background-color']) {
+  padding-block: 0 !important;
+}
+
+.cms-doc__content .cms-richtext ul,
+.cms-doc__content .cms-richtext ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.5rem;
+  color: var(--doc-text);
+}
+
+.cms-doc__content .cms-richtext li {
+  margin-bottom: 0.6rem;
+  padding-left: 0.25rem;
+}
+
+.cms-doc__content .cms-richtext li::marker {
+  color: var(--cms-accent, var(--cms-primary, #04415f));
+}
+
+.cms-doc__content .cms-richtext a {
+  color: var(--cms-primary, #04415f);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Images inside the content: sized with the featured image (above), spaced
+   like a figure. A plain <img> or a <picture> wrapper, depending on sizes. */
+.cms-doc__content .cms-richtext picture {
+  display: block;
+  margin: 2rem 0;
+}
+
+.cms-doc__content .cms-richtext img {
+  margin-block: 2rem;
+}
+
+.cms-doc__content .cms-richtext picture img {
+  margin-block: 0;
+}
+
+.cms-doc__section {
+  margin-top: 3rem;
+}
+
+.cms-doc__section-heading {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.5rem, 2.6vw, 1.8rem);
+  font-weight: 600;
+  color: var(--doc-heading);
+}
+
+.cms-doc__actions {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.cms-doc__more {
+  max-width: 50rem;
+  margin: 4rem auto 0;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--doc-rule);
+  text-align: center;
+}
+
+.cms-doc__more-heading {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--doc-text) 60%, transparent);
+}
+
+.cms-doc__more-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cms-doc__more-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--cms-primary, #04415f) 18%, transparent);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--cms-primary, #04415f);
+  background: var(--cms-surface, #fff);
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.cms-doc__more-link:hover {
+  background: var(--cms-primary, #04415f);
+  color: #fff;
+}
+
+.cms-doc__more-link:focus-visible {
+  outline: 2px solid #8b1d1f;
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .cms-doc {
+    padding: 2.5rem 1.25rem 3rem;
+  }
+
+  .cms-doc__header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+  }
+}
+
 /* ── Apply Page ── */
 .apply-page {
   min-height: 60vh;

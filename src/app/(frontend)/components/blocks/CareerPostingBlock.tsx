@@ -118,6 +118,30 @@ function DomainAccordionItem({
   )
 }
 
+/** The Problem Domains accordion on its own, for the Work With Us detail page. */
+export function ProblemDomainsAccordion({
+  domains,
+  applyHref,
+  applyButtonText,
+}: {
+  domains: ProblemDomain[]
+  applyHref: string
+  applyButtonText?: string | null
+}) {
+  return (
+    <div className="career-accordion">
+      {domains.map((domain, i) => (
+        <DomainAccordionItem
+          key={domain.id || i}
+          domain={domain}
+          applyHref={applyHref}
+          applyButtonText={applyButtonText}
+        />
+      ))}
+    </div>
+  )
+}
+
 export default function CareerPostingBlock({
   excerpt,
   effectiveDate,

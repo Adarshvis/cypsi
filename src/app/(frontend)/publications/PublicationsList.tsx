@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   ChevronDown,
   ChevronLeft,
@@ -11,13 +11,15 @@ import {
   SlidersHorizontal,
 } from 'lucide-react'
 import ExportMenu from './ExportMenu'
-import { TYPE_OPTIONS, typeLabel, type PublicationItem } from './types'
+import AuthorFilter from './AuthorFilter'
+import { authorSlug } from './labAuthors'
+import { TYPE_OPTIONS, typeLabel, type AuthorOption, type PublicationItem } from './types'
 
 export type { PublicationItem } from './types'
 
 interface Props {
   publications: PublicationItem[]
-  authors: string[]
+  authors: AuthorOption[]
   keywords: string[]
 }
 
@@ -63,6 +65,29 @@ export default function PublicationsList({ publications, authors, keywords }: Pr
   const [page, setPage] = useState(1)
   const [filtersOpen, setFiltersOpen] = useState(false)
 
+  // `?author=geetika-jain-saxena[,other-slug]` preselects authors, so a team
+  // profile or an email can link straight to someone's papers. The selection
+  // is written back to the URL (without a reload) so it can be shared.
+  const urlRead = useRef(false)
+  useEffect(() => {
+    const wanted = (new URLSearchParams(window.location.search).get('author') || '')
+      .split(',')
+      .filter(Boolean)
+    if (wanted.length) {
+      const names = authors.filter((a) => wanted.includes(authorSlug(a.name))).map((a) => a.name)
+      if (names.length) setSelectedAuthors(names)
+    }
+    urlRead.current = true
+  }, [authors])
+
+  useEffect(() => {
+    if (!urlRead.current) return
+    const url = new URL(window.location.href)
+    if (selectedAuthors.length) url.searchParams.set('author', selectedAuthors.map(authorSlug).join(','))
+    else url.searchParams.delete('author')
+    if (url.href !== window.location.href) window.history.replaceState(null, '', url.href)
+  }, [selectedAuthors])
+
   const activeFilterCount =
     (timeFilter !== 'any' ? 1 : 0) +
     selectedTypes.length +
@@ -98,7 +123,8 @@ export default function PublicationsList({ publications, authors, keywords }: Pr
     if (selectedTypes.length) result = result.filter((p) => selectedTypes.includes(p.type))
 
     if (selectedAuthors.length) {
-      result = result.filter((p) => p.authors.some((a) => selectedAuthors.includes(a.name)))
+      // Any selected author (matched across their spellings, see labAuthors.ts).
+      result = result.filter((p) => p.labAuthors.some((name) => selectedAuthors.includes(name)))
     }
 
     if (selectedKeywords.length) {
@@ -297,21 +323,11 @@ export default function PublicationsList({ publications, authors, keywords }: Pr
         ))}
       </FilterGroup>
 
-      {authors.length > 0 && (
-        <FilterGroup title="Author" scroll>
-          {authors.map((author) => (
-            <label key={author} className={optionRow}>
-              <input
-                type="checkbox"
-                className="accent-[var(--cms-primary,#4B2E83)] w-4 h-4"
-                checked={selectedAuthors.includes(author)}
-                onChange={() => toggle(author, selectedAuthors, setSelectedAuthors)}
-              />
-              <span>{author}</span>
-            </label>
-          ))}
-        </FilterGroup>
-      )}
+      <AuthorFilter
+        authors={authors}
+        selected={selectedAuthors}
+        onToggle={(name) => toggle(name, selectedAuthors, setSelectedAuthors)}
+      />
 
       {keywords.length > 0 && (
         <FilterGroup title="Keywords / Research Area" scroll>

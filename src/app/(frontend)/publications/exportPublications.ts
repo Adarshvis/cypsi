@@ -48,10 +48,8 @@ function toCsv(items: PublicationItem[]): string {
       [
         p.title,
         p.authors.map((a) => a.name).join('; '),
-        p.authors
-          .filter((a) => a.isLabMember)
-          .map((a) => a.name)
-          .join('; '),
+        // Same people as the Author filter.
+        p.labAuthors.join('; '),
         p.publisher,
         typeLabel(p.type),
         p.year,
