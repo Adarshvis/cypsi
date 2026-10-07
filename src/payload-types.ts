@@ -2607,7 +2607,7 @@ export interface Page {
          */
         applyButtonText?: string | null;
         /**
-         * URL the buttons point to. Leave blank to use /apply (a page with slug "apply" containing a Form Layout block whose form has a Resume Upload field). Each domain's button adds ?domain=<domain title>.
+         * URL the Apply button points to. Leave blank to use /apply (a page with slug "apply" containing a Form Layout block whose form has a Resume Upload field).
          */
         applyButtonLink?: string | null;
         /**
@@ -4929,7 +4929,7 @@ export interface News {
              */
             applyButtonText?: string | null;
             /**
-             * URL the buttons point to. Leave blank to use /apply (a page with slug "apply" containing a Form Layout block whose form has a Resume Upload field). Each domain's button adds ?domain=<domain title>.
+             * URL the Apply button points to. Leave blank to use /apply (a page with slug "apply" containing a Form Layout block whose form has a Resume Upload field).
              */
             applyButtonLink?: string | null;
             /**
@@ -7210,7 +7210,7 @@ export interface TeamPage {
              */
             applyButtonText?: string | null;
             /**
-             * URL the buttons point to. Leave blank to use /apply (a page with slug "apply" containing a Form Layout block whose form has a Resume Upload field). Each domain's button adds ?domain=<domain title>.
+             * URL the Apply button points to. Leave blank to use /apply (a page with slug "apply" containing a Form Layout block whose form has a Resume Upload field).
              */
             applyButtonLink?: string | null;
             /**

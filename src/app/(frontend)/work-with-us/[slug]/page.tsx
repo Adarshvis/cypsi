@@ -4,7 +4,7 @@ import PageBanner from '../../components/PageBanner'
 import DocumentArticle from '../../components/DocumentArticle'
 import RichText from '../../components/ui/RichText'
 import { ProblemDomainsAccordion } from '../../components/blocks/CareerPostingBlock'
-import { getProgrammeBySlug, getPublishedProgrammes } from '@/lib/workWithUs'
+import { getProgrammeBySlug } from '@/lib/workWithUs'
 import { mediaOf } from '@/lib/blog'
 import { safeHref } from '@/lib/safeEmbedUrl'
 import { getSiteMeta } from '@/lib/siteMeta'
@@ -30,7 +30,6 @@ export default async function ProgrammePage({ params }: PageProps) {
   const [programme, { workWithUs }] = await Promise.all([getProgrammeBySlug(slug), getSiteMeta()])
   if (!programme) notFound()
 
-  const others = (await getPublishedProgrammes()).filter((p) => p.id !== programme.id)
   const applyHref = safeHref(programme.applyButtonLink) || '/apply'
 
   // The collection stores each challenge as `challenge`; the accordion reads `text`.
@@ -52,10 +51,6 @@ export default async function ProgrammePage({ params }: PageProps) {
         date={programme.effectiveDate}
         intro={programme.excerpt}
         image={mediaOf(programme.featuredImage)}
-        more={{
-          heading: `More from ${workWithUs.title}`,
-          links: others.map((p) => ({ id: p.id, href: `/work-with-us/${p.slug}`, label: p.title })),
-        }}
       >
         {programme.content ? (
           <div className="cms-doc__content">
@@ -66,12 +61,7 @@ export default async function ProgrammePage({ params }: PageProps) {
         {problemDomains.length > 0 ? (
           <div className="cms-doc__section">
             <h2 className="cms-doc__section-heading ducc-heading">Problem Domains</h2>
-            {/* Each domain's Apply button preselects that domain on the form. */}
-            <ProblemDomainsAccordion
-              domains={problemDomains}
-              applyHref={applyHref}
-              applyButtonText={programme.applyButtonText}
-            />
+            <ProblemDomainsAccordion domains={problemDomains} />
           </div>
         ) : null}
 

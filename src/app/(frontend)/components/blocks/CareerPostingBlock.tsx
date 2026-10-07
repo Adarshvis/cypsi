@@ -23,21 +23,8 @@ interface CareerPostingBlockProps {
   status?: 'active' | 'inactive' | null
 }
 
-/** Adds `domain=<title>` so the apply form can preselect the domain. */
-function withDomain(href: string, title: string): string {
-  const separator = href.includes('?') ? '&' : '?'
-  return `${href}${separator}domain=${encodeURIComponent(title)}`
-}
-
-function DomainAccordionItem({
-  domain,
-  applyHref,
-  applyButtonText,
-}: {
-  domain: ProblemDomain
-  applyHref: string
-  applyButtonText?: string | null
-}) {
+/** One problem domain. The single Apply button sits below the accordion, not in each item. */
+function DomainAccordionItem({ domain }: { domain: ProblemDomain }) {
   const [open, setOpen] = useState(false)
 
   const hasChallenges = domain.challenges && domain.challenges.length > 0
@@ -103,15 +90,6 @@ function DomainAccordionItem({
               )}
             </div>
           )}
-
-          {applyButtonText && domain.title ? (
-            <div style={{ marginTop: '1rem' }}>
-              <a className="career-posting__apply-btn" href={withDomain(applyHref, domain.title)}>
-                {applyButtonText}
-                <span className="sr-only"> for {domain.title}</span>
-              </a>
-            </div>
-          ) : null}
         </div>
       )}
     </div>
@@ -119,24 +97,11 @@ function DomainAccordionItem({
 }
 
 /** The Problem Domains accordion on its own, for the Work With Us detail page. */
-export function ProblemDomainsAccordion({
-  domains,
-  applyHref,
-  applyButtonText,
-}: {
-  domains: ProblemDomain[]
-  applyHref: string
-  applyButtonText?: string | null
-}) {
+export function ProblemDomainsAccordion({ domains }: { domains: ProblemDomain[] }) {
   return (
     <div className="career-accordion">
       {domains.map((domain, i) => (
-        <DomainAccordionItem
-          key={domain.id || i}
-          domain={domain}
-          applyHref={applyHref}
-          applyButtonText={applyButtonText}
-        />
+        <DomainAccordionItem key={domain.id || i} domain={domain} />
       ))}
     </div>
   )
@@ -189,12 +154,7 @@ export default function CareerPostingBlock({
           <h2 className="career-posting__domains-heading">Problem Domains</h2>
           <div className="career-accordion">
             {problemDomains!.map((domain, i) => (
-              <DomainAccordionItem
-                key={domain.id || i}
-                domain={domain}
-                applyHref={applyHref}
-                applyButtonText={applyButtonText}
-              />
+              <DomainAccordionItem key={domain.id || i} domain={domain} />
             ))}
           </div>
         </div>
