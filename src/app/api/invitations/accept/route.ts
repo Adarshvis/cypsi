@@ -11,7 +11,14 @@
  * caller cannot ask for a role they were not granted.
  */
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import {
+  commitTransaction,
+  createLocalReq,
+  getPayload,
+  initTransaction,
+  killTransaction,
+  ValidationError,
+} from 'payload'
 import config from '@/payload.config'
 import { sendEmail } from '@/lib/email/sendEmail'
 import { getPublicUrl } from '@/lib/email/config'
@@ -46,6 +53,23 @@ async function findByToken(token: string) {
 
 /** A single message for every rejection, so nothing about the token leaks. */
 const INVALID = 'This invitation link is not valid.'
+
+function isValidationError(err: unknown): err is ValidationError {
+  return err instanceof ValidationError || (err as Error | null)?.name === 'ValidationError'
+}
+
+/**
+ * Local API errors are not logged by Payload, so without this the cause of a
+ * failed acceptance never reaches the server logs.
+ */
+async function logError(err: unknown, msg: string) {
+  try {
+    const payload = await getPayload({ config })
+    payload.logger.error({ err }, msg)
+  } catch {
+    console.error(msg, err)
+  }
+}
 
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('token')
@@ -89,7 +113,8 @@ export async function GET(request: NextRequest) {
       expiresAt: invitation.expiresAt,
       minPasswordLength: MIN_PASSWORD_LENGTH,
     })
-  } catch {
+  } catch (err) {
+    await logError(err, 'Invitation check failed')
     return NextResponse.json({ error: 'Could not check this invitation.' }, { status: 500 })
   }
 }
@@ -142,62 +167,87 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'This invitation has expired.' }, { status: 410 })
     }
 
-    const existing = await payload.find({
-      collection: 'users',
-      where: { email: { equals: invitation.email } },
-      limit: 1,
-      overrideAccess: true,
-    })
+    /*
+     * The account and the invitation's "accepted" status are written in one
+     * transaction, so a failure part-way leaves neither behind (no account
+     * without a closed invitation, which would block every retry).
+     */
+    const req = await createLocalReq({}, payload)
+    const ownsTransaction = await initTransaction(req)
 
-    if (existing.docs.length > 0) {
-      // Close the invitation so it cannot be reused against the live account.
-      await payload.update({
-        collection: 'invitations',
-        id: invitation.id,
-        data: {
-          status: 'accepted',
-          acceptedAt: new Date().toISOString(),
-          acceptedUser: existing.docs[0].id,
-        } as never,
+    let accountExisted = false
+    try {
+      const existing = await payload.find({
+        collection: 'users',
+        where: { email: { equals: invitation.email } },
+        limit: 1,
         overrideAccess: true,
+        req,
       })
+
+      if (existing.docs.length > 0) {
+        // Close the invitation so it cannot be reused against the live account.
+        // The existing account itself is left untouched (no password or role change).
+        await payload.update({
+          collection: 'invitations',
+          id: invitation.id,
+          data: {
+            status: 'accepted',
+            acceptedAt: new Date().toISOString(),
+            acceptedUser: existing.docs[0].id,
+          } as never,
+          overrideAccess: true,
+          req,
+        })
+        accountExisted = true
+      } else {
+        // Content Editor and Author are both scoped to what the invitation assigns.
+        const isScopedRole = SCOPED_ROLES.includes(invitation.role as never)
+        const pageIds = (invitation.allowedPages || [])
+          .map((p) => (p && typeof p === 'object' ? p.id : p))
+          .filter((p): p is string | number => p !== null && p !== undefined)
+
+        const user = await payload.create({
+          collection: 'users',
+          overrideAccess: true,
+          data: {
+            email: invitation.email,
+            password,
+            firstName: (body.firstName || invitation.name || '').trim() || undefined,
+            lastName: (body.lastName || '').trim() || undefined,
+            // Role and scope come from the invitation, never from the request.
+            roles: [invitation.role],
+            allowedCollections: isScopedRole ? invitation.allowedCollections || [] : [],
+            allowedPages: isScopedRole ? pageIds : [],
+          } as never,
+          req,
+        })
+
+        await payload.update({
+          collection: 'invitations',
+          id: invitation.id,
+          data: {
+            status: 'accepted',
+            acceptedAt: new Date().toISOString(),
+            acceptedUser: user.id,
+          } as never,
+          overrideAccess: true,
+          req,
+        })
+      }
+
+      if (ownsTransaction) await commitTransaction(req)
+    } catch (err) {
+      await killTransaction(req)
+      throw err
+    }
+
+    if (accountExisted) {
       return NextResponse.json(
         { error: 'An account with this address already exists. Sign in instead.', loginUrl: '/admin' },
         { status: 409 },
       )
     }
-
-    // Content Editor and Author are both scoped to what the invitation assigns.
-    const isScopedRole = SCOPED_ROLES.includes(invitation.role as never)
-    const pageIds = (invitation.allowedPages || [])
-      .map((p) => (p && typeof p === 'object' ? p.id : p))
-      .filter((p): p is string | number => p !== null && p !== undefined)
-
-    const user = await payload.create({
-      collection: 'users',
-      overrideAccess: true,
-      data: {
-        email: invitation.email,
-        password,
-        firstName: (body.firstName || invitation.name || '').trim() || undefined,
-        lastName: (body.lastName || '').trim() || undefined,
-        // Role and scope come from the invitation, never from the request.
-        roles: [invitation.role],
-        allowedCollections: isScopedRole ? invitation.allowedCollections || [] : [],
-        allowedPages: isScopedRole ? pageIds : [],
-      } as never,
-    })
-
-    await payload.update({
-      collection: 'invitations',
-      id: invitation.id,
-      data: {
-        status: 'accepted',
-        acceptedAt: new Date().toISOString(),
-        acceptedUser: user.id,
-      } as never,
-      overrideAccess: true,
-    })
 
     // Best effort: the account exists either way, so a failed welcome email
     // must not turn a successful signup into an error.
@@ -223,11 +273,28 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, email: invitation.email, loginUrl: '/admin' })
   } catch (err) {
+    await logError(err, 'Invitation accept failed')
+
     const message = err instanceof Error ? err.message : ''
-    if (/duplicate|unique/i.test(message)) {
+    // The Postgres adapter reports unique-constraint hits as a ValidationError
+    // whose per-field message carries the "unique" wording.
+    const fieldMessages = isValidationError(err)
+      ? (err.data?.errors || []).map((e) => e.message).join(' ')
+      : ''
+    if (/duplicate|unique/i.test(`${message} ${fieldMessages}`)) {
       return NextResponse.json(
         { error: 'An account with this address already exists.', loginUrl: '/admin' },
         { status: 409 },
+      )
+    }
+    if (isValidationError(err)) {
+      // Field details stay in the server log; the form only needs to know it can retry.
+      return NextResponse.json(
+        {
+          error:
+            'Some of the details could not be saved. Check them and try again, or ask the person who invited you for help.',
+        },
+        { status: 400 },
       )
     }
     return NextResponse.json({ error: 'Could not complete the invitation.' }, { status: 500 })

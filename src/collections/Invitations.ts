@@ -86,10 +86,33 @@ export const Invitations: CollectionConfig = {
        * fails on the constraint. Uniqueness is enforced below against *open*
        * invitations only, which is the rule actually wanted.
        */
-      validate: async (value: unknown, { req, id }: any) => {
-        const email = typeof value === 'string' ? value.trim().toLowerCase() : ''
+      validate: async (value: unknown, { req, id, operation, previousValue }: any) => {
+        const normalize = (v: unknown) => (typeof v === 'string' ? v.trim().toLowerCase() : '')
+        const email = normalize(value)
         if (!email) return 'An email address is required.'
         if (!req?.payload) return true
+
+        /*
+         * Only check when the address is being set or changed. Payload back-fills
+         * the stored email on partial updates and validates it again, so status
+         * changes (accept, expire, cancel, resend) would otherwise be rejected
+         * once the invitee's account exists.
+         */
+        if (operation === 'update' && id) {
+          let previous = previousValue
+          if (previous === undefined) {
+            const current = await req.payload.findByID({
+              collection: 'invitations',
+              id,
+              depth: 0,
+              disableErrors: true,
+              overrideAccess: true,
+              req,
+            })
+            previous = current?.email
+          }
+          if (normalize(previous) === email) return true
+        }
 
         const open = await req.payload.find({
           collection: 'invitations',
@@ -102,6 +125,7 @@ export const Invitations: CollectionConfig = {
           },
           limit: 1,
           overrideAccess: true,
+          req,
         })
         if (open.docs.length > 0) {
           return 'There is already a pending invitation for this address. Cancel it first, or use Resend.'
@@ -112,6 +136,7 @@ export const Invitations: CollectionConfig = {
           where: { email: { equals: email } },
           limit: 1,
           overrideAccess: true,
+          req,
         })
         if (existing.docs.length > 0) {
           return 'A user with this address already exists.'
